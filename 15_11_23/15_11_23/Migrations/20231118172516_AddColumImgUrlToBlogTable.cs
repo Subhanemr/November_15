@@ -4,13 +4,13 @@
 
 namespace _15_11_23.Migrations
 {
-    public partial class addImgUrl2ColumIntoProductsTable : Migration
+    public partial class AddColumImgUrlToBlogTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "ImgUrl2",
-                table: "Products",
+                name: "ImgUrl",
+                table: "Blogs",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -19,8 +19,8 @@ namespace _15_11_23.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ImgUrl2",
-                table: "Products");
+                name: "ImgUrl",
+                table: "Blogs");
         }
     }
 }

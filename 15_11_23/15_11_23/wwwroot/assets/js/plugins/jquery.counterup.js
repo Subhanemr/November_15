@@ -12,7 +12,6 @@
     "use strict";
 
     $.fn.counterUp = function (options) {
-
         // Defaults
         var settings = $.extend({
                 'time': 400,
@@ -24,7 +23,6 @@
             s;
 
         return this.each(function () {
-
             // Store the object
             var $this = $(this),
                 counter = {
@@ -57,7 +55,6 @@
 
                 // Generate list of incremental numbers to display
                 for (var i = divisions; i >= 1; i--) {
-
                     var newNum = parseFloat(num / divisions * i).toFixed(decimalPlaces);
 
                     // Add incremental seconds and convert back to time
@@ -116,7 +113,5 @@
                 this.destroy(); //-- Waypoint 3.0 version of triggerOnce
             }, {offset: '100%'});
         });
-
     };
-
 })(jQuery);

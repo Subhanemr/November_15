@@ -18,9 +18,11 @@
                 }
             }
         }
+
         &-logo {
             padding-bottom: 35px;
         }
+
         &-title {
             color: #000000;
             font-weight: 400;
@@ -28,23 +30,28 @@
             line-height: 24px;
             margin-bottom: 30px;
         }
+
         &-desc {
             margin-bottom: 35px;
             line-height: 27px;
             color: #000000;
         }
+
         &-list {
             &-item {
                 > li {
                     &:not(:last-child) {
                         padding-bottom: 5px;
                     }
+
                     i {
                         margin-right: 20px;
                         color: #df414b;
                     }
+
                     a {
                         color: #000000;
+
                         &:hover {
                             color: $pronia-primary;
                         }
@@ -53,6 +60,7 @@
             }
         }
     }
+
     &-contact-info {
         .footer {
             &-widget {
@@ -61,16 +69,19 @@
                 }
             }
         }
+
         .number {
             color: #000000;
             font-size: 24px;
             line-height: 40px;
             display: block;
             margin-bottom: 10px;
+
             &:hover {
                 color: $pronia-primary;
             }
         }
+
         .address {
             ul {
                 li {
@@ -88,9 +99,11 @@
     padding-top: 15px;
     padding-bottom: 15px;
     text-align: center;
+
     * {
         color: #8dba87;
     }
+
     &-text {
         text-transform: capitalize;
     }

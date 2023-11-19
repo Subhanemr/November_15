@@ -2,7 +2,7 @@
     ('use strict');
 
     /*----------------------------------------*/
-    /*  Preloader  
+    /*  Preloader
 /*----------------------------------------*/
     var windows = $(window);
     windows.on('load', function () {
@@ -806,7 +806,7 @@
     }
 
     /*----------------------------------------*/
-    /*  ion Range Slider 
+    /*  ion Range Slider
 /*----------------------------------------*/
     $('.pronia-range-slider').ionRangeSlider({
         prefix: '$',

@@ -7,33 +7,42 @@
             font-weight: 700;
             font-size: 24px;
             margin-bottom: 15px;
+
             @include breakpoint(max-lg-device) {
                 font-size: 21px;
             }
+
             a {
                 color: $pronia-secondary;
+
                 &:hover {
                     color: $pronia-primary;
                 }
             }
         }
+
         .short-desc {
             line-height: 30px;
             margin-bottom: 45px;
         }
     }
+
     &-meta {
         margin-bottom: 20px;
+
         * {
             color: $pronia-primary;
         }
+
         ul {
             li {
                 display: inline-block;
                 text-transform: uppercase;
+
                 &:not(:last-child) {
                     padding-right: 10px;
                 }
+
                 i {
                     vertical-align: text-bottom;
                     margin-right: 5px;
@@ -42,10 +51,12 @@
             }
         }
     }
+
     &-img {
         .img-full {
             height: 100%;
         }
+
         .inner-btn {
             i {
                 border: 2px solid $pronia-primary;
@@ -59,6 +70,7 @@
                 text-align: center;
                 font-size: 24px;
             }
+
             &-wrap {
                 position: absolute;
                 bottom: 20px;
@@ -66,15 +78,18 @@
             }
         }
     }
+
     &-item {
         background-color: #f6f7fb;
         padding: 35px 30px 40px 30px;
         border-radius: 10px;
+
         &-wrap {
             &.list-item-wrap {
                 .blog {
                     &-content {
                         height: 100%;
+
                         .inner-content {
                             display: flex;
                             flex-direction: column;
@@ -86,23 +101,29 @@
             }
         }
     }
+
     &-list {
         &-item {
             display: flex;
+
             @include breakpoint(max-sm-device) {
                 flex-direction: column;
             }
+
             .blog {
                 &-img {
                     width: 50%;
+
                     @include breakpoint(max-sm-device) {
                         width: 100%;
                     }
                 }
+
                 &-content {
                     padding-right: 30px;
                     width: 50%;
                     align-self: center;
+
                     @include breakpoint(max-sm-device) {
                         width: 100%;
                         padding-right: 0;
@@ -110,14 +131,17 @@
                     }
                 }
             }
+
             .ratio {
                 width: 50%;
+
                 @include breakpoint(max-sm-device) {
                     width: 100%;
                 }
             }
         }
     }
+
     &-detail {
         &-item {
             background-color: #f6f7fb;
@@ -126,32 +150,39 @@
             padding-left: 40px;
             padding-right: 40px;
             padding-bottom: 55px;
+
             @include breakpoint(max-xxs-device) {
                 padding-left: 20px;
                 padding-right: 20px;
             }
+
             .short-desc {
                 line-height: 30px;
                 margin-bottom: 50px;
             }
+
             .blog {
                 &-img {
                     margin-bottom: 50px;
                 }
+
                 &-content {
                     .title {
                         margin-bottom: 20px;
                         font-size: 36px;
                     }
                 }
+
                 &-meta {
                     margin-bottom: 10px;
+
                     ul {
                         li {
                             font-size: 18px;
                         }
                     }
                 }
+
                 &-banner {
                     padding-bottom: 50px;
                 }
@@ -172,28 +203,35 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 30px;
+
     @include breakpoint(max-xxs-device) {
         flex-direction: column;
     }
+
     .tags {
         display: flex;
+
         .title {
             color: #5f5f5f;
             font-weight: 500;
         }
+
         ul {
             display: flex;
             margin-left: 5px;
+
             li {
                 &:not(:last-child) {
                     margin-right: 5px;
                 }
+
                 a {
                     color: $pronia-primary;
                 }
             }
         }
     }
+
     .social {
         &-link {
             ul {
@@ -201,13 +239,16 @@
                     &:not(:last-child) {
                         padding-right: 15px;
                     }
+
                     i {
                         transition: $baseTransition;
                         color: #000000;
+
                         &:hover {
                             color: $pronia-primary;
                         }
                     }
+
                     &.comment {
                         span {
                             color: #000000;
@@ -231,50 +272,63 @@
         padding-left: 40px;
         padding-right: 40px;
         padding-bottom: 60px;
+
         @include breakpoint(max-xs-device) {
             padding-left: 25px;
             padding-right: 25px;
         }
+
         .heading {
             margin-bottom: 60px;
             line-height: 24px;
             font-size: 30px;
             color: #222121;
+
             @include breakpoint(max-xxs-device) {
                 font-size: 28px;
             }
         }
+
         &-item {
             display: flex;
+
             @include breakpoint(max-xxs-device) {
                 flex-direction: column;
             }
+
             &[class*='blog-comment-item'] {
                 &:not(:last-child) {
                     padding-bottom: 60px;
                 }
             }
+
             &.relpy-item {
                 padding-left: 60px;
+
                 @include breakpoint(max-xxs-device) {
                     padding-left: 0;
                 }
             }
         }
+
         &-img {
             width: 120px;
+
             img {
                 width: 100%;
             }
         }
+
         &-content {
             width: calc(100% - 115px);
             margin-left: 30px;
+
             @include breakpoint(max-xxs-device) {
                 width: 100%;
                 margin-left: 0;
                 margin-top: 25px;
             }
+
             .user {
                 &-meta {
                     .date {
@@ -284,6 +338,7 @@
                         margin-bottom: 20px;
                     }
                 }
+
                 &-name {
                     color: #333333;
                     font-weight: 400;
@@ -291,11 +346,13 @@
                     line-height: 29px;
                     margin-bottom: 5px;
                 }
+
                 &-comment {
                     margin-bottom: 20px;
                     line-height: 30px;
                 }
             }
+
             .comment {
                 &-btn {
                     background-color: #343434;
@@ -305,12 +362,15 @@
                     line-height: 35px;
                     color: $white;
                     font-size: 14px;
+
                     &:hover {
                         background-color: $pronia-primary;
                     }
+
                     &.style {
                         &-2 {
                             background-color: $pronia-primary;
+
                             &:hover {
                                 background-color: #343434;
                             }

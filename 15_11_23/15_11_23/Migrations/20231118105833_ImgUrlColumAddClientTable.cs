@@ -4,23 +4,23 @@
 
 namespace _15_11_23.Migrations
 {
-    public partial class addCountIdColumIntoProductsTable : Migration
+    public partial class ImgUrlColumAddClientTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "CountId",
-                table: "Products",
-                type: "int",
+            migrationBuilder.AddColumn<string>(
+                name: "ImgUrl",
+                table: "Clients",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: "");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "CountId",
-                table: "Products");
+                name: "ImgUrl",
+                table: "Clients");
         }
     }
 }
