@@ -99,6 +99,23 @@ namespace _15_11_23.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("_15_11_23.Models.Color", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Color");
+                });
+
             modelBuilder.Entity("_15_11_23.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -135,6 +152,29 @@ namespace _15_11_23.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("_15_11_23.Models.ProductColor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ColorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ColorId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductColors");
+                });
+
             modelBuilder.Entity("_15_11_23.Models.ProductImage", b =>
                 {
                     b.Property<int>("id")
@@ -162,6 +202,69 @@ namespace _15_11_23.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.ProductSize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SizeId");
+
+                    b.ToTable("ProductSizes");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.ProductTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ProductTags");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.Size", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Size");
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Slide", b =>
@@ -193,6 +296,23 @@ namespace _15_11_23.Migrations
                     b.ToTable("Slides");
                 });
 
+            modelBuilder.Entity("_15_11_23.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tag");
+                });
+
             modelBuilder.Entity("_15_11_23.Models.Product", b =>
                 {
                     b.HasOne("_15_11_23.Models.Category", "Category")
@@ -202,6 +322,25 @@ namespace _15_11_23.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.ProductColor", b =>
+                {
+                    b.HasOne("_15_11_23.Models.Color", "Color")
+                        .WithMany("ProductColors")
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("_15_11_23.Models.Product", "Product")
+                        .WithMany("ProductColors")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Color");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("_15_11_23.Models.ProductImage", b =>
@@ -215,9 +354,68 @@ namespace _15_11_23.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("_15_11_23.Models.ProductSize", b =>
+                {
+                    b.HasOne("_15_11_23.Models.Product", "Product")
+                        .WithMany("ProductSizes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("_15_11_23.Models.Size", "Size")
+                        .WithMany("ProductSizes")
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Size");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.ProductTag", b =>
+                {
+                    b.HasOne("_15_11_23.Models.Product", "Product")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("_15_11_23.Models.Tag", "Tag")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.Color", b =>
+                {
+                    b.Navigation("ProductColors");
+                });
+
             modelBuilder.Entity("_15_11_23.Models.Product", b =>
                 {
+                    b.Navigation("ProductColors");
+
                     b.Navigation("ProductImages");
+
+                    b.Navigation("ProductSizes");
+
+                    b.Navigation("ProductTags");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.Size", b =>
+                {
+                    b.Navigation("ProductSizes");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.Tag", b =>
+                {
+                    b.Navigation("ProductTags");
                 });
 #pragma warning restore 612, 618
         }

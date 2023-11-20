@@ -26,50 +26,33 @@
                     <div class="single-product-img">
                         <div class="swiper-container single-product-slider">
                             <div class="swiper-wrapper">
+                                @foreach (ProductImage productImage in Model.Product.ProductImages.OrderByDescending(pi => pi.IsPrimary).ToList())
+                                {
                                     <div class="swiper-slide">
-                                        <a href="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Url"
+                                        <a href="~/assets/images/website-images/@productImage.Url"
                                            class="single-img gallery-popup">
                                             <img class="img-full"
-                                             src="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Url"
-                                             alt="@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Alternative" />
+                                                 src="~/assets/images/website-images/@productImage.Url"
+                                                 alt="@productImage.Alternative" />
                                         </a>
                                     </div>
-                                <div class="swiper-slide">
-                                    <a href="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Url"
-                                       class="single-img gallery-popup">
-                                        <img class="img-full"
-                                             src="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Url"
-                                             alt="@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Alternative" />
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == null).Url"
-                                       class="single-img gallery-popup">
-                                        <img class="img-full"
-                                             src="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == null).Url"
-                                             alt="@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == null).Alternative" />
-                                    </a>
-                                </div>
-                            </div>
+                                }
+                            </div>   
                         </div>
                         <div class="thumbs-arrow-holder">
                             <div class="swiper-container single-product-thumbs">
                                 <div class="swiper-wrapper">
-                                    <a href="#" class="swiper-slide">
-                                        <img class="img-full"
-                                             src="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Url"
-                                             alt="@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Alternative" />
-                                    </a>
-                                    <a href="#" class="swiper-slide">
-                                        <img class="img-full"
-                                             src="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Url"
-                                             alt="@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Alternative" />
-                                    </a>
-                                    <a href="#" class="swiper-slide">
-                                        <img class="img-full"
-                                             src="~/assets/images/website-images/@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == null).Url"
-                                             alt="@Model.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == null).Alternative" />
-                                    </a>
+                                        @foreach (ProductImage productImage in Model.Product.ProductImages.OrderByDescending(pi => pi.IsPrimary).ToList())
+                                        {
+                                            <div class="swiper-slide">
+                                                <a href="~/assets/images/website-images/@productImage.Url"
+                                                   class="single-img gallery-popup">
+                                                    <img class="img-full"
+                                                         src="~/assets/images/website-images/@productImage.Url"
+                                                         alt="@productImage.Alternative" />
+                                                </a>
+                                            </div>
+                                        }
                                 </div>
                                 <!-- Add Arrows -->
                                 <div class="thumbs-button-wrap d-none d-md-block">
@@ -107,18 +90,20 @@
                         <div class="selector-wrap color-option">
                             <span class="selector-title border-bottom-0">Color</span>
                             <select class="nice-select wide border-bottom-0 rounded-0">
-                                <option value="default">Black & White</option>
-                                <option value="blue">Blue</option>
-                                <option value="green">Green</option>
-                                <option value="red">Red</option>
+                                @foreach (ProductColor pColor in Model.Product.ProductColors)
+                                {
+                                    <option value="@pColor.Color.Name">@pColor.Color.Name</option>
+                                }
+
                             </select>
                         </div>
                         <div class="selector-wrap size-option">
                             <span class="selector-title">Size</span>
                             <select class="nice-select wide rounded-0">
-                                <option value="medium">Medium Size & Poot</option>
-                                <option value="large">Large Size With Poot</option>
-                                <option value="small">Small Size With Poot</option>
+                                @foreach (ProductSize pSize in Model.Product.ProductSizes)
+                                {
+                                    <option value="@pSize.Size.Name">@pSize.Size.Name</option>
+                                }
                             </select>
                         </div>
                         <p class="short-desc">
@@ -205,9 +190,12 @@
                         <div class="product-category product-tags">
                             <span class="title">Tags :</span>
                             <ul>
-                                <li>
-                                    <a href="#">Furniture</a>
-                                </li>
+                                @foreach (ProductTag pTag in Model.Product.ProductTags)
+                                        {
+                                            <li>
+                                                <a href="#">@pTag.Tag.Name@(pTag!=Model.Product.ProductTags[Model.Product.ProductTags.Count - 1]?",":"")</a>
+                                            </li>
+                                        }
                             </ul>
                         </div>
                         <div class="product-category social-link align-items-center pb-0">
@@ -477,10 +465,10 @@
                             {
                                 <div class="swiper-slide product-item">
                                     <div class="product-img">
-                                        <a href="single-product-variable.html">
+                                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">
                                             <img class="primary-img"
                                                  src="~/assets/images/website-images/@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Url"
-                                                 alt="@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Alternative" />
+                                                 alt="@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Alternative" />
                                             <img class="secondary-img"
                                                  src="~/assets/images/website-images/@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Url"
                                                  alt="@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Alternative" />
@@ -527,7 +515,7 @@
                                     </div>
                                     <div class="product-content">
                                         <a class="product-name"
-                                           href="single-product-variable.html">@item.Name</a>
+                                           asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a>
                                         <div class="price-box pb-1">
                                             <span class="new-price">$@item.Price</span>
                                         </div>

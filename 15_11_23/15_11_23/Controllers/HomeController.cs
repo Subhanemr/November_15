@@ -494,7 +494,430 @@ namespace _15_11_23.Controllers
             //_context.ProductImages.AddRange(productImages);
             //_context.SaveChanges();
 
-            List<Product> products = _context.Products.Include(p => p.ProductImages).OrderByDescending(s => s.CountId).Take(8).ToList();
+            //List<Color> colors = new List<Color>
+            //{
+            //    new Color
+            //    {
+            //        Name = "Red"
+            //    },
+            //    new Color
+            //    {
+            //        Name = "Green"
+            //    },
+            //    new Color
+            //    {
+            //        Name = "Black"
+            //    },
+            //    new Color
+            //    {
+            //        Name = "Blue"
+            //    },
+            //    new Color
+            //    {
+            //        Name = "White"
+            //    }
+            //};
+            //_context.Colors.AddRange(colors);
+            //_context.SaveChanges();
+
+            //List<ProductColor> productColors = new List<ProductColor>
+            //{
+            //    new ProductColor
+            //    {
+            //        ProductId = 1,
+            //        ColorId = 1,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 1,
+            //        ColorId = 2,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 2,
+            //        ColorId = 4,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 2,
+            //        ColorId = 5,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 3,
+            //        ColorId = 1,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 3,
+            //        ColorId = 4,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 4,
+            //        ColorId = 3,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 5,
+            //        ColorId = 3,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 6,
+            //        ColorId = 1,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 6,
+            //        ColorId = 5,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 7,
+            //        ColorId = 1,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 7,
+            //        ColorId = 4,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 8,
+            //        ColorId = 1,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 9,
+            //        ColorId = 1,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 9,
+            //        ColorId = 2,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 10,
+            //        ColorId = 1,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 10,
+            //        ColorId = 2,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 11,
+            //        ColorId = 2,
+            //    },
+            //    new ProductColor
+            //    {
+            //        ProductId = 12,
+            //        ColorId = 3,
+            //    }
+            //};
+            //_context.ProductColors.AddRange(productColors);
+            //_context.SaveChanges();
+
+            //List<Size> sizes = new List<Size> 
+            //{
+            //    new Size
+            //    {
+            //        Name = "Small"
+            //    },
+            //    new Size
+            //    {
+            //        Name = "Medium"
+            //    },
+            //    new Size
+            //    {
+            //        Name = "Large"
+            //    },
+            //    new Size
+            //    {
+            //        Name = "Big"
+            //    },
+            //    new Size
+            //    {
+            //        Name = "XXXXL"
+            //    }
+            //};
+            //_context.Sizes.AddRange(sizes);
+            //_context.SaveChanges();
+
+            //List<Tag> tags = new List<Tag> 
+            //{
+            //    new Tag
+            //    {
+            //        Name = "Garden"
+            //    },
+            //    new Tag
+            //    {
+            //        Name = "Furniture"
+            //    },
+            //    new Tag
+            //    {
+            //        Name = "Flower"
+            //    },
+            //    new Tag
+            //    {
+            //        Name = "Air"
+            //    },
+            //    new Tag
+            //    {
+            //        Name = "AfrikaHelper"
+            //    },
+            //    new Tag
+            //    {
+            //        Name = "Water"
+            //    }
+            //};
+            //_context.Tags.AddRange(tags);
+            //_context.SaveChanges();
+
+            //List<ProductSize> productSizes = new List<ProductSize> 
+            //{
+            //    new ProductSize
+            //    {
+            //        ProductId = 1,
+            //        SizeId = 2
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 1,
+            //        SizeId = 3
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 2,
+            //        SizeId = 2
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 2,
+            //        SizeId = 3
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 3,
+            //        SizeId = 1
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 3,
+            //        SizeId = 3
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 4,
+            //        SizeId = 4
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 4,
+            //        SizeId = 5
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 5,
+            //        SizeId = 4
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 5,
+            //        SizeId = 5
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 6,
+            //        SizeId = 4
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 6,
+            //        SizeId = 5
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 7,
+            //        SizeId = 2
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 7,
+            //        SizeId = 3
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 8,
+            //        SizeId = 1
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 8,
+            //        SizeId = 2
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 8,
+            //        SizeId = 3
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 9,
+            //        SizeId = 1
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 9,
+            //        SizeId = 2
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 9,
+            //        SizeId = 3
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 10,
+            //        SizeId = 2
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 11,
+            //        SizeId = 2
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 12,
+            //        SizeId = 4
+            //    },
+            //    new ProductSize
+            //    {
+            //        ProductId = 12,
+            //        SizeId = 4
+            //    }
+            //};
+            //_context.ProductSizes.AddRange(productSizes);
+            //_context.SaveChanges();
+
+            //List<ProductTag> productTags = new List<ProductTag> 
+            //{
+            //    new ProductTag
+            //    {
+            //        ProductId = 1,
+            //        TagId = 2
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 1,
+            //        TagId = 3
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 2,
+            //        TagId = 1
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 2,
+            //        TagId = 1
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 3,
+            //        TagId = 1
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 3,
+            //        TagId = 4
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 4,
+            //        TagId = 5
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 4,
+            //        TagId = 6
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 5,
+            //        TagId = 5
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 5,
+            //        TagId = 6
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 6,
+            //        TagId = 1
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 6,
+            //        TagId = 4
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 7,
+            //        TagId = 1
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 7,
+            //        TagId = 3
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 8,
+            //        TagId = 1
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 8,
+            //        TagId = 3
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 9,
+            //        TagId = 3
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 10,
+            //        TagId = 2
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 11,
+            //        TagId = 2
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 12,
+            //        TagId = 5
+            //    },
+            //    new ProductTag
+            //    {
+            //        ProductId = 12,
+            //        TagId = 6
+            //    }
+            //};
+            //_context.ProductTags.AddRange(productTags);
+            //_context.SaveChanges();
+
+            List<Product> products = _context.Products
+            .Include(p => p.ProductImages.Where(pi => pi.IsPrimary != null)).OrderByDescending(s => s.CountId).Take(8)
+            .ToList();
+            
             List<Slide> slides = _context.Slides.OrderBy(s => s.Id).Take(3).ToList();
             List<Client> clients = _context.Clients.ToList();
             List<Blog> blogs = _context.Blogs.ToList();

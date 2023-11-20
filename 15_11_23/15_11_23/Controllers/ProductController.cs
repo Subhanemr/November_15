@@ -18,10 +18,21 @@ namespace _15_11_23.Controllers
         public IActionResult Detail(int id)
         {
             if (id == 0) return BadRequest();
-            Product product = _context.Products.Include(p => p.Category).Include(p => p.ProductImages).FirstOrDefault(p => p.Id == id);
-            List<Product> products = _context.Products.Include(p => p.Category).Include(p => p.ProductImages).Where(p => p.CategoryId == product.CategoryId && p.Id != product.Id).ToList();
+            Product product = _context.Products
+                .Include(p => p.Category)
+                .Include(pi => pi.ProductImages)
+                .Include(pt => pt.ProductTags).ThenInclude(pt => pt.Tag)
+                .Include(ps => ps.ProductSizes).ThenInclude(ps => ps.Size)
+                .Include(pc => pc.ProductColors).ThenInclude(pc => pc.Color)
+                .FirstOrDefault(p => p.Id == id);
 
             if (product == null) return NotFound();
+
+            List<Product> products = _context.Products
+                .Include(pi => pi.ProductImages.Where(pi => pi.IsPrimary !=null))
+                .Where(p => p.CategoryId == product.CategoryId && p.Id != product.Id)
+                .ToList();
+
 
             ProductVM vm = new ProductVM { Product = product, Products = products };
 
