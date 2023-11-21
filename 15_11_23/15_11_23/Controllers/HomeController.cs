@@ -15,7 +15,7 @@ namespace _15_11_23.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //List<Product> productsList = new List<Product> {
             //new Product
@@ -914,20 +914,20 @@ namespace _15_11_23.Controllers
             //_context.ProductTags.AddRange(productTags);
             //_context.SaveChanges();
 
-            List<Product> products = _context.Products
+            List<Product> products = await _context.Products
             .Include(p => p.ProductImages.Where(pi => pi.IsPrimary != null)).OrderByDescending(s => s.CountId).Take(8)
-            .ToList();
+            .ToListAsync();
             
-            List<Slide> slides = _context.Slides.OrderBy(s => s.Id).Take(3).ToList();
-            List<Client> clients = _context.Clients.ToList();
-            List<Blog> blogs = _context.Blogs.ToList();
+            List<Slide> slides = await _context.Slides.OrderBy(s => s.Id).Take(3).ToListAsync();
+            List<Client> clients = await _context.Clients.ToListAsync();
+            List<Blog> blogs = await _context.Blogs.ToListAsync();
 
             HomeVM vm = new HomeVM { Slides = slides, Products = products, Clients = clients, Blogs = blogs };
 
             return View(vm);
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
             return View();
         }
