@@ -28,10 +28,22 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
-            _context.Categories.Add(category);
-            return View();
+            if(!ModelState.IsValid) return View();
+
+            bool result = _context.Categories.Any(c => c.Name.ToLower().Trim() == category.Name.ToLower().Trim());
+
+            if (result)
+            {
+                ModelState.AddModelError("Name", "A Category is available");
+                return View();
+            }
+
+            await _context.Categories.AddAsync(category);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _15_11_23.Areas.Admin.Controllers
 {
+    [Area("ProniaAdmin")]
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
@@ -11,8 +12,7 @@ namespace _15_11_23.Areas.Admin.Controllers
         {
             _context = context;
         }
-        [Area("ProniaAdmin")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }

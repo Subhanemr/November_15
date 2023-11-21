@@ -181,35 +181,33 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Colors" asp-action="Index">
+                        <a class="nav-link" asp-controller="Color" asp-action="Index">
                             <i class="mdi mdi-invert-colors menu-icon"></i>
                             <span class="menu-title">Colors</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Sizes" asp-action="Index">
+                        <a class="nav-link" asp-controller="Size" asp-action="Index">
                             <i class="mdi mdi-format-size menu-icon"></i>
                             <span class="menu-title">Sizes</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Tags" asp-action="Index">
+                        <a class="nav-link" asp-controller="Tag" asp-action="Index">
                             <i class="mdi mdi-code-tags menu-icon"></i>
                             <span class="menu-title">Tags</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Products" asp-action="Index">
-                            <i class="mdi mdi-reproduction menu-icon"></i>
-                            <span class="menu-title">Products</span>
                         </a>
                     </li>
                 </ul>
             </nav>
             <!-- partial -->
-
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
         @RenderBody()
-
+                    </div>
+                </div>
+            </div>
         <!-- plugins:js -->
         <script src="~/admin/vendors/base/vendor.bundle.base.js"></script>
         <!-- endinject -->

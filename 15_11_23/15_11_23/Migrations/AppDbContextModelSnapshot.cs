@@ -64,7 +64,8 @@ namespace _15_11_23.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.HasKey("Id");
 
@@ -316,7 +317,7 @@ namespace _15_11_23.Migrations
             modelBuilder.Entity("_15_11_23.Models.Product", b =>
                 {
                     b.HasOne("_15_11_23.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -390,6 +391,11 @@ namespace _15_11_23.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Color", b =>
