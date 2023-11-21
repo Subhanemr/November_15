@@ -29,9 +29,10 @@ namespace _15_11_23.Controllers
             if (product == null) return NotFound();
 
             List<Product> products = _context.Products
-                .Include(pi => pi.ProductImages.Where(pi => pi.IsPrimary !=null))
+                .Include(pi => pi.ProductImages.Where(pi => pi.IsPrimary != null))
                 .Where(p => p.CategoryId == product.CategoryId && p.Id != product.Id)
                 .ToList();
+
 
 
             ProductVM vm = new ProductVM { Product = product, Products = products };
