@@ -2,10 +2,10 @@
 
 namespace _15_11_23.Areas.ProniaAdmin.Controllers
 {
-    public class CategoryController : Controller
+    public class TagsController : Controller
     {
         [Area("ProniaAdmin")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
