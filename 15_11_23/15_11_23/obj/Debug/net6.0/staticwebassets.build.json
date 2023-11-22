@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "WtfEfY+ceXRxjB35lHPRiJeVv/TCWdYnm3oIYgNrsQE=",
+  "Hash": "JcHnb2uLWEJNqmor+gYFTsDyscluBih+bf45DYsSNBw=",
   "Source": "15_11_23",
   "BasePath": "_content/15_11_23",
   "Mode": "Default",
@@ -4214,6 +4214,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\3.png"
+    },
+    {
+      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\54278075.jpg",
+      "SourceId": "15_11_23",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\",
+      "BasePath": "_content/15_11_23",
+      "RelativePath": "assets/images/website-images/54278075.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\54278075.jpg"
     },
     {
       "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\car.png",
