@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "V+hj8tRHoL6RWTusRI4M+XUWFVRKKnOuhF6GUCqDQUc=",
+  "Hash": "WtfEfY+ceXRxjB35lHPRiJeVv/TCWdYnm3oIYgNrsQE=",
   "Source": "15_11_23",
   "BasePath": "_content/15_11_23",
   "Mode": "Default",
@@ -1035,6 +1035,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\admin\\images\\logo.svg"
+    },
+    {
+      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\admin\\images\\LogoHiHi.png",
+      "SourceId": "15_11_23",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\",
+      "BasePath": "_content/15_11_23",
+      "RelativePath": "admin/images/LogoHiHi.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\admin\\images\\LogoHiHi.png"
     },
     {
       "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\admin\\images\\logo-mini.svg",

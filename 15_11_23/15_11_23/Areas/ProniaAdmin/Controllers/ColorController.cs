@@ -46,7 +46,48 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             await _context.Colors.AddAsync(color);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Update(int id)
+        {
+            if (id <= 0) return BadRequest();
+            Color color = await _context.Colors.FirstOrDefaultAsync(c => c.Id == id);
+
+            if (color == null) return NotFound();
+
+            return View(color);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, Color color)
+        {
+            if (!ModelState.IsValid) return View();
+
+            Color existed = await _context.Colors.FirstOrDefaultAsync(c => c.Id == id);
+            if (existed == null) return NotFound();
+
+            bool result = _context.Colors.Any(c => c.Name.ToLower().Trim() == color.Name.ToLower().Trim() && c.Id != id);
+
+            if (result)
+            {
+                ModelState.AddModelError("Name", "A Color is available");
+                return View();
+            }
+
+            existed.Name = color.Name;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0) return BadRequest();
+            Color existed = await _context.Colors.FirstOrDefaultAsync(c => c.Id == id);
+            if (existed == null) return NotFound();
+            _context.Colors.Remove(existed);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

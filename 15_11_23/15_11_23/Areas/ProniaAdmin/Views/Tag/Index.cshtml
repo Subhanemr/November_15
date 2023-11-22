@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (Tag size in Model)
+                        @foreach (Tag tag in Model)
                         {
                             count++;
                             <tr>
@@ -31,19 +31,19 @@
                                     @count
                                 </td>
                                 <td>
-                                    @size.Name
+                                    @tag.Name
                                 </td>
                                 <td>
-                                    @size.ProductTags.Count
+                                    @tag.ProductTags.Count
                                 </td>
                                 <td>
-                                    <a class="btn btn-primary btn-info">
+                                    <a asp-action="Update" asp-controller="Tag" asp-route-id="@tag.Id" class="btn btn-primary btn-info">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
-                                    <a class="btn btn-danger btn-info">
+                                    <a asp-action="Delete" asp-controller="Tag" asp-route-id="@tag.Id" class="btn btn-danger btn-info">
                                         <i class="mdi mdi-delete"></i>
                                     </a>
-                                    <a class="btn btn-primary">
+                                    <a asp-action="More" asp-controller="Tag" asp-route-id="@tag.Id" class="btn btn-primary">
                                         <i class="mdi mdi-open-in-new"></i>
                                     </a>
                                 </td>

@@ -45,7 +45,48 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             await _context.Sizes.AddAsync(size);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Update(int id)
+        {
+            if (id <= 0) return BadRequest();
+            Size size = await _context.Sizes.FirstOrDefaultAsync(c => c.Id == id);
+
+            if (size == null) return NotFound();
+
+            return View(size);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, Size size)
+        {
+            if (!ModelState.IsValid) return View();
+
+            Size existed = await _context.Sizes.FirstOrDefaultAsync(c => c.Id == id);
+            if (existed == null) return NotFound();
+
+            bool result = _context.Sizes.Any(c => c.Name.ToLower().Trim() == size.Name.ToLower().Trim() && c.Id != id);
+
+            if (result)
+            {
+                ModelState.AddModelError("Name", "A Size is available");
+                return View();
+            }
+
+            existed.Name = size.Name;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0) return BadRequest();
+            Size existed = await _context.Sizes.FirstOrDefaultAsync(c => c.Id == id);
+            if (existed == null) return NotFound();
+            _context.Sizes.Remove(existed);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
