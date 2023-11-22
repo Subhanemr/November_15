@@ -1,7 +1,9 @@
 ﻿@model Tag
 
-
+<div class="container">
 <h3 class="fw-bold m-3">@Model.Name Products</h3>
+<h4 class="fw-normal mx-5 my-3">Product Count: @Model.ProductTags.Count</h4>
+</div>
 <div class="container">
     <div class="row row-cols-4 row-cols-md-3 g-4">
         @foreach (ProductTag product in Model.ProductTags)
