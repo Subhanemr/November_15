@@ -87,5 +87,16 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> More(int id)
+        {
+            if (id <= 0) return BadRequest();
+            Tag tag = await _context.Tags
+                .Include(p => p.ProductTags)
+                .ThenInclude(p => p.Product).ThenInclude(p => p.ProductImages)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (tag == null) return NotFound();
+
+            return View(tag);
+        }
     }
 }

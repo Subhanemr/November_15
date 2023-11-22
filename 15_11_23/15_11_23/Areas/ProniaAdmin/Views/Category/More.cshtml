@@ -1,0 +1,20 @@
+﻿@model Category
+
+
+<h3 class="fw-bold m-2">@Model.Name Products</h3>
+<div class="card-group">
+@foreach (Product product in Model.Products)
+{
+        <div class="card m-1 bg-primary text-white rounded-3">
+            <img src="~/assets/images/website-images/@product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Url"
+                 alt="@product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Alternative" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title text-white">@product.Name</h5>
+                <p class="card-text">$@product.Price</p>
+                <p class="card-text">@product.SKU</p>
+                <p class="card-text">@product.Description</p>
+            </div>
+        </div>
+}
+</div>
+<a class="btn btn-light fw-bold fs-4" asp-action="Index" asp-controller="Category">Back</a>

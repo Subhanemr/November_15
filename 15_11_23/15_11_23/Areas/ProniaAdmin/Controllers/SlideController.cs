@@ -19,5 +19,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             List<Slide> slide = await _context.Slides.ToListAsync();
             return View(slide);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

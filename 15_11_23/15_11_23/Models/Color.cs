@@ -10,6 +10,5 @@ namespace _15_11_23.Models
         public string Name { get; set; }
         public List<ProductColor>? ProductColors { get; set; }
 
-
     }
 }

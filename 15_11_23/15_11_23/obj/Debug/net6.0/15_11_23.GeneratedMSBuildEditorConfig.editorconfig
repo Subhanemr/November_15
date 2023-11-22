@@ -24,6 +24,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Category/More.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcQ2F0ZWdvcnlcTW9yZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Category/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcQ2F0ZWdvcnlcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -34,6 +38,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Color/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcQ29sb3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Color/More.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcQ29sb3JcTW9yZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Color/Update.cshtml]
@@ -56,8 +64,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcU2l6ZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Size/More.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcU2l6ZVxNb3JlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Size/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcU2l6ZVxVcGRhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Slide/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcU2xpZGVcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Slide/Index.cshtml]
@@ -70,6 +86,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Tag/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcVGFnXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Tag/More.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvbmlhQWRtaW5cVmlld3NcVGFnXE1vcmUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/T x/Desktop/15_11_23/15_11_23/15_11_23/Areas/ProniaAdmin/Views/Tag/Update.cshtml]
