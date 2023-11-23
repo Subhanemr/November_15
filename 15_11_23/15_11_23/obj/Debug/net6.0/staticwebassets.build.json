@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "l2lWu/N0cJDHsU58sCnUa1dLRj80V0dPzv0hF9LSdSU=",
+  "Hash": "+O6JAIHoX3u16M9qFfSlDGJdTdzlIrV8r6YTqErZlH4=",
   "Source": "15_11_23",
   "BasePath": "_content/15_11_23",
   "Mode": "Default",
@@ -4233,6 +4233,23 @@
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\54278075.jpg"
     },
     {
+      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\8771cb78-a16a-4e62-8627-8e3fef2664ea.jpg",
+      "SourceId": "15_11_23",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\",
+      "BasePath": "_content/15_11_23",
+      "RelativePath": "assets/images/website-images/8771cb78-a16a-4e62-8627-8e3fef2664ea.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\8771cb78-a16a-4e62-8627-8e3fef2664ea.jpg"
+    },
+    {
       "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\car.png",
       "SourceId": "15_11_23",
       "SourceType": "Discovered",
@@ -4316,23 +4333,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\service.png"
-    },
-    {
-      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\wp12662276-berserk-pc-4k-wallpapers.jpg",
-      "SourceId": "15_11_23",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\",
-      "BasePath": "_content/15_11_23",
-      "RelativePath": "assets/images/website-images/wp12662276-berserk-pc-4k-wallpapers.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\wp12662276-berserk-pc-4k-wallpapers.jpg"
     },
     {
       "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\js\\main.js",

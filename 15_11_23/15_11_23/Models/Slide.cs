@@ -15,7 +15,7 @@ namespace _15_11_23.Models
         [Required(ErrorMessage = "Name must be entered mutled")]
         [MaxLength(100, ErrorMessage = "It should not exceed 25 characters")]
         public string Description { get; set; }
-        public string ImgUrl { get; set; }
+        public string? ImgUrl { get; set; }
         [NotMapped]
         public IFormFile? Photo { get; set; }
     }
