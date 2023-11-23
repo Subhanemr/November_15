@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+O6JAIHoX3u16M9qFfSlDGJdTdzlIrV8r6YTqErZlH4=",
+  "Hash": "r8MjIqkEswYo2LmS+jrmxjM9vXfr+clY0KDx3Lrswzk=",
   "Source": "15_11_23",
   "BasePath": "_content/15_11_23",
   "Mode": "Default",
@@ -4233,12 +4233,12 @@
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\54278075.jpg"
     },
     {
-      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\8771cb78-a16a-4e62-8627-8e3fef2664ea.jpg",
+      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\56a592bf-78b6-43e7-9327-38a32f5d9b13.jpg",
       "SourceId": "15_11_23",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\",
       "BasePath": "_content/15_11_23",
-      "RelativePath": "assets/images/website-images/8771cb78-a16a-4e62-8627-8e3fef2664ea.jpg",
+      "RelativePath": "assets/images/website-images/56a592bf-78b6-43e7-9327-38a32f5d9b13.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -4247,7 +4247,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\8771cb78-a16a-4e62-8627-8e3fef2664ea.jpg"
+      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\56a592bf-78b6-43e7-9327-38a32f5d9b13.jpg"
     },
     {
       "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\car.png",
