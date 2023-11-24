@@ -1,4 +1,5 @@
-﻿using _15_11_23.DAL;
+﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
+using _15_11_23.DAL;
 using _15_11_23.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,18 +30,18 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Category category)
+        public async Task<IActionResult> Create(CreateUpdateCategoryVM categoryVM)
         {
-            if(!ModelState.IsValid) return View();
+            if(!ModelState.IsValid) return View(categoryVM);
 
-            bool result = _context.Categories.Any(c => c.Name.ToLower().Trim() == category.Name.ToLower().Trim());
+            bool result = await _context.Categories.AnyAsync(c => c.Name.ToLower().Trim() == categoryVM.Name.ToLower().Trim());
 
             if (result)
             {
                 ModelState.AddModelError("Name", "A Category is available");
-                return View();
+                return View(categoryVM);
             }
-
+            Category category = new Category { Name = categoryVM.Name };
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
@@ -58,22 +59,22 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Category category)
+        public async Task<IActionResult> Update(int id, CreateUpdateCategoryVM categoryVM)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) return View(categoryVM);
 
-            Category existed = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+           Category existed = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
            if(existed == null) return NotFound();
 
-           bool result = _context.Categories.Any(c=> c.Name.ToLower().Trim() == category.Name.ToLower().Trim() && c.Id != id);
+           bool result = await _context.Categories.AnyAsync(c=> c.Name.ToLower().Trim() == categoryVM.Name.ToLower().Trim() && c.Id != id);
 
             if (result)
             {
                 ModelState.AddModelError("Name", "A Category is available");
-                return View();
+                return View(categoryVM);
             }
 
-            existed.Name = category.Name;
+            existed.Name = categoryVM.Name;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

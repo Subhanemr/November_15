@@ -20,13 +20,10 @@ namespace _15_11_23.Utilities.Extendions
         public static async Task<string> CreateFile(this IFormFile file, string root, params string[] folder)
         {
             string originalFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-            // Extract Guid-based portion
             string guidBasedFileName = ExtractGuidFileName(originalFileName);
 
-            // Get the file format (extension)
             string fileFormat = GetFileFormat(originalFileName);
 
-            // Combine Guid-based portion and file format
             string finalFileName = guidBasedFileName + fileFormat;
 
             string path = root;
@@ -57,39 +54,31 @@ namespace _15_11_23.Utilities.Extendions
         }
         public static string ExtractGuidFileName(string fullFileName)
         {
-            // Assuming the Guid-based portion is followed by an underscore
             int underscoreIndex = fullFileName.IndexOf('_');
 
-            // Check if underscore is found
             if (underscoreIndex != -1)
             {
-                // Extract Guid-based portion
                 string guidBasedFileName = fullFileName.Substring(0, underscoreIndex);
 
                 return guidBasedFileName;
             }
             else
             {
-                // If no underscore is found, return the full filename
                 return fullFileName;
             }
         }
         public static string GetFileFormat(string fullFileName)
         {
-            // Get the file format (extension) by finding the last dot in the filename
             int lastDotIndex = fullFileName.LastIndexOf('.');
 
-            // Check if dot is found
             if (lastDotIndex != -1)
             {
-                // Extract file format
                 string fileFormat = fullFileName.Substring(lastDotIndex);
 
                 return fileFormat;
             }
             else
             {
-                // If no dot is found, return an empty string or handle it as needed
                 return string.Empty;
             }
         }

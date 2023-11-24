@@ -23,6 +23,5 @@ namespace _15_11_23.DAL
         public DbSet<Tag> Tags { get; set; }
 
 
-
     }
 }

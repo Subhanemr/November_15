@@ -1,4 +1,5 @@
-﻿using _15_11_23.DAL;
+﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
+using _15_11_23.DAL;
 using _15_11_23.Models;
 using _15_11_23.Utilities.Extendions;
 using Microsoft.AspNetCore.Mvc;
@@ -28,29 +29,37 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Slide slide)
+        public async Task<IActionResult> Create(CreateSlideVM slideVM)
         {
-            if(slide.Photo is null)
+            if(slideVM.Photo is null)
             {
                 ModelState.AddModelError("Photo", "The image must be uploaded");
-                return View();
+                return View(slideVM);
             }
 
-            if (!slide.Photo.ValidateType())
+            if (!slideVM.Photo.ValidateType())
             {
                 ModelState.AddModelError("Photo", "File Not supported");
-                return View();
+                return View(slideVM);
             }
 
-            if(!slide.Photo.ValidataSize(10))
+            if(!slideVM.Photo.ValidataSize(10))
             {
                 ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
-                return View();
+                return View(slideVM);
             }
 
+            
 
+            string fileName = await slideVM.Photo.CreateFile(_env.WebRootPath, "assets","images", "website-images");
 
-            slide.ImgUrl = await slide.Photo.CreateFile(_env.WebRootPath, "assets","images", "website-images");
+            Slide slide = new Slide
+            {
+                Title = slideVM.Title,
+                SubTitle = slideVM.SubTitle,
+                Description = slideVM.Description,
+                ImgUrl = fileName
+            };
 
 
             await _context.Slides.AddAsync(slide);
@@ -65,43 +74,48 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
             if (slide == null) return NotFound();
 
-            return View(slide);
+            UpdateSlideVM slideVM = new UpdateSlideVM 
+            {
+                Title= slide.Title,
+                SubTitle = slide.SubTitle,
+                Description = slide.Description,
+                ImgUrl = slide.ImgUrl,
+
+            };
+
+            return View(slideVM);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Slide slide)
+        public async Task<IActionResult> Update(int id, UpdateSlideVM slideVM)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) return View(slideVM);
 
             Slide existed = await _context.Slides.FirstOrDefaultAsync(c => c.Id == id);
             if (existed == null) return NotFound();
-            if (slide.Photo is null)
-            {
-                ModelState.AddModelError("Photo", "The image must be uploaded");
-                return View(existed);
-            }
-            if(existed.ImgUrl is not null) 
+            
+            if(slideVM.Photo is not null) 
             {
 
-                if (!slide.Photo.ValidateType())
+                if (!slideVM.Photo.ValidateType())
                 {
                     ModelState.AddModelError("Photo", "File Not supported");
                     return View(existed);
                 }
 
-                if (!slide.Photo.ValidataSize(10))
+                if (!slideVM.Photo.ValidataSize(10))
                 {
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                     return View(existed);
                 }
-                string newImage = await slide.Photo.CreateFile(_env.WebRootPath, "assets", "images", "website-images");
+                string newImage = await slideVM.Photo.CreateFile(_env.WebRootPath, "assets", "images", "website-images");
                 existed.ImgUrl.DeleteFile(_env.WebRootPath, "assets", "images", "website-images");
                 existed.ImgUrl = newImage;
             }
 
-            existed.Title = slide.Title;
-            existed.SubTitle = slide.SubTitle;
-            existed.Description = slide.Description;
+            existed.Title = slideVM.Title;
+            existed.SubTitle = slideVM.SubTitle;
+            existed.Description = slideVM.Description;
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

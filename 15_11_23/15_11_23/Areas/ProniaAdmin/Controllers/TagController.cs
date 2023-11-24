@@ -1,4 +1,5 @@
-﻿using _15_11_23.DAL;
+﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
+using _15_11_23.DAL;
 using _15_11_23.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,20 +28,21 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Tag tag)
+        public async Task<IActionResult> Create(CreateUpdateTagVM tagVM)
         {
             if (!ModelState.IsValid)
             {
-                return View(tag);
+                return View(tagVM);
             }
 
-            bool result = _context.Tags.Any(c => c.Name.ToLower().Trim() == tag.Name.ToLower().Trim());
+            bool result = await _context.Tags.AnyAsync(c => c.Name.ToLower().Trim() == tagVM.Name.ToLower().Trim());
 
             if (result)
             {
                 ModelState.AddModelError("Color.Name", "A Color with this name already exists");
-                return View(tag);
+                return View(tagVM);
             }
+            Tag tag = new Tag { Name = tagVM.Name };
 
             await _context.Tags.AddAsync(tag);
             await _context.SaveChangesAsync();
@@ -59,22 +61,22 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Tag tag)
+        public async Task<IActionResult> Update(int id, CreateUpdateTagVM tagVM)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) return View(tagVM);
 
             Tag existed = await _context.Tags.FirstOrDefaultAsync(c => c.Id == id);
             if (existed == null) return NotFound();
 
-            bool result = _context.Tags.Any(c => c.Name.ToLower().Trim() == tag.Name.ToLower().Trim() && c.Id != id);
+            bool result = await _context.Tags.AnyAsync(c => c.Name.ToLower().Trim() == tagVM.Name.ToLower().Trim() && c.Id != id);
 
             if (result)
             {
                 ModelState.AddModelError("Name", "A Tag is available");
-                return View();
+                return View(tagVM);
             }
 
-            existed.Name = tag.Name;
+            existed.Name = tagVM.Name;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

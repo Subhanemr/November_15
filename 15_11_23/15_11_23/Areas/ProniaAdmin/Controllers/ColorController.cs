@@ -1,4 +1,5 @@
-﻿using _15_11_23.DAL;
+﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
+using _15_11_23.DAL;
 using _15_11_23.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,20 +29,21 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Color color)
+        public async Task<IActionResult> Create(CreateUpdateCategoryVM colorVM)
         {
             if (!ModelState.IsValid)
             {
-                return View(color);
+                return View(colorVM);
             }
 
-            bool result = _context.Colors.Any(c => c.Name.ToLower().Trim() == color.Name.ToLower().Trim());
+            bool result = await _context.Colors.AnyAsync(c => c.Name.ToLower().Trim() == colorVM.Name.ToLower().Trim());
 
             if (result)
             {
                 ModelState.AddModelError("Color.Name", "A Color with this name already exists");
-                return View(color);
+                return View(colorVM);
             }
+            Color color = new Color { Name = colorVM.Name };
 
             await _context.Colors.AddAsync(color);
             await _context.SaveChangesAsync();
@@ -60,22 +62,22 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Color color)
+        public async Task<IActionResult> Update(int id, CreateUpdateColorVM colorVM)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) return View(colorVM);
 
             Color existed = await _context.Colors.FirstOrDefaultAsync(c => c.Id == id);
             if (existed == null) return NotFound();
 
-            bool result = _context.Colors.Any(c => c.Name.ToLower().Trim() == color.Name.ToLower().Trim() && c.Id != id);
+            bool result = await _context.Colors.AnyAsync(c => c.Name.ToLower().Trim() == colorVM.Name.ToLower().Trim() && c.Id != id);
 
             if (result)
             {
                 ModelState.AddModelError("Name", "A Color is available");
-                return View();
+                return View(colorVM);
             }
 
-            existed.Name = color.Name;
+            existed.Name = colorVM.Name;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
