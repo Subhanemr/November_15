@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "muCz08UTi4/gWD/b9P6yh4P0sULJr98Q6Qswmm7xUw4=",
+  "Hash": "J11rOuWEVsqL4td7nYR8RmvRkRSbjELhJaOn0S122DU=",
   "Source": "15_11_23",
   "BasePath": "_content/15_11_23",
   "Mode": "Default",
@@ -4299,40 +4299,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\dark.png"
-    },
-    {
-      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\dd6aca58-de26-42ec-8263-5daf96445ffe.jpg",
-      "SourceId": "15_11_23",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\",
-      "BasePath": "_content/15_11_23",
-      "RelativePath": "assets/images/website-images/dd6aca58-de26-42ec-8263-5daf96445ffe.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\dd6aca58-de26-42ec-8263-5daf96445ffe.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\e378cafb-69e2-40f3-b87d-36acf32ce9f1.jpg",
-      "SourceId": "15_11_23",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\",
-      "BasePath": "_content/15_11_23",
-      "RelativePath": "assets/images/website-images/e378cafb-69e2-40f3-b87d-36acf32ce9f1.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\e378cafb-69e2-40f3-b87d-36acf32ce9f1.jpg"
     },
     {
       "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\images\\website-images\\quotation.png",
