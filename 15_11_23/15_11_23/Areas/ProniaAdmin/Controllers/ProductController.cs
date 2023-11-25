@@ -2,6 +2,7 @@
 using _15_11_23.DAL;
 using _15_11_23.Models;
 using _15_11_23.Utilities.Extendions;
+using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,13 +41,19 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 ViewBag.Categories = await _context.Categories.ToListAsync();
                 return View(productVM);
             }
-            bool result = await _context.Products.AnyAsync(c => c.Name.ToLower().Trim() == productVM.Name.ToLower().Trim() && c.CountId == productVM.CountId);
+            bool result = await _context.Products.AnyAsync(c => c.Name.ToLower().Trim() == productVM.Name.ToLower().Trim());
             if (result)
             {
                 ViewBag.Categories = await _context.Categories.ToListAsync();
                 ModelState.AddModelError("Name", "A Name is available");
                 return View(productVM);
             };
+            bool resultOrder = await _context.Products.AnyAsync(c => c.CountId == productVM.CountId);
+            if (resultOrder)
+            {
+                ModelState.AddModelError("Order", "A Order is available");
+                return View(productVM);
+            }
 
             bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == productVM.CategoryId);
             if (!resultCategory)
@@ -91,6 +98,60 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Update(int id)
+        {
+            ViewBag.Categories = await _context.Categories.ToListAsync();
+            if (id <= 0) { return BadRequest(); }
+            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            if (product == null) return NotFound();
+            UpdateProductVM productVM = new UpdateProductVM
+            {
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                SKU = product.SKU,
+                CategoryId = (int)product.CategoryId,
+                CountId = product.CountId
+            };
+            return View(productVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, UpdateProductVM productVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Categories = await _context.Categories.ToListAsync();
+                return View(productVM);
+            }
+            Product existed = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+            if (existed == null) return NotFound();
+            existed.Name = productVM.Name;
+            existed.Price = productVM.Price;
+            existed.Description = productVM.Description;
+            existed.CategoryId = (int)productVM.CategoryId;
+            existed.SKU = productVM.SKU;
+            existed.CountId = productVM.CountId;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> More(int id)
+        {
+            if (id <= 0) return BadRequest();
+            Product product = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductColors).ThenInclude(p => p.Color)
+                .Include(p => p.ProductImages)
+                .Include(p => p.ProductSizes).ThenInclude(p => p.Size)
+                .Include(p => p.ProductTags).ThenInclude(p => p.Tag)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (product == null) return NotFound();
+
+            return View(product);
         }
 
     }

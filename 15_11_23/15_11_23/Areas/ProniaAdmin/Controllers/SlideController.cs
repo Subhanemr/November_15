@@ -93,8 +93,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
             Slide existed = await _context.Slides.FirstOrDefaultAsync(c => c.Id == id);
             if (existed == null) return NotFound();
-            
-            if(slideVM.Photo is not null) 
+            if (slideVM.Photo is not null) 
             {
 
                 if (!slideVM.Photo.ValidateType())

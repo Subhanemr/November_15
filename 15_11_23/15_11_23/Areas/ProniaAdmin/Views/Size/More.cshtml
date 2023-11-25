@@ -14,10 +14,10 @@
                     <img src="~/assets/images/website-images/@product.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Url"
                          alt="@product.Product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Alternative" class="card-img-top">
                     <div class="card-body">
-                        <h5 class="card-title text-white">@product.Product.Name</h5>
-                        <p class="card-text">$@product.Product.Price</p>
-                        <p class="card-text">@product.Product.SKU</p>
-                        <p class="card-text">@product.Product.Description</p>
+                        <h5 class="card-title text-white">Name: @product.Product.Name</h5>
+                        <p class="card-text">Price: $@product.Product.Price</p>
+                        <p class="card-text">SKU: @product.Product.SKU</p>
+                        <p class="card-text">Description: @product.Product.Description</p>
                     </div>
                 </div>
             </div>
