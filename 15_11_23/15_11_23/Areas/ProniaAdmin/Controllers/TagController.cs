@@ -3,6 +3,7 @@ using _15_11_23.DAL;
 using _15_11_23.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace _15_11_23.Areas.ProniaAdmin.Controllers
 {
@@ -56,8 +57,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             Tag tag = await _context.Tags.FirstOrDefaultAsync(c => c.Id == id);
 
             if (tag == null) return NotFound();
+            CreateUpdateTagVM tagVM = new CreateUpdateTagVM { Name = tag.Name };
 
-            return View(tag);
+
+            return View(tagVM);
         }
 
         [HttpPost]

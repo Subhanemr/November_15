@@ -56,8 +56,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             Size size = await _context.Sizes.FirstOrDefaultAsync(c => c.Id == id);
 
             if (size == null) return NotFound();
+            CreateUpdateSizeVM sizeVM = new CreateUpdateSizeVM { Name = size.Name };
 
-            return View(size);
+
+            return View(sizeVM);
         }
 
         [HttpPost]

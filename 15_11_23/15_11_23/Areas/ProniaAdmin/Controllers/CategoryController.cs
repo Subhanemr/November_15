@@ -54,8 +54,9 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             Category category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
 
             if (category == null) return NotFound();
+            CreateUpdateCategoryVM categoryVM = new CreateUpdateCategoryVM { Name = category.Name };
 
-            return View(category);
+            return View(categoryVM);
         }
 
         [HttpPost]

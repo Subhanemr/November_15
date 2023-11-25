@@ -39,10 +39,10 @@ namespace _15_11_23.Utilities.Extendions
             return finalFileName;
 
         }
-        public static async void DeleteFile(this string fileName,string root, params string[] folders)
+        public static async void DeleteFile(this string fileName, string root, params string[] folders)
         {
             string path = root;
-            for(int i = 0;i < folders.Length; i++)
+            for (int i = 0; i < folders.Length; i++)
             {
                 path = Path.Combine(path, folders[i]);
             }
@@ -62,10 +62,9 @@ namespace _15_11_23.Utilities.Extendions
 
                 return guidBasedFileName;
             }
-            else
-            {
-                return fullFileName;
-            }
+
+            return fullFileName;
+
         }
         public static string GetFileFormat(string fullFileName)
         {
@@ -77,10 +76,7 @@ namespace _15_11_23.Utilities.Extendions
 
                 return fileFormat;
             }
-            else
-            {
-                return string.Empty;
-            }
+            return string.Empty;
         }
 
     }

@@ -57,8 +57,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             Color color = await _context.Colors.FirstOrDefaultAsync(c => c.Id == id);
 
             if (color == null) return NotFound();
+            CreateUpdateColorVM colorVM = new CreateUpdateColorVM { Name = color.Name };
 
-            return View(color);
+
+            return View(colorVM);
         }
 
         [HttpPost]
