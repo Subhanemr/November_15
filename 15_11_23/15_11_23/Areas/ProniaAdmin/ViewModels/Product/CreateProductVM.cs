@@ -20,8 +20,7 @@ namespace _15_11_23.Areas.ProniaAdmin.ViewModels
         [MaxLength(100, ErrorMessage = "It should not exceed 25 characters")]
         public string Description { get; set; }
         [Required(ErrorMessage = "Category must be entered mutled")]
-        [Range(1, int.MaxValue, ErrorMessage = "CategoryId must be greater than 0 ")]
-
+        [Range(1, int.MaxValue, ErrorMessage = "Category must be greater than 0 ")]
         public int? CategoryId { get; set; }
     }
 }
