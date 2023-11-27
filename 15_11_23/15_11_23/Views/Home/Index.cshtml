@@ -1510,10 +1510,10 @@
                                         <div class="product-img">
                                             <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">
                                                 <img class="primary-img"
-                                                     src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Url"
+                                                     src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true)?.Url"
                                                      alt="Product Images" />
                                                 <img class="secondary-img"
-                                                     src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Url"
+                                                     src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false)?.Url"
                                                      alt="Product Images" />
                                             </a>
                                             <div class="product-add-action">
@@ -1706,13 +1706,13 @@
                                 <div class="product-img">
                                     <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">
                                         <img class="primary-img"
-                                             src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Url"
-                                             alt="@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true).Alternative" />
+                                             src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true)?.Url"
+                                             alt="@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true)?.Alternative" />
                                         <img class="secondary-img"
-                                             src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Url"
-                                             alt="@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Alternative" />
+                                             src="~/assets/images/website-images//@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false)?.Url"
+                                             alt="@item.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false)?.Alternative" />
                                     </a>
-                                    <div class="product-add-action">
+                                    <div class="product-add-action">    
                                         <ul>
                                             <li>
                                                 <a href="wishlist.html"

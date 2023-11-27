@@ -22,5 +22,6 @@ namespace _15_11_23.Areas.ProniaAdmin.ViewModels
         [Required(ErrorMessage = "Category must be entered mutled")]
         [Range(1, int.MaxValue, ErrorMessage = "Category must be greater than 0 ")]
         public int? CategoryId { get; set; }
+        public List<Category>? Categories { get; set; }
     }
 }

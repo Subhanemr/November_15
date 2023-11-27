@@ -15,11 +15,11 @@ namespace _15_11_23.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Product> products =  _context.Products
+            List<Product> products = await _context.Products
             .Include(p => p.ProductImages.Where(pi => pi.IsPrimary != null)).OrderByDescending(s => s.CountId).Take(8)
-            .ToList();
+            .ToListAsync();
             
             List<Slide> slides = _context.Slides.OrderBy(s => s.Id).Take(3).ToList();
             List<Client> clients =  _context.Clients.ToList();

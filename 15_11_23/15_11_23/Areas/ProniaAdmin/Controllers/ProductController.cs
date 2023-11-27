@@ -19,6 +19,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             _context = context;
             _env = env;
         }
+        public async void GetCategories()
+        {
+            List<Category> categories = await _context.Categories.ToListAsync();
+        }
 
         public async Task<IActionResult> Index()
         {
@@ -30,8 +34,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
         public async Task<IActionResult> Create()
         {
-            ViewBag.Categories = await _context.Categories.ToListAsync();
-            return View();
+            CreateProductVM productVM = new CreateProductVM { 
+            Categories = await _context.Categories.ToListAsync()
+            };
+            return View(productVM);
         }
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductVM productVM)
@@ -44,13 +50,14 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             bool result = await _context.Products.AnyAsync(c => c.Name.ToLower().Trim() == productVM.Name.ToLower().Trim());
             if (result)
             {
-                ViewBag.Categories = await _context.Categories.ToListAsync();
+                productVM.Categories = await _context.Categories.ToListAsync();
                 ModelState.AddModelError("Name", "A Name is available");
                 return View(productVM);
             };
             bool resultOrder = await _context.Products.AnyAsync(c => c.CountId == productVM.CountId);
             if (resultOrder)
             {
+                productVM.Categories = await _context.Categories.ToListAsync();
                 ModelState.AddModelError("Order", "A Order is available");
                 return View(productVM);
             }
@@ -58,13 +65,13 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == productVM.CategoryId);
             if (!resultCategory)
             {
-                ViewBag.Categories = await _context.Categories.ToListAsync();
+                productVM.Categories = await _context.Categories.ToListAsync();
                 ModelState.AddModelError("CategoryId", "This id has no category");
                 return View(productVM);
             }
             if (productVM.Price <= 0)
             {
-                ViewBag.Categories = await _context.Categories.ToListAsync();
+                productVM.Categories = await _context.Categories.ToListAsync();
                 ModelState.AddModelError("Price", "Price cannot be 0");
                 return View(productVM);
             };
@@ -102,18 +109,18 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            ViewBag.Categories = await _context.Categories.ToListAsync();
             if (id <= 0) { return BadRequest(); }
             Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
             if (product == null) return NotFound();
-            UpdateProductVM productVM = new UpdateProductVM
+            UpdateProductVM productVM = new UpdateProductVM 
             {
                 Name = product.Name,
                 Price = product.Price,
                 Description = product.Description,
-                SKU = product.SKU,
+                CountId = product.CountId,
                 CategoryId = (int)product.CategoryId,
-                CountId = product.CountId
+                SKU = product.SKU,
+                Categories = await _context.Categories.ToListAsync()
             };
             return View(productVM);
         }
@@ -123,11 +130,18 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Categories = await _context.Categories.ToListAsync();
+                productVM.Categories = await _context.Categories.ToListAsync();
                 return View(productVM);
             }
             Product existed = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
             if (existed == null) return NotFound();
+            bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == productVM.CategoryId);
+            if (!resultCategory)
+            {
+                productVM.Categories = await _context.Categories.ToListAsync();
+                ModelState.AddModelError("CategoryId", "This id has no category");
+                return View(productVM);
+            }
             existed.Name = productVM.Name;
             existed.Price = productVM.Price;
             existed.Description = productVM.Description;
