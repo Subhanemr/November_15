@@ -23,5 +23,11 @@ namespace _15_11_23.Areas.ProniaAdmin.ViewModels
         [Range(1, int.MaxValue, ErrorMessage = "Category must be greater than 0 ")]
         public int? CategoryId { get; set; }
         public List<Category>? Categories { get; set; }
+        public List<Tag>? Tags { get; set; }
+        public List<Size>? Sizes { get; set; }
+        public List<Color>? Colors { get; set; }
+        public List<int> TagIds { get; set; }
+        public List<int> ColorIds { get; set; }
+        public List<int> SizeIds { get; set; }
     }
 }
