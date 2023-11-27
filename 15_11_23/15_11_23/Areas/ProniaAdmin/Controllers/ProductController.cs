@@ -5,6 +5,7 @@ using _15_11_23.Utilities.Extendions;
 using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 
 namespace _15_11_23.Areas.ProniaAdmin.Controllers
 {
@@ -14,7 +15,14 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
 
-        private void PopulateDropdowns(CreateProductVM productVM)
+        private void CreatePopulateDropdowns(CreateProductVM productVM)
+        {
+            productVM.Tags = _context.Tags.ToList();
+            productVM.Categories = _context.Categories.ToList();
+            productVM.Colors = _context.Colors.ToList();
+            productVM.Sizes = _context.Sizes.ToList();
+        }
+        private void UpdatePopulateDropdowns(UpdateProductVM productVM)
         {
             productVM.Tags = _context.Tags.ToList();
             productVM.Categories = _context.Categories.ToList();
@@ -55,20 +63,20 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                PopulateDropdowns(productVM);
+                CreatePopulateDropdowns(productVM);
                 return View(productVM);
             }
             bool result = await _context.Products.AnyAsync(c => c.Name.ToLower().Trim() == productVM.Name.ToLower().Trim());
             if (result)
             {
-                PopulateDropdowns(productVM);
+                CreatePopulateDropdowns(productVM);
                 ModelState.AddModelError("Name", "A Name is available");
                 return View(productVM);
             };
             bool resultOrder = await _context.Products.AnyAsync(c => c.CountId == productVM.CountId);
             if (resultOrder)
             {
-                PopulateDropdowns(productVM);
+                CreatePopulateDropdowns(productVM);
                 ModelState.AddModelError("Order", "A Order is available");
                 return View(productVM);
             }
@@ -76,13 +84,13 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == productVM.CategoryId);
             if (!resultCategory)
             {
-                PopulateDropdowns(productVM);
+                CreatePopulateDropdowns(productVM);
                 ModelState.AddModelError("CategoryId", "This id has no category");
                 return View(productVM);
             }
             if (productVM.Price <= 0)
             {
-                PopulateDropdowns(productVM);
+                CreatePopulateDropdowns(productVM);
                 ModelState.AddModelError("Price", "Price cannot be 0");
                 return View(productVM);
             };
@@ -92,7 +100,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 bool tagResult = await _context.Tags.AnyAsync(t => t.Id == tagId);
                 if (!tagResult)
                 {
-                    PopulateDropdowns(productVM);
+                    CreatePopulateDropdowns(productVM);
                     return View(productVM);
                 }
             }
@@ -101,7 +109,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 bool sizeResult = await _context.Sizes.AnyAsync(t => t.Id == sizeId);
                 if (!sizeResult)
                 {
-                    PopulateDropdowns(productVM);
+                    CreatePopulateDropdowns(productVM);
                     return View(productVM);
                 }
             }
@@ -110,7 +118,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 bool colorResult = await _context.Colors.AnyAsync(t => t.Id == colorId);
                 if (!colorResult)
                 {
-                    PopulateDropdowns(productVM);
+                    CreatePopulateDropdowns(productVM);
                     return View(productVM);
                 }
             }
@@ -214,24 +222,77 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                productVM.Tags = await _context.Tags.ToListAsync();
-                productVM.Colors = await _context.Colors.ToListAsync();
-                productVM.Sizes = await _context.Sizes.ToListAsync();
-                productVM.Categories = await _context.Categories.ToListAsync();
+                UpdatePopulateDropdowns(productVM);
                 return View(productVM);
             }
-            Product existed = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+            Product existed = await _context.Products.Include(p => p.ProductTags).Include(p => p.ProductSizes).Include(p => p.ProductColors).FirstOrDefaultAsync(c => c.Id == id);
             if (existed == null) return NotFound();
             bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == productVM.CategoryId);
             if (!resultCategory)
             {
-                productVM.Tags = await _context.Tags.ToListAsync();
-                productVM.Colors = await _context.Colors.ToListAsync();
-                productVM.Sizes = await _context.Sizes.ToListAsync();
-                productVM.Categories = await _context.Categories.ToListAsync();
+                UpdatePopulateDropdowns(productVM);
                 ModelState.AddModelError("CategoryId", "This id has no category");
                 return View(productVM);
             }
+
+            bool resultTag = await _context.ProductTags.AnyAsync(pt => productVM.TagIds.Contains(pt.Id));
+            if (!resultTag)
+            {
+                UpdatePopulateDropdowns(productVM);
+                ModelState.AddModelError("TagId", "This id has no tag");
+                return View(productVM);
+            }
+            List<ProductTag> tagsToRemove = existed.ProductTags
+                .Where(productTag => !productVM.TagIds.Contains(productTag.TagId))
+                .ToList();
+            _context.ProductTags.RemoveRange(tagsToRemove);
+
+            List<ProductTag> tagsToAdd = productVM.TagIds
+                .Except(existed.ProductTags.Select(pt => pt.TagId))
+                .Select(tagId => new ProductTag { TagId = tagId })
+                .ToList();
+            existed.ProductTags.AddRange(tagsToAdd);
+
+            bool resultColor = await _context.ProductColors.AnyAsync(pc => productVM.ColorIds.Contains(pc.Id));
+            if (!resultColor)
+            {
+                UpdatePopulateDropdowns(productVM);
+                ModelState.AddModelError("ColorId", "This id has no color");
+                return View(productVM);
+            }
+
+            List<ProductColor> colorToRemove = existed.ProductColors
+                .Where(productColor => !productVM.ColorIds.Contains(productColor.ColorId))
+                .ToList();
+            _context.ProductColors.RemoveRange(colorToRemove);
+
+            List<ProductColor> colorToAdd = productVM.ColorIds
+                .Except(existed.ProductColors.Select(pc => pc.ColorId))
+                .Select(colorId => new ProductColor { ColorId = colorId })
+                .ToList();
+            existed.ProductColors.AddRange(colorToAdd);
+
+            bool resultSize = await _context.ProductSizes.AnyAsync(ps => productVM.SizeIds.Contains(ps.Id));
+            if (!resultSize)
+            {
+                UpdatePopulateDropdowns(productVM);
+                ModelState.AddModelError("SizeId", "This id has no size");
+                return View(productVM);
+            }
+
+            List<ProductSize> sizeToRemove = existed.ProductSizes
+                .Where(productSize => !productVM.SizeIds.Contains(productSize.SizeId))
+                .ToList();
+            _context.ProductSizes.RemoveRange(sizeToRemove);
+
+            List<ProductSize> sizeToAdd = productVM.SizeIds
+                .Except(existed.ProductSizes.Select(ps => ps.SizeId))
+                .Select(sizeId => new ProductSize { SizeId = sizeId })
+                .ToList();
+            existed.ProductSizes.AddRange(sizeToAdd);
+
+
+
             existed.Name = productVM.Name;
             existed.Price = productVM.Price;
             existed.Description = productVM.Description;
