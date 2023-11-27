@@ -127,34 +127,34 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 SKU = productVM.SKU,
                 CategoryId = (int)productVM.CategoryId,
                 CountId = productVM.CountId,
-                ProductTags = new List<ProductTag>(),
-                ProductColors = new List<ProductColor>(),
-                ProductSizes = new List<ProductSize>()
+                ProductTags = productVM.TagIds.Select(tagId => new ProductTag { TagId = tagId }).ToList(),
+                ProductSizes = productVM.SizeIds.Select(sizeId => new ProductSize { SizeId = sizeId }).ToList(),
+                ProductColors = productVM.ColorIds.Select(colorId => new ProductColor { ColorId = colorId }).ToList()
             };
 
-            foreach (int tagId in productVM.TagIds)
-            {
-                ProductTag tag = new ProductTag { 
-                TagId = tagId
-                };
-                product.ProductTags.Add(tag);
-            }
-            foreach (int sizeId in productVM.TagIds)
-            {
-                ProductSize size = new ProductSize
-                {
-                    SizeId = sizeId
-                };
-                product.ProductSizes.Add(size);
-            }
-            foreach (int colorId in productVM.TagIds)
-            {
-                ProductColor color = new ProductColor
-                {
-                    ColorId = colorId
-                };
-                product.ProductColors.Add(color);
-            }
+            //foreach (int tagId in productVM.TagIds)
+            //{
+            //    ProductTag tag = new ProductTag { 
+            //    TagId = tagId
+            //    };
+            //    product.ProductTags.Add(tag);
+            //}
+            //foreach (int sizeId in productVM.TagIds)
+            //{
+            //    ProductSize size = new ProductSize
+            //    {
+            //        SizeId = sizeId
+            //    };
+            //    product.ProductSizes.Add(size);
+            //}
+            //foreach (int colorId in productVM.TagIds)
+            //{
+            //    ProductColor color = new ProductColor
+            //    {
+            //        ColorId = colorId
+            //    };
+            //    product.ProductColors.Add(color);
+            //}
 
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
