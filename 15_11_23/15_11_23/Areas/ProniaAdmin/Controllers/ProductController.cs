@@ -35,10 +35,6 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             _context = context;
             _env = env;
         }
-        public async void GetCategories()
-        {
-            List<Category> categories = await _context.Categories.ToListAsync();
-        }
 
         public async Task<IActionResult> Index()
         {
