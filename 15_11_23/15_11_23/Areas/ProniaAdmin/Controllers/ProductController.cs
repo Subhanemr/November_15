@@ -170,7 +170,11 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         {
             if (id <= 0) return BadRequest();
 
-            Product existed = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+            Product existed = await _context.Products
+                .Include(p => p.ProductTags)
+                .Include(p => p.ProductColors)
+                .Include(p => p.ProductSizes)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (existed == null) return NotFound();
 
