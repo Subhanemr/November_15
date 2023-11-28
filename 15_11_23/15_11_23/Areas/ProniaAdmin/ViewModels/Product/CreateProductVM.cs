@@ -29,5 +29,11 @@ namespace _15_11_23.Areas.ProniaAdmin.ViewModels
         public List<int> TagIds { get; set; }
         public List<int> ColorIds { get; set; }
         public List<int> SizeIds { get; set; }
+        [Required (ErrorMessage ="Image must be uploaded")]
+        public IFormFile MainPhoto { get; set; }
+        [Required(ErrorMessage = "Image must be uploaded")]
+        public IFormFile HoverPhoto { get; set; }
+        [Required(ErrorMessage = "Image must be uploaded")]
+        public List<IFormFile> Photos { get; set; }
     }
 }

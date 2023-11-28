@@ -118,6 +118,47 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                     return View(productVM);
                 }
             }
+            if (!productVM.MainPhoto.ValidateType())
+            {
+                CreatePopulateDropdowns(productVM);
+                ModelState.AddModelError("Photo", "File Not supported");
+                return View(productVM);
+            }
+
+            if (!productVM.MainPhoto.ValidataSize(10))
+            {
+                CreatePopulateDropdowns(productVM);
+                ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
+                return View(productVM);
+            }
+
+            if (!productVM.HoverPhoto.ValidateType())
+            {
+                CreatePopulateDropdowns(productVM);
+                ModelState.AddModelError("Photo", "File Not supported");
+                return View(productVM);
+            }
+
+            if (!productVM.HoverPhoto.ValidataSize(10))
+            {
+                CreatePopulateDropdowns(productVM);
+                ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
+                return View(productVM);
+            }
+
+
+            ProductImage mainImage = new ProductImage { 
+            IsPrimary = true,
+            Alternative = productVM.Name,
+            Url = await productVM.MainPhoto.CreateFile(_env.WebRootPath, "assets", "images", "website-images")
+            };
+
+            ProductImage hoverImage = new ProductImage
+            {
+                IsPrimary = false,
+                Alternative = productVM.Name,
+                Url = await productVM.MainPhoto.CreateFile(_env.WebRootPath, "assets", "images", "website-images")
+            };
 
             Product product = new Product
             {
@@ -129,32 +170,34 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 CountId = productVM.CountId,
                 ProductTags = productVM.TagIds.Select(tagId => new ProductTag { TagId = tagId }).ToList(),
                 ProductSizes = productVM.SizeIds.Select(sizeId => new ProductSize { SizeId = sizeId }).ToList(),
-                ProductColors = productVM.ColorIds.Select(colorId => new ProductColor { ColorId = colorId }).ToList()
+                ProductColors = productVM.ColorIds.Select(colorId => new ProductColor { ColorId = colorId }).ToList(),
+                ProductImages = new List<ProductImage> { mainImage , hoverImage}
             };
 
-            //foreach (int tagId in productVM.TagIds)
-            //{
-            //    ProductTag tag = new ProductTag { 
-            //    TagId = tagId
-            //    };
-            //    product.ProductTags.Add(tag);
-            //}
-            //foreach (int sizeId in productVM.TagIds)
-            //{
-            //    ProductSize size = new ProductSize
-            //    {
-            //        SizeId = sizeId
-            //    };
-            //    product.ProductSizes.Add(size);
-            //}
-            //foreach (int colorId in productVM.TagIds)
-            //{
-            //    ProductColor color = new ProductColor
-            //    {
-            //        ColorId = colorId
-            //    };
-            //    product.ProductColors.Add(color);
-            //}
+            TempData["Message"] = "";
+
+            foreach(IFormFile photo in productVM.Photos)
+            {
+                if (!photo.ValidateType())
+                {
+                    TempData["Message"] += $"<p class=\"text-danger\">{photo.Name} type is not suitable</p>";
+                    continue;
+                }
+
+                if (!photo.ValidataSize(10))
+                {
+                    TempData["Message"] += $"<p class=\"text-danger\">{photo.Name} the size is not suitable</p>";
+                    continue;
+                }
+
+                product.ProductImages.Add(new ProductImage
+                {
+                    IsPrimary = null,
+                    Alternative = productVM.Name,
+                    Url = await productVM.MainPhoto.CreateFile(_env.WebRootPath, "assets", "images", "website-images")
+                });
+            }
+
 
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
@@ -235,7 +278,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 return View(productVM);
             }
 
-            bool resultTag = await _context.ProductTags.AnyAsync(pt => productVM.TagIds.Contains(pt.Id));
+            bool resultTag = await _context.Tags.AnyAsync(pt => productVM.TagIds.Contains(pt.Id));
             if (!resultTag)
             {
                 UpdatePopulateDropdowns(productVM);
@@ -253,7 +296,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 .ToList();
             existed.ProductTags.AddRange(tagsToAdd);
 
-            bool resultColor = await _context.ProductColors.AnyAsync(pc => productVM.ColorIds.Contains(pc.Id));
+            bool resultColor = await _context.Colors.AnyAsync(pc => productVM.ColorIds.Contains(pc.Id));
             if (!resultColor)
             {
                 UpdatePopulateDropdowns(productVM);
@@ -272,7 +315,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 .ToList();
             existed.ProductColors.AddRange(colorToAdd);
 
-            bool resultSize = await _context.ProductSizes.AnyAsync(ps => productVM.SizeIds.Contains(ps.Id));
+            bool resultSize = await _context.Sizes.AnyAsync(ps => productVM.SizeIds.Contains(ps.Id));
             if (!resultSize)
             {
                 UpdatePopulateDropdowns(productVM);
