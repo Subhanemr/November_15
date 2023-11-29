@@ -29,5 +29,10 @@ namespace _15_11_23.Areas.ProniaAdmin.ViewModels
         public List<int?> TagIds { get; set; }
         public List<int?> ColorIds { get; set; }
         public List<int?> SizeIds { get; set; }
+        public IFormFile? MainPhoto { get; set; }
+        public IFormFile? HoverPhoto { get; set; }
+        public List<IFormFile>? Photos { get; set; }
+        public List<ProductImage>? ProductImages { get; set; }
+        public List<int>? ImageIds { get; set; }
     }
 }

@@ -51,7 +51,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
             
 
-            string fileName = await slideVM.Photo.CreateFile(_env.WebRootPath, "assets","images", "website-images");
+            string fileName = await slideVM.Photo.CreateFileAsync(_env.WebRootPath, "assets","images", "website-images");
 
             Slide slide = new Slide
             {
@@ -107,8 +107,8 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                     return View(existed);
                 }
-                string newImage = await slideVM.Photo.CreateFile(_env.WebRootPath, "assets", "images", "website-images");
-                existed.ImgUrl.DeleteFile(_env.WebRootPath, "assets", "images", "website-images");
+                string newImage = await slideVM.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                existed.ImgUrl.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 existed.ImgUrl = newImage;
             }
 
@@ -128,7 +128,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
             if (existed == null) return NotFound();
 
-            existed.ImgUrl.DeleteFile(_env.WebRootPath, "assets","images", "website-images");
+            existed.ImgUrl.DeleteFileAsync(_env.WebRootPath, "assets","images", "website-images");
 
             _context.Slides.Remove(existed);
             await _context.SaveChangesAsync();

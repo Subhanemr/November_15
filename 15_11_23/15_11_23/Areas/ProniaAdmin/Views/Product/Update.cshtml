@@ -1,10 +1,48 @@
-﻿@model UpdateProductVM
+﻿@{
+    ProductImage main = Model.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true);
+    ProductImage hover = Model.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false);
+}
+
+@model UpdateProductVM
 
 <div class="col-md-6 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Update Product</h4>
             <form class="forms-sample" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <img src="~/assets/images/website-images//@main.Url" width="25%" />
+                    <input asp-for="MainPhoto" type="hidden" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="MainPhoto">Main Image</label>
+                    <input asp-for="MainPhoto" class="form-control" placeholder="MainImage" accept="image/*">
+                    <span asp-validation-for="MainPhoto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <img src="~/assets/images/website-images//@hover.Url" width="25%" />
+                    <input asp-for="HoverPhoto" type="hidden" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="HoverPhoto">Hover Photo</label>
+                    <input asp-for="HoverPhoto" class="form-control" placeholder="HoverPhoto" accept="image/*">
+                    <span asp-validation-for="HoverPhoto" class="text-danger"></span>
+                </div>
+                <div class="form-group d-flex">
+                    @foreach (ProductImage productImage in Model.ProductImages.Where(pi => pi.IsPrimary == null))
+                    {
+                        <div class="position-relative mx-1">
+                            <img src="~/assets/images/website-images//@productImage.Url" width="150px" height="200px" accept="image/*"/>
+                            <button type="button" style="right:2px; top:2px;" class="cus-delete btn btn-danger opacity-50 text-white position-absolute">X</button>
+                            <input asp-for="ImageIds" value="@productImage.id" type="hidden" class="form-control">
+                        </div>
+                    }
+                </div>
+                <div class="form-group">
+                    <label asp-for="Photos">Other Images</label>
+                    <input asp-for="Photos" class="form-control" placeholder="Photos" accept="image/*">
+                    <span asp-validation-for="Photos" class="text-danger"></span>
+                </div>
                 <div class="form-group">
                     <label asp-for="Name">Product Name</label>
                     <input asp-for="Name" class="form-control" placeholder="Name">
@@ -61,3 +99,16 @@
         </div>
     </div>
 </div>
+
+
+@section DeleteImages{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".cus-delete").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    btn.parentElement.remove();
+                });
+            });
+        });
+    </script>
+}

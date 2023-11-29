@@ -17,7 +17,7 @@ namespace _15_11_23.Utilities.Extendions
             if (file.Length <= limitMb * 1024 * 1024) return true;
             return false;
         }
-        public static async Task<string> CreateFile(this IFormFile file, string root, params string[] folder)
+        public static async Task<string> CreateFileAsync(this IFormFile file, string root, params string[] folder)
         {
             string originalFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
             string guidBasedFileName = ExtractGuidFileName(originalFileName);
@@ -39,7 +39,7 @@ namespace _15_11_23.Utilities.Extendions
             return finalFileName;
 
         }
-        public static async void DeleteFile(this string fileName, string root, params string[] folders)
+        public static async void DeleteFileAsync(this string fileName, string root, params string[] folders)
         {
             string path = root;
             for (int i = 0; i < folders.Length; i++)

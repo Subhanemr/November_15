@@ -46,7 +46,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                 return View(blogVM);
             }
-            string fileName = await blogVM.Photo.CreateFile(_env.WebRootPath, "assets", "images", "website-images");
+            string fileName = await blogVM.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
 
             Blog blog = new Blog
             {
@@ -98,8 +98,8 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                     return View(existed);
                 }
 
-                string fileName = await blogVM.Photo.CreateFile(_env.WebRootPath, "assets", "images", "website-images");
-                existed.ImgUrl.DeleteFile(_env.WebRootPath, "assets", "images", "website-images");
+                string fileName = await blogVM.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                existed.ImgUrl.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 existed.ImgUrl = fileName;
             }
 
@@ -117,7 +117,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             Blog blog = await _context.Blogs.FirstOrDefaultAsync(c => c.Id == id);
             if (blog == null) { return NotFound(); };
 
-            blog.ImgUrl.DeleteFile(_env.WebRootPath, "assets", "images", "website-images");
+            blog.ImgUrl.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
             _context.Blogs.Remove(blog);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
