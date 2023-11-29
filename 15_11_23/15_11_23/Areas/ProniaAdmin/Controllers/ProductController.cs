@@ -391,7 +391,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             {
                 string fileName = await productVM.MainPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 ProductImage prMain = existed.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true);
-                prMain.Url.DeleteFileAsync(fileName);
+                prMain.Url.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 _context.ProductImages.Remove(prMain);
 
                 existed.ProductImages.Add(new ProductImage
@@ -405,7 +405,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             {
                 string fileName = await productVM.HoverPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 ProductImage prHover = existed.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false);
-                prHover.Url.DeleteFileAsync(fileName);
+                prHover.Url.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 _context.ProductImages.Remove(prHover);
 
                 existed.ProductImages.Add(new ProductImage
