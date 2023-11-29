@@ -32,7 +32,7 @@
                     @foreach (ProductImage productImage in Model.ProductImages.Where(pi => pi.IsPrimary == null))
                     {
                         <div class="position-relative mx-1">
-                            <img src="~/assets/images/website-images//@productImage.Url" width="150px" height="200px" accept="image/*"/>
+                            <img src="~/assets/images/website-images//@productImage.Url" width="150px" height="200px"/>
                             <button type="button" style="right:2px; top:2px;" class="cus-delete btn btn-danger opacity-50 text-white position-absolute">X</button>
                             <input asp-for="ImageIds" value="@productImage.id" type="hidden" class="form-control">
                         </div>
