@@ -194,7 +194,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 {
                     IsPrimary = null,
                     Alternative = productVM.Name,
-                    Url = await productVM.MainPhoto.CreateFile(_env.WebRootPath, "assets", "images", "website-images")
+                    Url = await photo.CreateFile(_env.WebRootPath, "assets", "images", "website-images")
                 });
             }
 
@@ -286,7 +286,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 return View(productVM);
             }
             List<ProductTag> tagsToRemove = existed.ProductTags
-                .Where(productTag => !productVM.TagIds.Contains(productTag.TagId))
+                .Where(pt => !productVM.TagIds.Contains(pt.TagId))
                 .ToList();
             _context.ProductTags.RemoveRange(tagsToRemove);
 
@@ -305,7 +305,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             }
 
             List<ProductColor> colorToRemove = existed.ProductColors
-                .Where(productColor => !productVM.ColorIds.Contains(productColor.ColorId))
+                .Where(pc => !productVM.ColorIds.Contains(pc.ColorId))
                 .ToList();
             _context.ProductColors.RemoveRange(colorToRemove);
 
@@ -324,7 +324,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             }
 
             List<ProductSize> sizeToRemove = existed.ProductSizes
-                .Where(productSize => !productVM.SizeIds.Contains(productSize.SizeId))
+                .Where(ps => !productVM.SizeIds.Contains(ps.SizeId))
                 .ToList();
             _context.ProductSizes.RemoveRange(sizeToRemove);
 
