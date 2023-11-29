@@ -28,12 +28,12 @@
                     <input asp-for="HoverPhoto" class="form-control" placeholder="HoverPhoto" accept="image/*">
                     <span asp-validation-for="HoverPhoto" class="text-danger"></span>
                 </div>
-                <div class="form-group d-flex">
+                <div class="form-group d-flex container row">
                     @foreach (ProductImage productImage in Model.ProductImages.Where(pi => pi.IsPrimary == null))
                     {
-                        <div class="position-relative mx-1">
+                        <div class="position-relative m-3 col-3">
                             <img src="~/assets/images/website-images//@productImage.Url" width="150px" height="200px"/>
-                            <button type="button" style="right:2px; top:2px;" class="cus-delete btn btn-danger opacity-50 text-white position-absolute">X</button>
+                            <button type="button" style="left:13px; top:2px;" class="cus-delete btn btn-danger opacity-50 text-white position-absolute">X</button>
                             <input asp-for="ImageIds" value="@productImage.id" type="hidden" class="form-control">
                         </div>
                     }
