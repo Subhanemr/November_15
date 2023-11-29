@@ -1,51 +1,57 @@
 ﻿@model Product
 
 <div class="container">
-    <div class="card mb-3" style="max-width: 99%;">
-        <div class="row g-0">
-            <div class="col-md-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4 m-1">
 
-                <div class="col-md-8">
-                    <img src="~/assets/images/website-images//@Model.ProductImages.FirstOrDefault(p => p.IsPrimary == true).Url" class="img-fluid rounded-start w-50" alt="@Model.ProductImages.FirstOrDefault(p => p.IsPrimary==true).Alternative">
-                    <img src="~/assets/images/website-images//@Model.ProductImages.FirstOrDefault(p => p.IsPrimary == false).Url" class="img-fluid rounded-start w-50" alt="@Model.ProductImages.FirstOrDefault(p => p.IsPrimary==false).Alternative">
-
-                </div>
-                @foreach (ProductImage productImage in Model.ProductImages.Where(p => p.IsPrimary == null))
-                {
-                    <img src="~/assets/images/website-images//@productImage.Url" class="img-fluid rounded-start w-50" alt="@productImage.Alternative">
-                }
-                <div class="card-body">
-                    <h5 class="card-title">Name: @Model.Name</h5>
-                    <p class="card-text">SKU: @Model.SKU</p>
-                    <p class="card-text">Description: @Model.Description</p>
-                    <p class="card-text">Category: @Model.Category.Name</p>
-                    <p class="card-text">
-                        Tags: @foreach (ProductTag productTag in Model.ProductTags)
-                        {
-                            @productTag.Tag.Name
-
-                            @(productTag != Model.ProductTags[Model.ProductTags.Count - 1] ? ", " : "")
-                        }
-                    </p>
-                    <p class="card-text">
-                        Colors: @foreach (ProductColor productColor in Model.ProductColors)
-                        {
-                            @productColor.Color.Name
-
-                            @(productColor != Model.ProductColors[Model.ProductColors.Count - 1] ? ", " : "")
-                        }
-                    </p>
-                    <p class="card-text">
-                        Sizes: @foreach (ProductSize productSize in Model.ProductSizes)
-                        {
-                            @productSize.Size.Name
-
-                            @(productSize != Model.ProductSizes[Model.ProductSizes.Count - 1] ? ", " : "")
-                        }
-                    </p>
-                </div>
+        <div class="col">
+            <div class="card">
+                <img src="~/assets/images/website-images//@Model.ProductImages.FirstOrDefault(p => p.IsPrimary == true).Url" class="img-fluid rounded-start" alt="@Model.ProductImages.FirstOrDefault(p => p.IsPrimary==true).Alternative">
             </div>
         </div>
+        <div class="col">
+            <div class="card">
+                <img src="~/assets/images/website-images//@Model.ProductImages.FirstOrDefault(p => p.IsPrimary == false).Url" class="img-fluid rounded-start" alt="@Model.ProductImages.FirstOrDefault(p => p.IsPrimary==false).Alternative">
+            </div>
+        </div>
+
+        @foreach (ProductImage productImage in Model.ProductImages.Where(p => p.IsPrimary == null))
+        {
+            <div class="col">
+                <div class="card ">
+                    <img src="~/assets/images/website-images//@productImage.Url" class="img-fluid rounded-start" alt="@productImage.Alternative">
+                </div>
+            </div>
+        }
+    </div>
+    <div class="card-body m-2">
+        <h5 class="card-title">Name: @Model.Name</h5>
+        <p class="card-text">SKU: @Model.SKU</p>
+        <p class="card-text">Description: @Model.Description</p>
+        <p class="card-text">Category: @Model.Category.Name</p>
+        <p class="card-text">
+            Tags: @foreach (ProductTag productTag in Model.ProductTags)
+            {
+                @productTag.Tag.Name
+
+                @(productTag != Model.ProductTags[Model.ProductTags.Count - 1] ? ", " : "")
+            }
+        </p>
+        <p class="card-text">
+            Colors: @foreach (ProductColor productColor in Model.ProductColors)
+            {
+                @productColor.Color.Name
+
+                @(productColor != Model.ProductColors[Model.ProductColors.Count - 1] ? ", " : "")
+            }
+        </p>
+        <p class="card-text">
+            Sizes: @foreach (ProductSize productSize in Model.ProductSizes)
+            {
+                @productSize.Size.Name
+
+                @(productSize != Model.ProductSizes[Model.ProductSizes.Count - 1] ? ", " : "")
+            }
+        </p>
     </div>
 </div>
-<a class="btn btn-light fw-bold fs-4" asp-action="Index" asp-controller="Product">Back</a>
+<a class="btn btn-light fw-bold fs-4" asp-action="Index" asp-controller="Project">Back</a>
