@@ -3,11 +3,14 @@
 <div class="container">
     <div class="card mb-3" style="max-width: 99%;">
         <div class="row g-0">
-            @foreach (ProductImage productImage in Model.ProductImages)
+            <div class="col-md-4">
+                <img src="~/assets/images/website-images//@Model.ProductImages.FirstOrDefault(p => p.IsPrimary == true).Url" class="img-fluid rounded-start w-50 h-50" alt="@Model.ProductImages.FirstOrDefault(p => p.IsPrimary==true).Alternative">
+                <img src="~/assets/images/website-images//@Model.ProductImages.FirstOrDefault(p => p.IsPrimary == false).Url" class="img-fluid rounded-start w-50 h-50" alt="@Model.ProductImages.FirstOrDefault(p => p.IsPrimary==false).Alternative">
+
+            </div>
+            @foreach (ProductImage productImage in Model.ProductImages.Where(p => p.IsPrimary == null))
             {
-                <div class="col-md-4">
-                    <img src="~/assets/images/website-images//@productImage.Url" class="img-fluid rounded-start w-75" alt="@productImage.Alternative">
-                </div>
+                <img src="~/assets/images/website-images//@productImage.Url" class="img-fluid rounded-start w-50 h-50" alt="@productImage.Alternative">
             }
             <div class="col-md-8">
                 <div class="card-body">

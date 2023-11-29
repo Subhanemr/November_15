@@ -157,7 +157,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             {
                 IsPrimary = false,
                 Alternative = productVM.Name,
-                Url = await productVM.MainPhoto.CreateFile(_env.WebRootPath, "assets", "images", "website-images")
+                Url = await productVM.HoverPhoto.CreateFile(_env.WebRootPath, "assets", "images", "website-images")
             };
 
             Product product = new Product

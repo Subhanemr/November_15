@@ -24,7 +24,7 @@ namespace _15_11_23.Controllers
                 .Include(pt => pt.ProductTags).ThenInclude(pt => pt.Tag)
                 .Include(ps => ps.ProductSizes).ThenInclude(ps => ps.Size)
                 .Include(pc => pc.ProductColors).ThenInclude(pc => pc.Color)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);  
 
             if (product == null) return NotFound();
 
