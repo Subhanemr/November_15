@@ -11,7 +11,7 @@ namespace _15_11_23.Servicers
         {
             _context = context;
         }
-        public async Task<Dictionary<string, string>> GetSttings()
+        public async Task<Dictionary<string, string>> GetSettingsAsync()
         {
             Dictionary<string, string> keyValuePairs = await _context.Settings.ToDictionaryAsync(p=>p.Key,p=>p.Value);
             return keyValuePairs;
