@@ -41,13 +41,13 @@
     </div>
     <div class="main-wrapper">
         <!-- Begin Main Header Area -->
-        @await Html.PartialAsync("Header/_HeaderPartialView")
-    @*     @await Component.InvokeAsync("Header") *@
+@*         @await Html.PartialAsync("Header/_HeaderPartialView") *@
+        @await Component.InvokeAsync("Header")
         <!-- Main Header Area End Here -->
         @RenderBody()
             <!-- Begin Footer Area -->
-        @await Html.PartialAsync("Footer/_FooterPartialView")
-  @*       @await Component.InvokeAsync("Footer") *@
+@*         @await Html.PartialAsync("Footer/_FooterPartialView") *@
+        @await Component.InvokeAsync("Footer")
 
             <!-- Footer Area End Here -->
             <!-- Begin Modal Area -->
