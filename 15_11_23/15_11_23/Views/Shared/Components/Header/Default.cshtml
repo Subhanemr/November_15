@@ -1,4 +1,7 @@
-﻿@model Dictionary<string, string>
+﻿@model HeaderVM
+@{
+    decimal total = 0;
+}
 
 
 <header class="main-header-area">
@@ -7,7 +10,7 @@
             <div class="row align-items-center">
                 <div class="col-6">
                     <div class="header-top-left">
-                        <span class="pronia-offer">@Model["Sale"]</span>
+                        <span class="pronia-offer">@Model.Settings["Sale"]</span>
                     </div>
                 </div>
                 <div class="col-6">
@@ -20,12 +23,12 @@
                                         data-bs-toggle="dropdown"
                                         aria-label="currency"
                                         aria-expanded="false">
-                                    @Model["Usd"]
+                                    @Model.Settings["Usd"]
                                 </button>
                                 <ul class="dropdown-menu"
                                     aria-labelledby="currencyButton">
-                                    <li><a class="dropdown-item" href="#">@Model["Gbp"]</a></li>
-                                    <li><a class="dropdown-item" href="#">@Model["Iso"]</a></li>
+                                    <li><a class="dropdown-item" href="#">@Model.Settings["Gbp"]</a></li>
+                                    <li><a class="dropdown-item" href="#">@Model.Settings["Iso"]</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -56,12 +59,12 @@
                 <div class="col-lg-12">
                     <div class="header-middle-wrap position-relative">
                         <div class="header-contact d-none d-lg-flex">
-                            @Html.Raw(Model["PhoneLogo"])
-                            <a href="tel://@Model["Phone"]">@Model["Phone"]</a>
+                            @Html.Raw(Model.Settings["PhoneLogo"])
+                            <a href="tel://@Model.Settings["Phone"]">@Model.Settings["Phone"]</a>
                         </div>
 
                         <a href="index.html" class="header-logo">
-                            <img src="~/assets/images/logo/@Model["Logo"]" alt="Header Logo" />
+                            <img src="~/assets/images/logo/@Model.Settings["Logo"]" alt="Header Logo" />
                         </a>
 
                         <div class="header-right">
@@ -71,7 +74,7 @@
                                        class="search-btn bt"
                                        data-bs-toggle="modal"
                                        data-bs-target="#exampleModal">
-                                        @Html.Raw(Model["SearchIcon"])
+                                        @Html.Raw(Model.Settings["SearchIcon"])
 
                                     </a>
                                 </li>
@@ -82,7 +85,7 @@
                                             data-bs-toggle="dropdown"
                                             aria-label="setting"
                                             aria-expanded="false">
-                                        @Html.Raw(Model["UserIcon"])
+                                        @Html.Raw(Model.Settings["UserIcon"])
 
                                     </button>
                                     <ul class="dropdown-menu"
@@ -97,15 +100,15 @@
                                 </li>
                                 <li class="d-none d-lg-block">
                                     <a href="wishlist.html">
-                                        @Html.Raw(Model["LikeIcon"])
+                                        @Html.Raw(Model.Settings["LikeIcon"])
 
                                     </a>
                                 </li>
                                 <li class="minicart-wrap me-3 me-lg-0">
                                     <a href="#miniCart" class="minicart-btn toolbar-btn">
-                                        @Html.Raw(Model["ShopIcon"])
+                                        @Html.Raw(Model.Settings["ShopIcon"])
 
-                                        <span class="quantity">3</span>
+                                        <span class="quantity">@Model.Items.Count</span>
                                     </a>
                                 </li>
                                 <li class="mobile-menu_wrap d-block d-lg-none">
@@ -254,7 +257,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-6">
                         <a href="index.html" class="header-logo">
-                            <img src="~/assets/images/logo/@Model["Logo"]" alt="Header Logo" />
+                            <img src="~/assets/images/logo/@Model.Settings["Logo"]" alt="Header Logo" />
                         </a>
                     </div>
                     <div class="col-lg-6 d-none d-lg-block">
@@ -386,7 +389,7 @@
                                        class="search-btn bt"
                                        data-bs-toggle="modal"
                                        data-bs-target="#exampleModal">
-                                        @Html.Raw(Model["SearchIcon"])
+                                        @Html.Raw(Model.Settings["SearchIcon"])
                                     </a>
                                 </li>
                                 <li class="dropdown d-none d-lg-block">
@@ -396,7 +399,7 @@
                                             data-bs-toggle="dropdown"
                                             aria-label="setting"
                                             aria-expanded="false">
-                                        @Html.Raw(Model["UserIcon"])
+                                        @Html.Raw(Model.Settings["UserIcon"])
 
                                     </button>
                                     <ul class="dropdown-menu"
@@ -411,15 +414,15 @@
                                 </li>
                                 <li class="d-none d-lg-block">
                                     <a href="wishlist.html">
-                                        @Html.Raw(Model["LikeIcon"])
+                                        @Html.Raw(Model.Settings["LikeIcon"])
 
                                     </a>
                                 </li>
                                 <li class="minicart-wrap me-3 me-lg-0">
                                     <a href="#miniCart" class="minicart-btn toolbar-btn">
-                                        @Html.Raw(Model["ShopIcon"])
+                                        @Html.Raw(Model.Settings["ShopIcon"])
 
-                                        <span class="quantity">3</span>
+                                        <span class="quantity">@Model.Items.Count</span>
                                     </a>
                                 </li>
                                 <li class="mobile-menu_wrap d-block d-lg-none">
@@ -442,8 +445,8 @@
                     <a href="#" class="button-close"><i class="pe-7s-close"></i></a>
                 </div>
                 <div class="header-contact offcanvas-contact">
-                    @Html.Raw(Model["PhoneLogo"])
-                    <a href="tel://@Model["Phone"]">@Model["Phone"]</a>
+                    @Html.Raw(Model.Settings["PhoneLogo"])
+                    <a href="tel://@Model.Settings["Phone"]">@Model.Settings["Phone"]</a>
                 </div>
                 <div class="offcanvas-user-info">
                     <ul class="dropdown-wrap">
@@ -482,7 +485,7 @@
                                     id="settingButtonTwo"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false">
-                                @Html.Raw(Model["UserIcon"])
+                                @Html.Raw(Model.Settings["UserIcon"])
 
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end"
@@ -497,7 +500,7 @@
                         </li>
                         <li>
                             <a href="wishlist.html">
-                                @Html.Raw(Model["LikeIcon"])
+                                @Html.Raw(Model.Settings["LikeIcon"])
 
                             </a>
                         </li>
@@ -758,7 +761,7 @@
                             <button class="search-btn"
                                     type="submit"
                                     aria-label="searchbtn">
-                                @Html.Raw(Model["SearchIcon"])
+                                @Html.Raw(Model.Settings["SearchIcon"])
 
                             </button>
                         </form>
@@ -783,80 +786,40 @@
                     </a>
                 </div>
                 <ul class="minicart-list">
-                    <li class="minicart-product">
-                        <a class="product-item_remove" href="#">
-                            <i class="pe-7s-close"
-                               data-tippy="Remove"
-                               data-tippy-inertia="true"
-                               data-tippy-animation="shift-away"
-                               data-tippy-delay="50"
-                               data-tippy-arrow="true"
-                               data-tippy-theme="sharpborder"></i>
-                        </a>
-                        <a href="single-product-variable.html"
-                           class="product-item_img">
-                            <img class="img-full"
-                                 src="~/assets/images/product/small-size/2-1-70x78.png"
-                                 alt="Product Image" />
-                        </a>
-                        <div class="product-item_content">
-                            <a class="product-item_title"
-                               href="single-product-variable.html">American Marigold</a>
-                            <span class="product-item_quantity">1 x $23.45</span>
-                        </div>
-                    </li>
-                    <li class="minicart-product">
-                        <a class="product-item_remove" href="#">
-                            <i class="pe-7s-close"
-                               data-tippy="Remove"
-                               data-tippy-inertia="true"
-                               data-tippy-animation="shift-away"
-                               data-tippy-delay="50"
-                               data-tippy-arrow="true"
-                               data-tippy-theme="sharpborder"></i>
-                        </a>
-                        <a href="single-product-variable.html"
-                           class="product-item_img">
-                            <img class="img-full"
-                                 src="~/assets/images/product/small-size/2-2-70x78.png"
-                                 alt="Product Image" />
-                        </a>
-                        <div class="product-item_content">
-                            <a class="product-item_title"
-                               href="single-product-variable.html">Black Eyed Susan</a>
-                            <span class="product-item_quantity">1 x $25.45</span>
-                        </div>
-                    </li>
-                    <li class="minicart-product">
-                        <a class="product-item_remove" href="#">
-                            <i class="pe-7s-close"
-                               data-tippy="Remove"
-                               data-tippy-inertia="true"
-                               data-tippy-animation="shift-away"
-                               data-tippy-delay="50"
-                               data-tippy-arrow="true"
-                               data-tippy-theme="sharpborder"></i>
-                        </a>
-                        <a href="single-product-variable.html"
-                           class="product-item_img">
-                            <img class="img-full"
-                                 src="~/assets/images/product/small-size/2-3-70x78.png"
-                                 alt="Product Image" />
-                        </a>
-                        <div class="product-item_content">
-                            <a class="product-item_title"
-                               href="single-product-variable.html">Bleeding Heart</a>
-                            <span class="product-item_quantity">1 x $30.45</span>
-                        </div>
-                    </li>
+                    @foreach (CartItemVM item in Model.Items)
+                    {
+                        total += item.SubTotal;
+                        <li class="minicart-product">
+                            <a class="product-item_remove" href="#">
+                                <i class="pe-7s-close"
+                                   data-tippy="Remove"
+                                   data-tippy-inertia="true"
+                                   data-tippy-animation="shift-away"
+                                   data-tippy-delay="50"
+                                   data-tippy-arrow="true"
+                                   data-tippy-theme="sharpborder"></i>
+                            </a>
+                            <a href="single-product-variable.html"
+                               class="product-item_img">
+                                <img class="img-full"
+                                     src="~/assets/images/website-images//@item.Image"
+                                     alt="Product Image" />
+                            </a>
+                            <div class="product-item_content">
+                                <a class="product-item_title"
+                                   href="single-product-variable.html">@item.Name</a>
+                                <span class="product-item_quantity">@item.Count x $@item.Price</span>
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
             <div class="minicart-item_total">
-                <span>Subtotal</span>
-                <span class="ammount">$79.35</span>
+                <span>Total</span>
+                <span class="ammount">$@total</span>
             </div>
             <div class="group-btn_wrap d-grid gap-2">
-                <a href="cart.html" class="btn btn-dark">View Cart</a>
+                <a asp-action="Index" asp-controller="Cart" class="btn btn-dark">View Cart</a>
                 <a href="checkout.html" class="btn btn-dark">Checkout</a>
             </div>
         </div>
