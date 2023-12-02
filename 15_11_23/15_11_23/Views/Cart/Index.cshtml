@@ -69,12 +69,12 @@
                                             <td class="product-price">
                                                 <span class="amount">$@cartItem.Price</span>
                                             </td>
-                                            <td class="quantity">
-                                                <div class="d-flex btn btn-dark">
-                                                    <a class="m-1" asp-action="CountMinus" asp-controller="Cart" asp-route-id="@cartItem.Id">
+                                            <td class="quantity col-1">
+                                                <div class="d-flex btn btn-dark" style="width:90px;">
+                                                    <a class="m-1"  asp-action="CountMinus" asp-controller="Cart" asp-route-id="@cartItem.Id">
                                                         <i class="fa fa-minus"></i>
                                                     </a>
-                                                    <p class="fw-bold m-1">@cartItem.Count</p>
+                                                    <p class="fw-bold m-1 mx-2">@cartItem.Count</p>
                                                     <a class="m-1" asp-action="CountPlus" asp-controller="Cart" asp-route-id="@cartItem.Id">
                                                         <i class="fa fa-plus"></i>
                                                     </a>
