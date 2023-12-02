@@ -1,9 +1,9 @@
-﻿ @model List<CartItemVM>
+﻿@model List<CartItemVM>
 @{
     decimal total = 0;
 }
-    
- <!-- Begin Main Content Area -->
+
+<!-- Begin Main Content Area -->
 <main class="main-content">
     <div class="breadcrumb-area breadcrumb-height"
          data-bg-image="~/assets/images/breadcrumb/bg/1-1-1919x388.jpg">
@@ -46,7 +46,7 @@
                                         total += cartItem.SubTotal;
                                         <tr>
                                             <td class="product_remove">
-                                                <a >
+                                                <a asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@cartItem.Id">
                                                     <i class="pe-7s-close"
                                                        data-tippy="Remove"
                                                        data-tippy-inertia="true"
@@ -59,7 +59,7 @@
                                             <td class="product-thumbnail">
                                                 <a asp-action="Detail" asp-controller="Product" asp-route-id="@cartItem.Id">
                                                     <img src="~/assets/images/website-images//@cartItem.Image"
-                                                    class="w-25"
+                                                         class="w-25"
                                                          alt="@cartItem.Name" />
                                                 </a>
                                             </td>
@@ -70,16 +70,14 @@
                                                 <span class="amount">$@cartItem.Price</span>
                                             </td>
                                             <td class="quantity">
-                                                <div class="cart-plus-minus">
-                                                    <input class="cart-plus-minus-box"
-                                                           value="@cartItem.Count"
-                                                           type="text" />
-                                                    <div class="dec qtybutton">
+                                                <div class="d-flex btn btn-dark">
+                                                    <a class="m-1" asp-action="CountMinus" asp-controller="Cart" asp-route-id="@cartItem.Id">
                                                         <i class="fa fa-minus"></i>
-                                                    </div>
-                                                    <div class="inc qtybutton">
+                                                    </a>
+                                                    <p class="fw-bold m-1">@cartItem.Count</p>
+                                                    <a class="m-1" asp-action="CountPlus" asp-controller="Cart" asp-route-id="@cartItem.Id">
                                                         <i class="fa fa-plus"></i>
-                                                    </div>
+                                                    </a>
                                                 </div>
                                             </td>
                                             <td class="product-subtotal">
@@ -88,7 +86,6 @@
                                         </tr>
                                     }
 
-                                    
                                 </tbody>
                             </table>
                         </div>
