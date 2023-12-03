@@ -84,7 +84,10 @@ namespace _15_11_23.Controllers
             }
 
             string json = JsonConvert.SerializeObject(cart);
-            Response.Cookies.Append("Basket", json);
+            Response.Cookies.Append("Basket", json, new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddDays(1),
+            });
 
             return RedirectToAction(nameof(Index), "Home");
         }
