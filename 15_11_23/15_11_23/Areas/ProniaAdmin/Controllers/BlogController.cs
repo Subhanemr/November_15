@@ -31,6 +31,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateBlogVM blogVM)
         {
+            if(!ModelState.IsValid) return View(blogVM);
             if (blogVM.Photo == null)
             {
                 ModelState.AddModelError("Photo", "The image must be uploaded");
