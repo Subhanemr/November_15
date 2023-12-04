@@ -79,5 +79,15 @@ namespace _15_11_23.Utilities.Extendions
             return string.Empty;
         }
 
+        public static string Capitalize(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            return char.ToUpper(text[0]) + text.Substring(1).ToLower();
+        }
+
     }
 }

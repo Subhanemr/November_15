@@ -93,6 +93,7 @@ namespace _15_11_23.Controllers
         }
         public async Task<IActionResult> DeleteItem(int id)
         {
+            if (id <= 0) return BadRequest();
             List<CartCookieItemVM> cart = JsonConvert.DeserializeObject<List<CartCookieItemVM>>(Request.Cookies["Basket"]);
 
             CartCookieItemVM item = cart.FirstOrDefault(c => c.Id == id);
