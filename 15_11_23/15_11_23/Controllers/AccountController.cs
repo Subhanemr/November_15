@@ -62,5 +62,9 @@ namespace _15_11_23.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("index", "Home");
         }
+        public IActionResult LogIn()
+        {
+            return View();
+        }
     }
 }

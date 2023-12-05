@@ -1,5 +1,5 @@
 ﻿@model RegisterVM
-      
+
 <!-- Begin Main Content Area -->
 <main class="main-content">
     <div class="breadcrumb-area breadcrumb-height"
@@ -29,7 +29,6 @@
                             <h4 class="login-title">Register</h4>
                             <div class="row">
                                 <div class="text-danger" asp-validation-summary="ModelOnly">
-
                                 </div>
                                 <div class="col-12">
                                     <label asp-for="UserName">User Name</label>
@@ -62,15 +61,25 @@
                                     <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label asp-for ="Genders">Gender</label>
-                                    <select asp-for="Genders" class="mx-2 mb-3">
+                                    <p class="fw-bold">Genders</p>
+                                    <div class="col-md-6 d-flex flex-row ">
+                                        @foreach (var gender in Enum.GetValues(typeof(Gender)))
+                                        {
+                                            <label asp-for="Genders" class="mx-2">@gender</label>
+                                            <input asp-for="Genders" placeholder="@gender" type="radio" value="@gender" />
+                                            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+
+                                        }
+                                        @*                                     <label asp-for ="Genders">Gender</label> *@
+                                        @*                                     <select asp-for="Genders" class="mx-2 mb-3">
                                         <option disabled selected>Choose Your Gender</option>
                                         @foreach (var gender in Enum.GetValues(typeof(Gender)))
                                         {
-                                            <option value="@gender">@gender</option>
+                                        <option value="@gender">@gender</option>
                                         }
-                                    </select>
-                                    <span class="text-danger" asp-validation-for="Genders"></span>
+                                        </select> *@
+                                        <span class="text-danger" asp-validation-for="Genders"></span>
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <button class="btn btn-custom-size lg-size btn-pronia-primary">
