@@ -3,6 +3,7 @@ using _15_11_23.DAL;
 using _15_11_23.Models;
 using _15_11_23.Utilities.Extendions;
 using _15_11_23.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
@@ -10,6 +11,7 @@ using NuGet.Packaging;
 namespace _15_11_23.Areas.ProniaAdmin.Controllers
 {
     [Area("ProniaAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
@@ -35,7 +37,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             _context = context;
             _env = env;
         }
-
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Product> product = await _context.Products
@@ -44,6 +46,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 .ToListAsync();
             return View(product);
         }
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Create()
         {
             CreateProductVM productVM = new CreateProductVM { 
@@ -204,7 +207,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) return BadRequest();
@@ -239,7 +242,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -467,7 +470,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) return BadRequest();

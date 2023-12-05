@@ -1,4 +1,5 @@
 ﻿using _15_11_23.DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _15_11_23.Areas.Admin.Controllers
@@ -12,6 +13,8 @@ namespace _15_11_23.Areas.Admin.Controllers
         {
             _context = context;
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             return View();

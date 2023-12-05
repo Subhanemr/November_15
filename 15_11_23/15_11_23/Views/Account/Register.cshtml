@@ -67,7 +67,7 @@
                                         {
                                             <label asp-for="Genders" class="mx-2">@gender</label>
                                             <input asp-for="Genders" placeholder="@gender" type="radio" value="@gender" />
-                                            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                                            <span class="text-danger" asp-validation-for="Genders"></span>
 
                                         }
                                         @*                                     <label asp-for ="Genders">Gender</label> *@
@@ -80,6 +80,9 @@
                                         </select> *@
                                         <span class="text-danger" asp-validation-for="Genders"></span>
                                     </div>
+                                </div>
+                                <div class="col-12 my-1">
+                                    Already a member? <a asp-action="LogIn" asp-controller="Account">Enter</a>
                                 </div>
                                 <div class="col-12">
                                     <button class="btn btn-custom-size lg-size btn-pronia-primary">

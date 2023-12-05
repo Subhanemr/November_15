@@ -1,6 +1,7 @@
 ﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
 using _15_11_23.DAL;
 using _15_11_23.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -17,6 +18,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Category> categories = await _context.Categories.Include(c => c.Products).ToListAsync();
@@ -24,6 +26,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return View(categories);
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -48,6 +51,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) return BadRequest();
@@ -80,6 +84,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) return BadRequest();
@@ -90,6 +95,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) return BadRequest();
