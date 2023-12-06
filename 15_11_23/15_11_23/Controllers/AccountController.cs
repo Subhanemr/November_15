@@ -164,7 +164,9 @@ namespace _15_11_23.Controllers
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                     return View(editUserVM);
                 }
-                appUser.Img = await editUserVM.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                string fileName = await editUserVM.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                appUser.Img.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                appUser.Img = fileName;
             }
 
             await _userManager.UpdateAsync(appUser);
