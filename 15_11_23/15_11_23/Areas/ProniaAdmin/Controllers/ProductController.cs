@@ -12,6 +12,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 {
     [Area("ProniaAdmin")]
     [Authorize(Roles = "Admin,Moderator")]
+    [AutoValidateAntiforgeryToken]
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
@@ -38,6 +39,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             _env = env;
         }
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
             List<Product> product = await _context.Products
@@ -47,6 +49,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return View(product);
         }
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create()
         {
             CreateProductVM productVM = new CreateProductVM { 
@@ -208,6 +211,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = "Admin")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) return BadRequest();
@@ -243,6 +247,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -471,6 +476,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) return BadRequest();

@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace _15_11_23.Areas.ProniaAdmin.Controllers
 {
     [Area("ProniaAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
+    [AutoValidateAntiforgeryToken]
     public class SlideController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,6 +23,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
             List<Slide> slide = await _context.Slides.ToListAsync();
@@ -28,6 +31,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Create()
         {
             return View();
@@ -73,6 +77,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) return BadRequest();
@@ -127,6 +132,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) return BadRequest();
@@ -144,6 +150,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) return BadRequest();

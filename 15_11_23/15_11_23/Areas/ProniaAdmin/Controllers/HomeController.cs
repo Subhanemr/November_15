@@ -6,6 +6,7 @@ namespace _15_11_23.Areas.Admin.Controllers
 {
     [Area("ProniaAdmin")]
     [Authorize(Roles = "Admin,Moderator")]
+    [AutoValidateAntiforgeryToken]
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
@@ -16,6 +17,7 @@ namespace _15_11_23.Areas.Admin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
             return View();
