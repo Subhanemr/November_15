@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _15_11_23.Areas.Admin.Controllers
 {
     [Area("ProniaAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;

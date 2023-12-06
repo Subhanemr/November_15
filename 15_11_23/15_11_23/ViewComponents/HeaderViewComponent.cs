@@ -1,6 +1,7 @@
 ﻿using _15_11_23.DAL;
 using _15_11_23.Models;
 using _15_11_23.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -11,12 +12,14 @@ namespace _15_11_23.ViewComponents
     public class HeaderViewComponent : ViewComponent
     {
         private readonly AppDbContext _context;
-        private readonly  IHttpContextAccessor _http;
+        private readonly IHttpContextAccessor _http;
+        private readonly UserManager<AppUser> _userManager;
 
-        public HeaderViewComponent(AppDbContext context, IHttpContextAccessor http)
+        public HeaderViewComponent(AppDbContext context, IHttpContextAccessor http, UserManager<AppUser> userManager)
         {
             _context = context;
             _http = http;
+            _userManager = userManager;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -47,7 +50,14 @@ namespace _15_11_23.ViewComponents
                     }
                 }
             }
-            HeaderVM headerVM = new HeaderVM { Settings = keyValuePairs, Items = cartVM };
+            AppUser appUser = new AppUser();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                appUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
+
+            HeaderVM headerVM = new HeaderVM { Settings = keyValuePairs, Items = cartVM, User = appUser };
 
             return View(headerVM);
         }

@@ -1,4 +1,5 @@
-﻿@model HeaderVM
+﻿@using System.Security.Claims;
+@model HeaderVM
 @{
     decimal total = 0;
 }
@@ -93,7 +94,10 @@
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             <li>
-                                                <a class="dropdown-item" href="my-account.html">@User.Identity.Name</a>
+                                                <div class="d-flex">
+                                                    <img src="~/assets/images/website-images//@Model.User.Img" style="width:25px;" class="m-1">
+                                                    <a class="dropdown-item" asp-action="EditUser" asp-controller="Account">@User.Identity.Name</a>
+                                                </div>
                                             </li>
                                             <li>
                                                 <a asp-action="LogOut" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Log Out</a>
@@ -108,7 +112,7 @@
                                         else
                                         {
                                             <li>
-                                                
+
                                             </li>
                                             <li>
                                                 <a asp-action="Login" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Login</a>
@@ -218,7 +222,10 @@
                                                 @if (User.Identity.IsAuthenticated)
                                                 {
                                                     <li>
-                                                        <a class="dropdown-item" href="my-account.html">@User.Identity.Name</a>
+                                                        <div class="d-flex">
+                                                            <img src="~/assets/images/website-images//@Model.User.Img" style="width:25px;" class="m-1">
+                                                            <a class="dropdown-item" asp-action="EditUser" asp-controller="Account">@User.Identity.Name</a>
+                                                        </div>
                                                     </li>
                                                     <li>
                                                         <a asp-action="LogOut" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Log Out</a>
@@ -369,7 +376,11 @@
                                                     @if (User.Identity.IsAuthenticated)
                                                     {
                                                         <li>
-                                                            <a class="dropdown-item" href="my-account.html">@User.Identity.Name</a>
+                                                            <div class="d-flex">
+
+                                                                <img src="~/assets/images/website-images//@Model.User.Img" style="width:25px;" class="m-1">
+                                                                <a class="dropdown-item" asp-action="EditUser" asp-controller="Account">@User.Identity.Name</a>
+                                                            </div>
                                                         </li>
                                                         <li>
                                                             <a asp-action="LogOut" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Log Out</a>
@@ -465,7 +476,10 @@
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             <li>
-                                                <a class="dropdown-item" href="my-account.html">@User.Identity.Name</a>
+                                                <div class="d-flex">
+                                                    <img src="~/assets/images/website-images//@Model.User.Img" style="width:25px;" class="m-1">
+                                                    <a class="dropdown-item" asp-action="EditUser" asp-controller="Account">@User.Identity.Name</a>
+                                                </div>
                                             </li>
                                             <li>
                                                 <a asp-action="LogOut" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Log Out</a>
@@ -569,7 +583,11 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <li>
-                                        <a class="dropdown-item" href="my-account.html">@User.Identity.Name</a>
+                                        <div class="d-flex">
+
+                                            <img src="~/assets/images/website-images//@Model.User.Img" style="width:25px;" class="m-1">
+                                            <a class="dropdown-item" asp-action="EditUser" asp-controller="Account">@User.Identity.Name</a>
+                                        </div>
                                     </li>
                                     <li>
                                         <a asp-action="LogOut" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Log Out</a>
