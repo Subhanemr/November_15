@@ -88,7 +88,7 @@ namespace _15_11_23.Controllers
             {
                 AppUser appUser = await _userManager.Users.Include(p => p.BasketItems).FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (appUser == null) return NotFound();
-                BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.Id == id);
+                BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
                 if (item == null)
                 {
                     item = new BasketItem
