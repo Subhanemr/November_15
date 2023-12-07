@@ -23,5 +23,8 @@ namespace _15_11_23.DAL
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Settings> Settings { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
     }
 }

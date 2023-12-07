@@ -106,6 +106,8 @@ namespace _15_11_23.Controllers
                 ModelState.AddModelError(string.Empty, "Username, Email or Password is incorrect");
                 return View(loginVM);
             }
+
+            Response.Cookies.Delete("Basket");
             if (returnUrl == null)
             {
                 return RedirectToAction("index", "Home");
