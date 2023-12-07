@@ -208,6 +208,10 @@ namespace _15_11_23.Controllers
                 if (item == null) return BadRequest();
 
                 item.Count--;
+                if (item.Count <= 0)
+                {
+                    return await DeleteItem(id);
+                }
                 await _context.SaveChangesAsync();
             }
             else
@@ -250,6 +254,10 @@ namespace _15_11_23.Controllers
                 if (item == null) return BadRequest();
 
                 item.Count++;
+                if (item.Count <= 0)
+                {
+                    return await DeleteItem(id);
+                }
                 await _context.SaveChangesAsync();
             }
             else
