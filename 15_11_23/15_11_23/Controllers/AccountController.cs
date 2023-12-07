@@ -58,6 +58,8 @@ namespace _15_11_23.Controllers
 
             await _userManager.AddToRoleAsync(appUser, UserRole.Member.ToString());
             await _signInManager.SignInAsync(appUser, false);
+
+            Response.Cookies.Delete("Basket");
             if (returnUrl == null)
             {
                 return RedirectToAction("index", "Home");
