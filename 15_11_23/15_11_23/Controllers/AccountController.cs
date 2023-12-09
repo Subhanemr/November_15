@@ -5,6 +5,8 @@ using _15_11_23.Utilities.Extendions;
 using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace _15_11_23.Controllers
@@ -178,6 +180,31 @@ namespace _15_11_23.Controllers
             await _signInManager.SignInAsync(appUser, isPersistent: false);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> MyOrders()
+        {
+            AppUser appUser = await _userManager.Users
+                .Include(b => b.BasketItems.Where(bi => bi.OrderId != null))
+                .ThenInclude(p => p.Product)
+                .ThenInclude(pi => pi.ProductImages.Where(pi => pi.IsPrimary == true))
+                .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
+            List<CartItemVM> cartVM = new List<CartItemVM>();
+            
+            foreach (BasketItem item in appUser.BasketItems)
+            {
+                cartVM.Add(new CartItemVM
+                {
+                    Id = item.ProductId,
+                    Name = item.Product.Name,
+                    Price = item.Product.Price,
+                    Count = item.Count,
+                    SubTotal = item.Count * item.Product.Price,
+                    Image = item.Product.ProductImages.FirstOrDefault()?.Url
+                });
+            }
+            return View(cartVM);
         }
     }
 }

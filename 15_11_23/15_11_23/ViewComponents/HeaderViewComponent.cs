@@ -33,7 +33,7 @@ namespace _15_11_23.ViewComponents
             if (_http.HttpContext.User.Identity.IsAuthenticated)
             {
                 AppUser user = await _userManager.Users
-                    .Include(b => b.BasketItems)
+                    .Include(b => b.BasketItems.Where(bi => bi.OrderId == null))
                     .ThenInclude(p => p.Product)
                     .ThenInclude(p => p.ProductImages.Where(pi => pi.IsPrimary == true))
                     .FirstOrDefaultAsync(u => u.Id == _http.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));

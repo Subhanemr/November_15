@@ -71,7 +71,7 @@
                                             </td>
                                             <td class="quantity col-1">
                                                 <div class="d-flex btn btn-dark" style="width:90px;">
-                                                    <a class="m-1"  asp-action="CountMinus" asp-controller="Cart" asp-route-id="@cartItem.Id">
+                                                    <a class="m-1" asp-action="CountMinus" asp-controller="Cart" asp-route-id="@cartItem.Id">
                                                         <i class="fa fa-minus"></i>
                                                     </a>
                                                     <p class="fw-bold m-1 mx-2">@cartItem.Count</p>
@@ -120,7 +120,14 @@
                                     <ul>
                                         <li>Total <span>$@total</span></li>
                                     </ul>
-                                    <a href="#">Proceed to checkout</a>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a asp-action="Checkout" asp-controller="Cart">Proceed to checkout</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Register" asp-controller="Account">Proceed to checkout</a>
+                                    }
                                 </div>
                             </div>
                         </div>

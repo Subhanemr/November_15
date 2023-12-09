@@ -135,7 +135,7 @@ namespace _15_11_23.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BasketItems");
+                    b.ToTable("BasketItems", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Blog", b =>
@@ -167,7 +167,7 @@ namespace _15_11_23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Category", b =>
@@ -185,7 +185,7 @@ namespace _15_11_23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Client", b =>
@@ -213,7 +213,7 @@ namespace _15_11_23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Color", b =>
@@ -231,7 +231,7 @@ namespace _15_11_23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors");
+                    b.ToTable("Colors", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Order", b =>
@@ -242,9 +242,28 @@ namespace _15_11_23.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("PruchaseAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Product", b =>
@@ -280,7 +299,7 @@ namespace _15_11_23.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.ProductColor", b =>
@@ -303,7 +322,7 @@ namespace _15_11_23.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductColors");
+                    b.ToTable("ProductColors", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.ProductImage", b =>
@@ -332,7 +351,7 @@ namespace _15_11_23.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.ProductSize", b =>
@@ -355,7 +374,7 @@ namespace _15_11_23.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("ProductSizes");
+                    b.ToTable("ProductSizes", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.ProductTag", b =>
@@ -378,7 +397,7 @@ namespace _15_11_23.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ProductTags");
+                    b.ToTable("ProductTags", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Settings", b =>
@@ -399,7 +418,7 @@ namespace _15_11_23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings");
+                    b.ToTable("Settings", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Size", b =>
@@ -417,7 +436,7 @@ namespace _15_11_23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes");
+                    b.ToTable("Sizes", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Slide", b =>
@@ -449,7 +468,7 @@ namespace _15_11_23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Slides");
+                    b.ToTable("Slides", (string)null);
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Tag", b =>
@@ -467,7 +486,7 @@ namespace _15_11_23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -626,6 +645,17 @@ namespace _15_11_23.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("_15_11_23.Models.Order", b =>
+                {
+                    b.HasOne("_15_11_23.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("_15_11_23.Models.Product", b =>

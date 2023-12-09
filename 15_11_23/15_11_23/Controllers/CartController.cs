@@ -1,10 +1,12 @@
 ﻿using _15_11_23.DAL;
+using _15_11_23.Interfaces;
 using _15_11_23.Models;
 using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Drawing;
 using System.Security.Claims;
 
 namespace _15_11_23.Controllers
@@ -13,11 +15,14 @@ namespace _15_11_23.Controllers
     {
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailService _emailService;
 
-        public CartController(AppDbContext context, UserManager<AppUser> userManager)
+
+        public CartController(AppDbContext context, UserManager<AppUser> userManager, IEmailService emailService)
         {
             _context = context;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         public async Task<IActionResult> Index()
@@ -28,7 +33,7 @@ namespace _15_11_23.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 AppUser appUser = await _userManager.Users
-                    .Include(b => b.BasketItems)
+                    .Include(b => b.BasketItems.Where(bi => bi.OrderId == null))
                     .ThenInclude(p => p.Product)
                     .ThenInclude(pi => pi.ProductImages.Where(pi => pi.IsPrimary == true))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -86,7 +91,7 @@ namespace _15_11_23.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                AppUser appUser = await _userManager.Users.Include(p => p.BasketItems).FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+                AppUser appUser = await _userManager.Users.Include(p => p.BasketItems.Where(bi => bi.OrderId == null)).FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (appUser == null) return NotFound();
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
                 if (item == null)
@@ -157,7 +162,7 @@ namespace _15_11_23.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 AppUser appUser = await _userManager.Users
-                    .Include(p => p.BasketItems)
+                    .Include(p => p.BasketItems.Where(bi => bi.OrderId == null))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 if (appUser == null) return NotFound();
@@ -198,7 +203,7 @@ namespace _15_11_23.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 AppUser appUser = await _userManager.Users
-                    .Include(b => b.BasketItems)
+                    .Include(b => b.BasketItems.Where(bi => bi.OrderId == null))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 if (appUser == null) return NotFound();
@@ -244,7 +249,7 @@ namespace _15_11_23.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 AppUser appUser = await _userManager.Users
-                    .Include(b => b.BasketItems)
+                    .Include(b => b.BasketItems.Where(bi => bi.OrderId == null))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 if (appUser == null) return NotFound();
@@ -284,5 +289,134 @@ namespace _15_11_23.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Checkout()
+        {
+            AppUser appUser = await _userManager.Users.Include(b => b.BasketItems.Where(bi => bi.OrderId == null)).ThenInclude(p => p.Product)
+                    .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            OrderVM orderVM = new OrderVM
+            {
+                BasketItems = appUser.BasketItems
+            };
+            return View(orderVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Checkout(OrderVM orderVM)
+        {
+            AppUser appUser = await _userManager.Users.Include(b => b.BasketItems.Where(bi => bi.OrderId == null)).ThenInclude(p => p.Product)
+                    .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (!appUser.BasketItems.Any(b => b.OrderId == null))
+            {
+                orderVM.BasketItems = appUser.BasketItems;
+                return View(orderVM);
+            }
+            if (!ModelState.IsValid)
+            {
+                orderVM.BasketItems = appUser.BasketItems;
+                return View(orderVM);
+            }
+
+            decimal total = 0;
+            foreach (BasketItem item in appUser.BasketItems)
+            {
+                item.Price = item.Product.Price;
+                total += item.Price * item.Count;
+            }
+
+            Order order = new Order
+            {
+                Status = null,
+                Address = orderVM.Address,
+                PruchaseAt = DateTime.Now,
+                AppUserId = appUser.Id,
+                BasketItems = appUser.BasketItems,
+                TotalPrice = total
+            };
+
+            await _context.Orders.AddAsync(order);
+            await _context.SaveChangesAsync();
+            string bodyHtml = await Table(order);
+
+
+            await _emailService.SendMailAsync(appUser.Email, "Your Order", bodyHtml, true);
+
+            return RedirectToAction("MyOrders","Account");
+        }
+
+        public async Task<string> Table(Order order)
+        {
+            string bodyHtml = @"
+<style>
+table {font - family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #E2E0E0;
+}
+
+td, th {border - bottom: 1px solid #9E9E9E;
+  text-align: left;
+  border-radius: 25px;
+  padding: 20px;
+
+            }
+th{
+font-weight: bold;
+}
+
+
+</style>
+
+<h2>Your Order</h2>
+
+<table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+
+            decimal total = 0;
+            foreach (BasketItem item in order.BasketItems)
+            {
+                total += item.Price * item.Count;
+                bodyHtml += $@"
+                                    <tr>
+
+                                        <td>
+                                            <a>{item.Product.Name}</a>
+                                        </td>
+                                        <td>
+                                            <p>{item.Price}</p>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <p>{item.Count}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>{total}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>";
+            }
+
+            bodyHtml += $@"                              
+                                    	<td colspan=""4"">
+                                    		<h2>Orders totals</h2> <p><h3>Total</h4> <h4>${total}</h5><p>
+                                        </td>
+                                    </tr>
+
+                            </tbody>
+</table>";
+
+
+            return bodyHtml;
+        }
     }
 }

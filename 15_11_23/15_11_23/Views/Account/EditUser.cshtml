@@ -1,43 +1,51 @@
 ﻿@model EditUserVM
 
-<div class="container">
-    <div class="card-body">
-        <h4 class="card-title">Edit Profile</h4>
-        <form class="forms-sample" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <img src="~/assets/images/website-images//@Model.Img" class="w-25" />
-                <input asp-for="Img" hidden="hidden" class="form-control" placeholder="Image">
-            </div>
-            <div class="form-group">
-                <label asp-for="Photo">Image</label>
-                <input asp-for="Photo" class="form-control" placeholder="Photo" accept="image/*">
-                <span asp-validation-for="Photo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name">Product Name</label>
-                <input asp-for="Name" class="form-control" placeholder="Name">
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Surname">Surname</label>
-                <input asp-for="Surname" class="form-control" placeholder="Surname">
-                <span asp-validation-for="Surname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserName">Username</label>
-                <input asp-for="UserName" class="form-control" placeholder="Username">
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                @foreach (var gender in Enum.GetValues(typeof(Gender)))
-                {
-                    <label asp-for="Genders" class="mx-2">@gender</label>
-                    <input asp-for="Genders" placeholder="@gender" type="radio" value="@gender" />
-                    <span class="text-danger" asp-validation-for="Genders"></span>
-                }
-            </div>
-            <button type="submit" class="btn btn-primary me-2 mt-2">Submit</button>
-            <a asp-action="Index" asp-controller="Home" class="btn btn-light mt-2">Cancel</a>
-        </form>
+<div class="container d-flex">
+    <div class="profile col-md-9">
+        <div class="card-body">
+            <h4 class="card-title">Edit Profile</h4>
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <img src="~/assets/images/website-images//@Model.Img" class="w-25" />
+                    <input asp-for="Img" hidden="hidden" class="form-control" placeholder="Image">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Photo">Image</label>
+                    <input asp-for="Photo" class="form-control" placeholder="Photo" accept="image/*">
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name">Product Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surname">Surname</label>
+                    <input asp-for="Surname" class="form-control" placeholder="Surname">
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserName">Username</label>
+                    <input asp-for="UserName" class="form-control" placeholder="Username">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    @foreach (var gender in Enum.GetValues(typeof(Gender)))
+                    {
+                        <label asp-for="Genders" class="mx-2">@gender</label>
+                        <input asp-for="Genders" placeholder="@gender" type="radio" value="@gender" />
+                        <span class="text-danger" asp-validation-for="Genders"></span>
+                    }
+                </div>
+                <button type="submit" class="btn btn-primary me-2 mt-2">Submit</button>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-light mt-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <div class="bg-secondary border rounded-3">
+        <ul class="p-3 text-white">
+            <li><a asp-action="EditUser" asp-controller="Account">Edit Profile</a></li>
+            <li><a asp-action="MyOrders" asp-controller="Account">My Orders</a></li>
+        </ul> 
     </div>
 </div>

@@ -10,5 +10,6 @@ namespace _15_11_23.Models
         public string Genders { get; set; }
         public string Img { get; set; } = "default-profile.png";
         public List<BasketItem> BasketItems { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

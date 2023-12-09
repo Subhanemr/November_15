@@ -1,5 +1,4 @@
-﻿@using System.Security.Claims;
-@model HeaderVM
+﻿@model HeaderVM
 @{
     decimal total = 0;
 }
@@ -886,7 +885,14 @@
         <div class="offcanvas-body">
             <div class="minicart-content">
                 <div class="minicart-heading">
-                    <h4 class="mb-0">Shopping Cart</h4>
+                    @if (Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
+                    {
+                        <h4 class="mb-0">My Orders</h4>
+                    }
+                    else
+                    {
+                        <h4 class="mb-0">Shopping Cart</h4>
+                    }
                     <a href="#" class="button-close">
                         <i class="pe-7s-close"
                            data-tippy="Close"
@@ -902,15 +908,21 @@
                     {
                         total += item.SubTotal;
                         <li class="minicart-product">
-                            <a class="product-item_remove" asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@item.Id">
-                                <i class="pe-7s-close"
-                                   data-tippy="Remove"
-                                   data-tippy-inertia="true"
-                                   data-tippy-animation="shift-away"
-                                   data-tippy-delay="50"
-                                   data-tippy-arrow="true"
-                                   data-tippy-theme="sharpborder"></i>
-                            </a>
+                            @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
+                            {
+                                <a class="product-item_remove"
+                                   asp-action="DeleteItem"
+                                   asp-controller="Cart"
+                                   asp-route-id="@item.Id">
+                                    <i class="pe-7s-close"
+                                       data-tippy="Remove"
+                                       data-tippy-inertia="true"
+                                       data-tippy-animation="shift-away"
+                                       data-tippy-delay="50"
+                                       data-tippy-arrow="true"
+                                       data-tippy-theme="sharpborder"></i>
+                                </a>
+                            }
                             <a href="single-product-variable.html"
                                class="product-item_img">
                                 <img class="img-full"
@@ -932,7 +944,7 @@
             </div>
             <div class="group-btn_wrap d-grid gap-2">
                 <a asp-action="Index" asp-controller="Cart" class="btn btn-dark">View Cart</a>
-                <a href="checkout.html" class="btn btn-dark">Checkout</a>
+                <a asp-action="Checkout" asp-controller="Cart" class="btn btn-dark">Checkout</a>
             </div>
         </div>
     </div>
