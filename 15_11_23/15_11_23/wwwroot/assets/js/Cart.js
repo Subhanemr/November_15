@@ -1,33 +1,23 @@
-﻿//$(".delete-button").on("click", function (e) {
-//    e.preventDefault();
-//    var itemId = $(this).data("item-id");
-
-//    $.post("/Cart/DeleteItem/" + itemId, function (data) {
-//        $("#cart-container").html(data);
-//    });
-//});
-
-
-//const cartItemHolder = document.querySelector(".cart-item-holder");
-//const addToCartButtons = document.querySelectorAll(".add-to-cart");
+﻿const cartItemHolder = document.querySelector(".cart-item-holder");
+const addToCartButtons = document.querySelectorAll(".add-to-cart");
 //const deleteFromCartButtons = document.querySelectorAll(".delete-from-cart");
-//const cartCountElement = document.querySelector(".cartItemCount");
+const cartCountElement = document.querySelector(".cartItemCount");
 
-//addToCartButtons.forEach(button =>
-//    button.addEventListener("click", ev => {
-//        ev.preventDefault();
+addToCartButtons.forEach(button =>
+    button.addEventListener("click", ev => {
+        ev.preventDefault();
 
-//        const href = ev.target.getAttribute("href");
+        const href = ev.target.getAttribute("href");
 
-//        fetch(href)
-//            .then(res => res.text())
-//            .then(data => {
-//                cartItemHolder.innerHTML = data;
-//                updateCartItemCount();
-//            })
-//            .catch(error => console.error("Error fetching data:", error));
-//    })
-//);
+        fetch(href)
+            .then(res => res.text())
+            .then(data => {
+                cartItemHolder.innerHTML = data;
+                updateCartItemCount();
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    })
+);
 
 
 //deleteFromCartButtons.forEach(button =>
@@ -46,12 +36,12 @@
 //    })
 //);
 
-//function updateCartItemCount() {
-//    const cartItems = document.querySelectorAll(".getCartItemCount");
-//    cartItems.forEach(item => {
-//        const countValue = item.dataset.count;
-//        cartCountElement.textContent = countValue;
-//    });
+function updateCartItemCount() {
+    const cartItems = document.querySelectorAll(".getCartItemCount");
+    cartItems.forEach(item => {
+        const countValue = item.dataset.count;
+        cartCountElement.textContent = countValue;
+    });
 
-//}
+}
 

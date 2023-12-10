@@ -90,7 +90,7 @@ namespace _15_11_23.Controllers
             Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
             if (product == null) return NotFound();
             List<CartCookieItemVM> cart;
-
+            List<CartItemVM> cartItems;
 
             if (User.Identity.IsAuthenticated)
             {
@@ -114,6 +114,8 @@ namespace _15_11_23.Controllers
                     item.Count++;
                 }
                 await _context.SaveChangesAsync();
+
+                cartItems = await _layoutServices.GetDbItemAsync(appUser);
             }
             else
             {
@@ -153,9 +155,11 @@ namespace _15_11_23.Controllers
                     Expires = DateTimeOffset.Now.AddDays(1),
                 });
 
+                cartItems = await _layoutServices.GetCookieItemAsync(cart);
+
             }
 
-
+            //return PartialView("CartItem/_CartPartialView", cartItems);
             return RedirectToAction(nameof(Index), "Home");
         }
         public async Task<IActionResult> DeleteItem(int id)

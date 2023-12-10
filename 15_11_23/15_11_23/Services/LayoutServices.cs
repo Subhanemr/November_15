@@ -50,9 +50,9 @@ namespace _15_11_23.Servicers
             }
             else
             {
-                if (_http.HttpContext.Request.Cookies["BasketPeskit"] is not null)
+                if (_http.HttpContext.Request.Cookies["Basket"] is not null)
                 {
-                    List<CartCookieItemVM> cart = JsonConvert.DeserializeObject<List<CartCookieItemVM>>(_http.HttpContext.Request.Cookies["BasketPeskit"]);
+                    List<CartCookieItemVM> cart = JsonConvert.DeserializeObject<List<CartCookieItemVM>>(_http.HttpContext.Request.Cookies["Basket"]);
                     foreach (CartCookieItemVM cartCookieItemVM in cart)
                     {
                         Product product = await _context.Products.Include(p => p.ProductImages.Where(pi => pi.IsPrimary == true))
@@ -80,7 +80,7 @@ namespace _15_11_23.Servicers
         public async Task<List<CartItemVM>> GetCookieItemAsync(List<CartCookieItemVM> cartCookieItems)
         {
             List<CartItemVM> cartVM = new List<CartItemVM>();
-            if (_http.HttpContext.Request.Cookies["BasketPeskit"] is not null)
+            if (_http.HttpContext.Request.Cookies["Basket"] is not null)
             {
                 foreach (CartCookieItemVM cartCookieItemVM in cartCookieItems)
                 {
@@ -127,9 +127,9 @@ namespace _15_11_23.Servicers
         public async Task<List<CartCookieItemVM>> GetCartCookie()
         {
             List<CartCookieItemVM> cartCookieItems;
-            if (_http.HttpContext.Request.Cookies["BasketPeskit"] is not null)
+            if (_http.HttpContext.Request.Cookies["Basket"] is not null)
             {
-                cartCookieItems = JsonConvert.DeserializeObject<List<CartCookieItemVM>>(_http.HttpContext.Request.Cookies["BasketPeskit"]);
+                cartCookieItems = JsonConvert.DeserializeObject<List<CartCookieItemVM>>(_http.HttpContext.Request.Cookies["Basket"]);
                 return cartCookieItems;
             }
             return null;

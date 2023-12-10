@@ -1,6 +1,11 @@
-﻿@model HeaderVM
+﻿@inject LayoutServices service
+@model HeaderVM
 @{
     decimal total = 0;
+    foreach (CartItemVM item in Model.Items)
+    {
+        total += item.SubTotal;
+    }
 }
 
 
@@ -17,7 +22,7 @@
                     <div class="header-top-right">
                         <ul class="dropdown-wrap">
                             <li class="dropdown">
-                                <button class="btn btn-link dropdown-toggle ht-btn"
+                                <button class="btn btn-link dropdown-toggle ht-btn" 
                                         type="button"
                                         id="currencyButton"
                                         data-bs-toggle="dropdown"
@@ -132,7 +137,7 @@
                                     <a href="#miniCart" class="minicart-btn toolbar-btn">
                                         @Html.Raw(Model.Settings["ShopIcon"])
 
-                                        <span class="quantity">@Model.Items.Count</span>
+                                        <span class="quantity cartItemCount">@Model.Items.Count</span>
                                     </a>
                                 </li>
                                 <li class="mobile-menu_wrap d-block d-lg-none">
@@ -310,10 +315,10 @@
                             <nav class="main-nav">
                                 <ul>
                                     <li class="drop-holder">
-                                        <a href="index.html">Home</a>
+                                        <a asp-controller="Home" asp-action="Index">Home</a>
                                         <ul class="drop-menu">
                                             <li>
-                                                <a href="index.html">Home One</a>
+                                                <a asp-controller="Home" asp-action="Index">Home One</a>
                                             </li>
                                             <li>
                                                 <a href="index-2.html">Home Two</a>
@@ -511,7 +516,7 @@
                                     <a href="#miniCart" class="minicart-btn toolbar-btn">
                                         @Html.Raw(Model.Settings["ShopIcon"])
 
-                                        <span class="quantity">@Model.Items.Count</span>
+                                        <span class="quantity cartItemCount">@Model.Items.Count</span>
                                     </a>
                                 </li>
                                 <li class="mobile-menu_wrap d-block d-lg-none">
@@ -621,7 +626,7 @@
                     <nav class="offcanvas-navigation">
                         <ul class="mobile-menu">
                             <li class="menu-item-has-children">
-                                <a href="#">
+                                <a asp-controller="Home" asp-action="Index">
                                     <span class="mm-text">
                                         Home
                                         <i class="pe-7s-angle-down"></i>
@@ -629,7 +634,7 @@
                                 </a>
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="index.html">
+                                        <a asp-controller="Home" asp-action="Index">
                                             <span class="mm-text">Home One</span>
                                         </a>
                                     </li>
@@ -736,16 +741,34 @@
                                             </span>
                                         </a>
                                         <ul class="sub-menu">
-                                            <li>
-                                                <a href="my-account.html">
-                                                    <span class="mm-text">My Account</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="login-register.html">
-                                                    <span class="mm-text">Login | Register</span>
-                                                </a>
-                                            </li>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <li>
+                                                    <div class="d-flex">
+
+                                                        <img src="~/assets/images/website-images//@Model.User.Img" style="width:25px;" class="m-1">
+                                                        <a class="dropdown-item" asp-action="EditUser" asp-controller="Account">@User.Identity.Name</a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a asp-action="LogOut" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Log Out</a>
+                                                </li>
+                                                @if (User.IsInRole(UserRole.Admin.ToString()) || User.IsInRole(UserRole.Moderator.ToString()))
+                                                {
+                                                    <li>
+                                                        <a asp-action="Index" asp-controller="Home" asp-area="ProniaAdmin" class="dropdown-item">Admin Panel</a>
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    <a asp-action="Login" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Login</a>
+                                                </li>
+                                                <li>
+                                                    <a asp-action="Register" asp-controller="Account" asp-route-returnurl="@Context.Request.Path.Value" class="dropdown-item">Register</a>
+                                                </li>
+                                            }
                                             <li>
                                                 <a href="cart.html">
                                                     <span class="mm-text">Shopping Cart</span>
@@ -903,41 +926,7 @@
                            data-tippy-theme="sharpborder"></i>
                     </a>
                 </div>
-
-                <ul class="minicart-list">
-                    @foreach (CartItemVM item in Model.Items)
-                    {
-                        total += item.SubTotal;
-                        <li class="minicart-product">
-                            @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
-                            {
-                                <a class="product-item_remove"
-                                   asp-action="DeleteItem"
-                                   asp-controller="Cart"
-                                   asp-route-id="@item.Id">
-                                    <i class="pe-7s-close"
-                                       data-tippy="Remove"
-                                       data-tippy-inertia="true"
-                                       data-tippy-animation="shift-away"
-                                       data-tippy-delay="50"
-                                       data-tippy-arrow="true"
-                                       data-tippy-theme="sharpborder"></i>
-                                </a>
-                            }
-                            <a href="single-product-variable.html"
-                               class="product-item_img">
-                                <img class="img-full"
-                                     src="~/assets/images/website-images//@item.Image"
-                                     alt="Product Image" />
-                            </a>
-                            <div class="product-item_content">
-                                <a class="product-item_title"
-                                   href="single-product-variable.html">@item.Name</a>
-                                <span class="product-item_quantity">@item.Count x $@item.Price</span>
-                            </div>
-                        </li>
-                    }
-                </ul>
+                @await Html.PartialAsync("CartItem/_CartPartialView", await service.GetItemAsync())
             </div>
             <div class="minicart-item_total">
                 <span>Total</span>
