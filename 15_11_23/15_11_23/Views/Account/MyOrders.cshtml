@@ -11,10 +11,10 @@
             <div class="row h-100">
                 <div class="col-lg-12">
                     <div class="breadcrumb-item">
-                        <h2 class="breadcrumb-heading">Cart Page</h2>
+                        <h2 class="breadcrumb-heading">Orders Page</h2>
                         <ul>
                             <li>
-                                <a href="index.html">Home</a>
+                                <a asp-action="Index" asp-controller="Home">Home</a>
                             </li>
                             <li>Your Orders</li>
                         </ul>
@@ -27,48 +27,56 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="table-content table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="product-thumbnail">images</th>
-                                    <th class="cart-product-name">Product</th>
-                                    <th class="product-price">Unit Price</th>
-                                    <th class="product-quantity">Quantity</th>
-                                    <th class="product-subtotal">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (CartItemVM cartItem in Model)
-                                {
-                                    total += cartItem.SubTotal;
+                    <div class="container d-flex">
+                        <div class="table-content table-responsive w-100">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td class="product-thumbnail">
-                                            <a asp-action="Detail" asp-controller="Product" asp-route-id="@cartItem.Id">
-                                                <img src="~/assets/images/website-images//@cartItem.Image"
-                                                     class="w-25"
-                                                     alt="@cartItem.Name" />
-                                            </a>
-                                        </td>
-                                        <td class="product-name">
-                                            <a asp-action="Detail" asp-controller="Product" asp-route-id="@cartItem.Id">@cartItem.Name</a>
-                                        </td>
-                                        <td class="product-price">
-                                            <span class="amount">$@cartItem.Price</span>
-                                        </td>
-                                        <td class="quantity col-1">
-                                            <div class="d-flex btn btn-dark" style="width:50px;">
-                                                <p class="fw-bold m-1 mx-2">@cartItem.Count</p>
-                                            </div>
-                                        </td>
-                                        <td class="product-subtotal">
-                                            <span class="amount">$@cartItem.SubTotal</span>
-                                        </td>
+                                        <th class="product-thumbnail">images</th>
+                                        <th class="cart-product-name">Product</th>
+                                        <th class="product-price">Unit Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Total</th>
                                     </tr>
-                                }
+                                </thead>
+                                <tbody>
+                                    @foreach (CartItemVM cartItem in Model)
+                                    {
+                                        total += cartItem.SubTotal;
+                                        <tr>
+                                            <td class="product-thumbnail">
+                                                <a asp-action="Detail" asp-controller="Product" asp-route-id="@cartItem.Id">
+                                                    <img src="~/assets/images/website-images//@cartItem.Image"
+                                                         class="w-25"
+                                                         alt="@cartItem.Name" />
+                                                </a>
+                                            </td>
+                                            <td class="product-name">
+                                                <a asp-action="Detail" asp-controller="Product" asp-route-id="@cartItem.Id">@cartItem.Name</a>
+                                            </td>
+                                            <td class="product-price">
+                                                <span class="amount">$@cartItem.Price</span>
+                                            </td>
+                                            <td class="quantity col-1">
+                                                <div class="d-flex btn btn-dark" style="width:50px;">
+                                                    <p class="fw-bold m-1 mx-2">@cartItem.Count</p>
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal">
+                                                <span class="amount">$@cartItem.SubTotal</span>
+                                            </td>
+                                        </tr>
+                                    }
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bg-secondary border rounded-3 mx-2" style="width:130px;">
+                            <ul class="p-3 text-white">
+                                <li><a asp-action="EditUser" asp-controller="Account">Edit Profile</a></li>
+                                <li><a asp-action="MyOrders" asp-controller="Account">My Orders</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-5 ml-auto">
