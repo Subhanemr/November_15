@@ -70,14 +70,11 @@ namespace _15_11_23.Controllers
             return Redirect(returnUrl);
         }
 
-        public async Task<IActionResult> LogOut(string? returnUrl)
+        public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            if (returnUrl == null)
-            {
-                return RedirectToAction("index", "Home");
-            }
-            return Redirect(returnUrl);
+
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult LogIn()
         {
