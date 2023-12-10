@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "hzpTA6w1OPjIdwsp86vbnP7ixQX30Lnwvr90KKPYAMU=",
+  "Hash": "RawYAUs6c9g9dLANubaeF0wqeNOzN+iwhLbcn27unEs=",
   "Source": "15_11_23",
   "BasePath": "_content/15_11_23",
   "Mode": "Default",
@@ -4724,6 +4724,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\website-images\\service.png"
+    },
+    {
+      "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\js\\Cart.js",
+      "SourceId": "15_11_23",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\",
+      "BasePath": "_content/15_11_23",
+      "RelativePath": "assets/js/Cart.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\js\\Cart.js"
     },
     {
       "Identity": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\js\\main.js",

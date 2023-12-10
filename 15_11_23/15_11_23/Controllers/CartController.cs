@@ -1,6 +1,7 @@
 ﻿using _15_11_23.DAL;
 using _15_11_23.Interfaces;
 using _15_11_23.Models;
+using _15_11_23.Servicers;
 using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,15 @@ namespace _15_11_23.Controllers
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailService _emailService;
+        private readonly LayoutServices _layoutServices;
 
 
-        public CartController(AppDbContext context, UserManager<AppUser> userManager, IEmailService emailService)
+        public CartController(AppDbContext context, UserManager<AppUser> userManager, IEmailService emailService, LayoutServices layoutServices)
         {
             _context = context;
             _userManager = userManager;
             _emailService = emailService;
+            _layoutServices = layoutServices;
         }
 
         public async Task<IActionResult> Index()

@@ -1,0 +1,35 @@
+﻿@model List<CartItemVM>
+
+<ul class="minicart-list">
+    @foreach (CartItemVM item in Model)
+    {
+        <li class="minicart-product">
+            @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
+            {
+                <a class="product-item_remove delete-button"
+                   asp-action="DeleteItem"
+                   asp-controller="Cart"
+                   asp-route-id="@item.Id">
+                    <i class="pe-7s-close"
+                       data-tippy="Remove"
+                       data-tippy-inertia="true"
+                       data-tippy-animation="shift-away"
+                       data-tippy-delay="50"
+                       data-tippy-arrow="true"
+                       data-tippy-theme="sharpborder"></i>
+                </a>
+            }
+            <a href="single-product-variable.html"
+               class="product-item_img">
+                <img class="img-full"
+                     src="~/assets/images/website-images//@item.Image"
+                     alt="Product Image" />
+            </a>
+            <div class="product-item_content">
+                <a class="product-item_title"
+                   href="single-product-variable.html">@item.Name</a>
+                <span class="product-item_quantity">@item.Count x $@item.Price</span>
+            </div>
+        </li>
+    }
+</ul>

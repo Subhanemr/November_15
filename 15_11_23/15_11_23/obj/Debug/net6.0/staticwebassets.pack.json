@@ -1109,6 +1109,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\website-images\\service.png"
     },
     {
+      "Id": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\js\\Cart.js",
+      "PackagePath": "staticwebassets\\assets\\js\\Cart.js"
+    },
+    {
       "Id": "C:\\Users\\T x\\Desktop\\15_11_23\\15_11_23\\15_11_23\\wwwroot\\assets\\js\\main.js",
       "PackagePath": "staticwebassets\\assets\\js\\main.js"
     },
