@@ -1,7 +1,8 @@
 ﻿const cartItemHolder = document.querySelector(".cart-item-holder");
 const addToCartButtons = document.querySelectorAll(".add-to-cart");
 const deleteFromCartButtons = document.querySelectorAll(".delete-from-cart");
-const cartCountElement = document.querySelectorAll(".cartItemCount");
+const cartCountElementi = document.querySelector(".cartItemCounti");
+const cartCountElementI = document.querySelector(".cartItemCountI");
 const ammount = document.querySelector(".all-ammount");
 
 addToCartButtons.forEach(button =>
@@ -15,7 +16,7 @@ addToCartButtons.forEach(button =>
             .then(data => {
                 cartItemHolder.innerHTML = data;
                 updateCartItemCount();
-                //ammountValueGet()
+                ammountValueGet()
             })
             .catch(error => console.error("Error fetching data:", error));
     })
@@ -33,27 +34,28 @@ deleteFromCartButtons.forEach(button =>
             .then(data => {
                 cartItemHolder.innerHTML = data;
                 updateCartItemCount();
-                //ammountValueGet()
+                ammountValueGet()
             })
             .catch(error => console.error("Error fetching data:", error));
     })
 );
 
 function updateCartItemCount() {
-    const cartItems = document.querySelectorAll("#getCartItemCount");
+    const cartItems = document.querySelectorAll(".getCartItemCount");
     cartItems.forEach(item => {
         const countValue = item.dataset.count;
-        console.log(countValue);
-        cartCountElement.textContent = countValue;
+        cartCountElementi.textContent = countValue;
+        cartCountElementI.textContent = countValue;
+
     });
 
 }
 
-//function ammountValueGet() {
-//    const cartItems = document.querySelectorAll(".getAmount");
-//    cartItems.forEach(item => {
-//        const ammountValue = item.dataset.ammount;
-//        ammount.textContent = ammountValue;
-//    });
+function ammountValueGet() {
+    const cartItems = document.querySelectorAll(".getAmount");
+    cartItems.forEach(item => {
+        const ammountValue = item.dataset.ammount;
+        ammount.textContent = ammountValue;
+    });
 
-//}
+}
