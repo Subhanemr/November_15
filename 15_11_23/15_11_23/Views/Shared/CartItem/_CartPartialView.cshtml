@@ -3,14 +3,14 @@
     decimal total = 0; 
 }
 <div class="cart-item-holder">
-    <ul class="minicart-list ">
+    <ul class="minicart-list">
         @foreach (CartItemVM item in Model)
         {
             total += item.SubTotal;
-            <li class="getCartItemCount minicart-product" data-count="@Model.Count" >
+            <li class="minicart-product" id="getCartItemCount" data-count="@Model.Count">
                 @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
                 {
-                    <a class="delete-from-cart product-item_remove"
+                    <a class="product-item_remove delete-from-cart"
                        asp-action="DeleteItem"
                        asp-controller="Cart"
                        asp-route-id="@item.Id">
@@ -29,7 +29,7 @@
                          src="~/assets/images/website-images//@item.Image"
                          alt="Product Image" />
                 </a>
-                <div class="getAmount product-item_content" data-ammount="@total">
+                <div class="product-item_content getAmount" data-ammount="@total">
                     <a class="product-item_title"
                        href="single-product-variable.html">@item.Name</a>
                     <span class="product-item_quantity">@item.Count x $@item.Price</span>
