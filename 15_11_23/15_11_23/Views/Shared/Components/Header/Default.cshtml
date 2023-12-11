@@ -1,6 +1,7 @@
 ﻿@inject LayoutServices service
 @model HeaderVM
 @{
+
     decimal total = 0;
     foreach (CartItemVM item in Model.Items)
     {
@@ -137,7 +138,7 @@
                                     <a href="#miniCart" class="minicart-btn toolbar-btn">
                                         @Html.Raw(Model.Settings["ShopIcon"])
 
-                                        <span class="quantity cartItemCount">@Model.Items.Count</span>
+                                        <span class="cartItemCount quantity">@Model.Items.Count</span>
                                     </a>
                                 </li>
                                 <li class="mobile-menu_wrap d-block d-lg-none">
@@ -516,7 +517,7 @@
                                     <a href="#miniCart" class="minicart-btn toolbar-btn">
                                         @Html.Raw(Model.Settings["ShopIcon"])
 
-                                        <span class="quantity cartItemCount">@Model.Items.Count</span>
+                                        <span class="cartItemCount quantity">@Model.Items.Count</span>
                                     </a>
                                 </li>
                                 <li class="mobile-menu_wrap d-block d-lg-none">
@@ -930,7 +931,7 @@
             </div>
             <div class="minicart-item_total">
                 <span>Total</span>
-                <span class="ammount">$@total</span>
+                <span class="all-ammount">$@total</span>
             </div>
             <div class="group-btn_wrap d-grid gap-2">
                 <a asp-action="Index" asp-controller="Cart" class="btn btn-dark">View Cart</a>

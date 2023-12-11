@@ -1,40 +1,43 @@
 ﻿const cartItemHolder = document.querySelector(".cart-item-holder");
 const addToCartButtons = document.querySelectorAll(".add-to-cart");
-//const deleteFromCartButtons = document.querySelectorAll(".delete-from-cart");
-const cartCountElement = document.querySelector(".cartItemCount");
+const deleteFromCartButtons = document.querySelectorAll(".delete-from-cart");
+const cartCountElement = document.querySelectorAll(".cartItemCount");
+const ammount = document.querySelectorAll(".all-ammount");
 
 addToCartButtons.forEach(button =>
     button.addEventListener("click", ev => {
         ev.preventDefault();
 
-        const href = ev.target.getAttribute("href");
+        const href = ev.target.parentElement.getAttribute("href");
 
         fetch(href)
             .then(res => res.text())
             .then(data => {
                 cartItemHolder.innerHTML = data;
                 updateCartItemCount();
+                ammountValueGet()
             })
             .catch(error => console.error("Error fetching data:", error));
     })
 );
 
 
-//deleteFromCartButtons.forEach(button =>
-//    button.addEventListener("click", ev => {
-//        ev.preventDefault();
+deleteFromCartButtons.forEach(button =>
+    button.addEventListener("click", ev => {
+        ev.preventDefault();
 
-//        const href = ev.target.getAttribute("href");
+        const href = ev.target.parentElement.getAttribute("href");
 
-//        fetch(href)
-//            .then(res => res.text())
-//            .then(data => {
-//                cartItemHolder.innerHTML = data;
-//                updateCartItemCount();
-//            })
-//            .catch(error => console.error("Error fetching data:", error));
-//    })
-//);
+        fetch(href)
+            .then(res => res.text())
+            .then(data => {
+                cartItemHolder.innerHTML = data;
+                updateCartItemCount();
+                ammountValueGet()
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    })
+);
 
 function updateCartItemCount() {
     const cartItems = document.querySelectorAll(".getCartItemCount");
@@ -45,3 +48,11 @@ function updateCartItemCount() {
 
 }
 
+function ammountValueGet() {
+    const cartItems = document.querySelectorAll(".getAmount");
+    cartItems.forEach(item => {
+        const ammountValue = item.dataset.ammount;
+        ammount.textContent = ammountValue;
+    });
+
+}

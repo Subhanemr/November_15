@@ -1,4 +1,5 @@
 ﻿using _15_11_23.DAL;
+using _15_11_23.Interfaces;
 using _15_11_23.Models;
 using _15_11_23.Utilities.Enums;
 using _15_11_23.Utilities.Extendions;
@@ -16,14 +17,16 @@ namespace _15_11_23.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IWebHostEnvironment _env;
+        private readonly IEmailService _emailService;
         public RoleManager<IdentityRole> _roleManager { get; }
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment env)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment env, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _env = env;
+            _emailService = emailService;
         }
         public IActionResult Register()
         {
@@ -59,7 +62,12 @@ namespace _15_11_23.Controllers
             }
 
             await _userManager.AddToRoleAsync(appUser, UserRole.Member.ToString());
-            await _signInManager.SignInAsync(appUser, false);
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, Email = appUser.Email }, Request.Scheme);
+            await _emailService.SendMailAsync(appUser.Email, "Email Confirmation", confirmationLink);
+
+            //await _signInManager.SignInAsync(appUser, false);
 
             Response.Cookies.Delete("Basket");
             if (returnUrl == null)
@@ -67,7 +75,28 @@ namespace _15_11_23.Controllers
                 return RedirectToAction("index", "Home");
             }
 
-            return Redirect(returnUrl);
+            //return Redirect(returnUrl);
+            return RedirectToAction(nameof(SuccessfullyRegistred), "Account");
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+
+            AppUser appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser == null) return NotFound();
+            var result = await _userManager.ConfirmEmailAsync(appUser, token);
+            if (!result.Succeeded)
+            {
+                return BadRequest();
+            }
+            await _signInManager.SignInAsync(appUser, false);
+
+            return View();
+        }
+
+        public IActionResult SuccessfullyRegistred()
+        {
+            return View();
         }
 
         public async Task<IActionResult> LogOut()
@@ -101,7 +130,11 @@ namespace _15_11_23.Controllers
                 ModelState.AddModelError(string.Empty, "Login is not enable please try latter");
                 return View(loginVM);
             }
-
+            if (!user.EmailConfirmed)
+            {
+                ModelState.AddModelError(string.Empty, "Confirm your email");
+                return View(loginVM);
+            }
             if (!result.Succeeded)
             {
                 ModelState.AddModelError(string.Empty, "Username, Email or Password is incorrect");
@@ -186,9 +219,9 @@ namespace _15_11_23.Controllers
                 .ThenInclude(p => p.Product)
                 .ThenInclude(pi => pi.ProductImages.Where(pi => pi.IsPrimary == true))
                 .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
-            
+
             List<CartItemVM> cartVM = new List<CartItemVM>();
-            
+
             foreach (BasketItem item in appUser.BasketItems)
             {
                 cartVM.Add(new CartItemVM

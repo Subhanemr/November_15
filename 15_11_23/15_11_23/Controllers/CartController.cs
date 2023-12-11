@@ -115,7 +115,7 @@ namespace _15_11_23.Controllers
                 }
                 await _context.SaveChangesAsync();
 
-                //cartItems = await _layoutServices.GetDbItemAsync(appUser);
+                cartItems = await _layoutServices.GetDbItemAsync(appUser);
             }
             else
             {
@@ -155,16 +155,17 @@ namespace _15_11_23.Controllers
                     Expires = DateTimeOffset.Now.AddDays(1),
                 });
 
-                //cartItems = await _layoutServices.GetCookieItemAsync(cart);
+                cartItems = await _layoutServices.GetCookieItemAsync(cart);
 
             }
 
-            //return PartialView("CartItem/_CartPartialView", cartItems);
-            return RedirectToAction(nameof(Index), "Home");
+            return PartialView("CartItem/_CartPartialView", cartItems);
+            //return RedirectToAction(nameof(Index), "Home");
         }
         public async Task<IActionResult> DeleteItem(int id)
         {
             if (id <= 0) return BadRequest();
+            List<CartItemVM> cartItems;
 
             if (User.Identity.IsAuthenticated)
             {
@@ -181,6 +182,8 @@ namespace _15_11_23.Controllers
                 _context.BasketItems.Remove(item);
 
                 await _context.SaveChangesAsync();
+
+                cartItems = await _layoutServices.GetDbItemAsync(appUser);
             }
             else
             {
@@ -199,9 +202,11 @@ namespace _15_11_23.Controllers
                     Expires = DateTimeOffset.Now.AddDays(1)
                 });
 
+                cartItems = await _layoutServices.GetCookieItemAsync(cart);
             }
 
-            return RedirectToAction(nameof(Index));
+            return PartialView("CartItem/_CartPartialView", cartItems);
+            //return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> CountMinus(int id)
