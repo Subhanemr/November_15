@@ -1,6 +1,7 @@
 ﻿using _15_11_23.DAL;
 using _15_11_23.Models;
 using _15_11_23.ModelsVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,9 +32,13 @@ namespace _15_11_23.Controllers
             return View(vm);
         }
 
+        
         public IActionResult ErrorPage(string error)
         {
-
+            if (error == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View(model: error);
         }
 

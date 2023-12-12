@@ -1,4 +1,4 @@
-﻿@model ShopVM
+﻿@model PaginationVM<ShopVM>
 
 <!-- Begin Main Content Area -->
 <main class="main-content">
@@ -27,12 +27,12 @@
                     <div class="sidebar-area">
                         <div class="widgets-searchbox">
                             <form asp-action="Index" asp-controller="Shop"
-                                  asp-route-categoryId="@Model.CategoryId"
-                                  asp-route-order="@Model.Order">
+                                  asp-route-categoryId="@Model.Item.CategoryId"
+                                  asp-route-order="@Model.Item.Order">
                                 <input name="search"
                                        class="input-field"
                                        type="text"
-                                       placeholder="Search" value="@(Model.Search == null? "":Model.Search)"/>
+                                       placeholder="Search" value="@(Model.Item.Search == null? "":Model.Item.Search)" />
                                 <button class="widgets-searchbox-btn" type="submit">
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -44,18 +44,18 @@
                                 <ul class="widgets-category">
                                     <li>
                                         <a asp-action="Index" asp-controller="Shop"
-                                           asp-route-order="@Model.Order"
-                                           asp-route-search="@Model.Search">
+                                           asp-route-order="@Model.Item.Order"
+                                           asp-route-search="@Model.Item.Search">
                                             <i class="fa fa-chevron-right"></i>
                                             All
                                         </a>
                                     </li>
-                                    @foreach (Category category in Model.Categories)
+                                    @foreach (Category category in Model.Item.Categories)
                                     {
                                         <li>
                                             <a asp-action="Index" asp-controller="Shop" asp-route-categoryId="@category.Id"
-                                               asp-route-order="@Model.Order"
-                                               asp-route-search="@Model.Search">
+                                               asp-route-order="@Model.Item.Order"
+                                               asp-route-search="@Model.Item.Search">
                                                 <i class="fa fa-chevron-right"></i>
                                                 @category.Name <span>(@category.Products.Count)</span>
                                             </a>
@@ -186,8 +186,8 @@
                             </li>
                             <li class="short">
                                 <form asp-action="Index" asp-controller="Shop"
-                                      asp-route-categoryId="@Model.CategoryId"
-                                      asp-route-search="@Model.Search">
+                                      asp-route-categoryId="@Model.Item.CategoryId"
+                                      asp-route-search="@Model.Item.Search">
                                     <select onchange="this.form.submit()" name="Order" class="nice-select">
                                         <option value="">Sort by Default</option>
                                         <option value="1">Sort by Name</option>
@@ -205,7 +205,7 @@
                              role="tabpanel"
                              aria-labelledby="grid-view-tab">
                             <div class="product-grid-view row g-y-20">
-                                @foreach (Product product in Model.Products)
+                                @foreach (Product product in Model.Item.Products)
                                 {
                                     <div class="col-xl-3 col-md-4 col-sm-6">
                                         <div class="product-item">
@@ -1202,18 +1202,16 @@
                     <div class="pagination-area">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">3</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">&raquo;</a>
-                                </li>
+                                @for (int i = 0; i < Model.TotalPage; i++)
+                                {
+                                    <li class="page-item @(i == Model.CurrentPage-1?"disabled":"")">
+                                        <a class="page-link " asp-action="Index" asp-route-page="@(i)"
+                                           asp-route-categoryId="@Model.Item.CategoryId"
+                                           asp-route-search="@Model.Item.Search"
+                                           asp-route-order="@Model.Item.Order"
+                                           asp-controller="Shop">@(i + 1)</a>
+                                    </li>
+                                }
                             </ul>
                         </nav>
                     </div>

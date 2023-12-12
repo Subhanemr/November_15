@@ -1,5 +1,7 @@
-﻿using _15_11_23.DAL;
+﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
+using _15_11_23.DAL;
 using _15_11_23.Models;
+using _15_11_23.Utilities.Exceptions;
 using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +19,12 @@ namespace _15_11_23.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string? search, int? order, int? categoryId)
+        public async Task<IActionResult> Index(string? search, int? order, int? categoryId, int page)
         {
-            IQueryable<Product> queryable = _context.Products.Include(pi => pi.ProductImages.Where(a => a.IsPrimary != null)).AsQueryable();
+            if (page < 0) throw new WrongRequestException("The request sent does not exist");
+            double count = await _context.Products.CountAsync();
+            IQueryable<Product> queryable = _context.Products.Skip(page * 4).Take(4)
+                .Include(pi => pi.ProductImages.Where(a => a.IsPrimary != null)).AsQueryable();
             switch (order)
             {
                 case 1:
@@ -51,7 +56,16 @@ namespace _15_11_23.Controllers
                 Search = search,
                 CategoryId = categoryId,
             };
-            return View(shopVM);
+
+            PaginationVM<ShopVM> paginationVM = new PaginationVM<ShopVM>
+            {
+                CurrentPage = page + 1,
+                TotalPage = Math.Ceiling(count / 3),
+                Item = shopVM
+            };
+            if (paginationVM.TotalPage < page) throw new NotFoundException("Your request was not found");
+
+            return View(paginationVM);
         }
     }
 }

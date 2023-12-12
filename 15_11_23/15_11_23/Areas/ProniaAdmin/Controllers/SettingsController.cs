@@ -22,10 +22,22 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
         [Authorize(Roles = "Admin,Moderator")]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-            List<Settings> settings = await _context.Settings.ToListAsync();
-            return View(settings);
+            if (page < 0) throw new WrongRequestException("The request sent does not exist");
+            double count = await _context.Settings.CountAsync();
+            List<Settings> settings = await _context.Settings.Skip(page *4).Take(4)
+                .ToListAsync();
+
+            PaginationVM<Settings> paginationVM = new PaginationVM<Settings>
+            {
+                CurrentPage = page + 1,
+                TotalPage = Math.Ceiling(count / 4),
+                Items = settings
+            };
+            if (paginationVM.TotalPage < page) throw new NotFoundException("Your request was not found");
+
+            return View(paginationVM);
         }
 
         [Authorize(Roles = "Admin,Moderator")]

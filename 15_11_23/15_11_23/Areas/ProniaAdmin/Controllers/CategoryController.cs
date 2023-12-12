@@ -34,7 +34,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             {
                 TotalPage = Math.Ceiling(count / 2),
                 CurrentPage = page + 1,
-                Item = categories
+                Items = categories
             };
             if (paginationVM.TotalPage < page) throw new NotFoundException("Your request was not found");
             return View(paginationVM);
