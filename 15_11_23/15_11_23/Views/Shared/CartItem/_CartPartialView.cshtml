@@ -2,7 +2,7 @@
 @{
     decimal total = 0; 
 }
-<div class="cart-item-holder">
+<div class="cart-item-holder getCartItemCount getAmount" data-count="@Model.Count" data-ammount="@total">
     <ul class="minicart-list">
         @foreach (CartItemVM item in Model)
         {
@@ -10,10 +10,8 @@
             <li class="minicart-product getCartItemCount" data-count="@Model.Count">
                 @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
                 {
-                    <a class="product-item_remove delete-from-cart"
-                       asp-action="DeleteItem"
-                       asp-controller="Cart"
-                       asp-route-id="@item.Id">
+                    <a class="product-item_remove"
+                       onclick="removeSubu(event, @item.Id)">
                         <i class="pe-7s-close"
                            data-tippy="Remove"
                            data-tippy-inertia="true"

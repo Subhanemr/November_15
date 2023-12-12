@@ -23,22 +23,17 @@ addToCartButtons.forEach(button =>
 );
 
 
-deleteFromCartButtons.forEach(button =>
-    button.addEventListener("click", ev => {
-        ev.preventDefault();
 
-        const href = ev.target.parentElement.getAttribute("href");
-
-        fetch(href)
-            .then(res => res.text())
-            .then(data => {
-                cartItemHolder.innerHTML = data;
-                updateCartItemCount();
-                ammountValueGet()
-            })
-            .catch(error => console.error("Error fetching data:", error));
-    })
-);
+const removeSubu = (e, id) => {
+    e.preventDefault();
+    console.log('salam')
+    fetch(`http://localhost:5157/Cart/DeleteItem/${id}`).then(res => res.text())
+        .then(data => {
+            cartItemHolder.innerHTML = data;
+            updateCartItemCount();
+            ammountValueGet();
+        })
+}
 
 function updateCartItemCount() {
     const cartItems = document.querySelectorAll(".getCartItemCount");
