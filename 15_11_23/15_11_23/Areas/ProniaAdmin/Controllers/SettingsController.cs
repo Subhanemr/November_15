@@ -1,6 +1,7 @@
 ﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
 using _15_11_23.DAL;
 using _15_11_23.Models;
+using _15_11_23.Utilities.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,10 +60,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
 
             Settings settings = await _context.Settings.FirstOrDefaultAsync(c => c.Id == id);
-            if (settings == null) { return NotFound(); }
+            if (settings == null) { throw new NotFoundException("Your request was not found"); }
             CreateUpdateSettingsVM settingsVM = new CreateUpdateSettingsVM { Key = settings.Key, Value = settings.Value };
 
             return View(settingsVM);
@@ -74,7 +75,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             if (!ModelState.IsValid) return View(settingsVM);
 
             Settings settings = await _context.Settings.FirstOrDefaultAsync(c => c.Id == id);
-            if (settings == null) { return NotFound();  }
+            if (settings == null) { throw new NotFoundException("Your request was not found");  }
 
             bool result = await _context.Settings.AnyAsync(c => c.Key.ToLower().Trim() == settingsVM.Key.ToLower().Trim()&& c.Id !=id);
 
@@ -95,9 +96,9 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Settings settings = await _context.Settings.FirstOrDefaultAsync(s => s.Id == id);
-            if (settings == null) return NotFound();
+            if (settings == null) throw new NotFoundException("Your request was not found");
             _context.Settings.Remove(settings);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

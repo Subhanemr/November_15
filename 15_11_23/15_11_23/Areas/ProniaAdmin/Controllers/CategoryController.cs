@@ -1,6 +1,7 @@
 ﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
 using _15_11_23.DAL;
 using _15_11_23.Models;
+using _15_11_23.Utilities.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +23,21 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
         [Authorize(Roles = "Admin,Moderator")]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-            List<Category> categories = await _context.Categories.Include(c => c.Products).ToListAsync();
+            if (page < 0) throw new WrongRequestException("The request sent does not exist");
+            double count = await _context.Categories.CountAsync();
+            List<Category> categories = await _context.Categories.Skip(page * 2).Take(2)
+                .Include(c => c.Products).ToListAsync();
 
-            return View(categories);
+            PaginationVM<Category> paginationVM = new PaginationVM<Category>
+            {
+                TotalPage = Math.Ceiling(count / 2),
+                CurrentPage = page + 1,
+                Item = categories
+            };
+            if (paginationVM.TotalPage < page) throw new NotFoundException("Your request was not found");
+            return View(paginationVM);
         }
 
         [Authorize(Roles = "Admin,Moderator")]
@@ -59,10 +70,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Category category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
 
-            if (category == null) return NotFound();
+            if (category == null) throw new NotFoundException("Your request was not found");
             CreateUpdateCategoryVM categoryVM = new CreateUpdateCategoryVM { Name = category.Name };
 
             return View(categoryVM);
@@ -74,7 +85,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             if (!ModelState.IsValid) return View(categoryVM);
 
            Category existed = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
-           if(existed == null) return NotFound();
+           if(existed == null) throw new NotFoundException("Your request was not found");
 
            bool result = await _context.Categories.AnyAsync(c=> c.Name.ToLower().Trim() == categoryVM.Name.ToLower().Trim() && c.Id != id);
 
@@ -93,9 +104,9 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Category existed = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
             _context.Categories.Remove(existed);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -105,12 +116,12 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Category category = await _context.Categories
                 .Include(p => p.Products)
                 .ThenInclude(p => p.ProductImages)
                 .FirstOrDefaultAsync(p => p.Id == id);
-            if (category == null) return NotFound();
+            if (category == null) throw new NotFoundException("Your request was not found");
 
             return View(category);
         }

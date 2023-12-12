@@ -1,6 +1,7 @@
 ﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
 using _15_11_23.DAL;
 using _15_11_23.Models;
+using _15_11_23.Utilities.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,10 +22,22 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
         [Authorize(Roles = "Admin,Moderator")]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-            List<Size> colors = await _context.Sizes.Include(c => c.ProductSizes).ToListAsync();
-            return View(colors);
+            if (page < 0) throw new WrongRequestException("The request sent does not exist");
+            double count = await _context.Sizes.CountAsync();
+            List<Size> sizes = await _context.Sizes.Skip(page * 3).Take(3)
+                .Include(c => c.ProductSizes).ToListAsync();
+
+            PaginationVM<Size> paginationVM = new PaginationVM<Size>
+            {
+                CurrentPage = page + 1,
+                TotalPage = Math.Ceiling(count / 3),
+                Item = sizes
+            };
+            if (paginationVM.TotalPage < page) throw new NotFoundException("Your request was not found");
+
+            return View(paginationVM);
         }
 
         [Authorize(Roles = "Admin,Moderator")]
@@ -61,10 +74,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Size size = await _context.Sizes.FirstOrDefaultAsync(c => c.Id == id);
 
-            if (size == null) return NotFound();
+            if (size == null) throw new NotFoundException("Your request was not found");
             CreateUpdateSizeVM sizeVM = new CreateUpdateSizeVM { Name = size.Name };
 
 
@@ -77,7 +90,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             if (!ModelState.IsValid) return View();
 
             Size existed = await _context.Sizes.FirstOrDefaultAsync(c => c.Id == id);
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
 
             bool result = await _context.Sizes.AnyAsync(c => c.Name.ToLower().Trim() == sizeVM.Name.ToLower().Trim() && c.Id != id);
 
@@ -96,9 +109,9 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Size existed = await _context.Sizes.FirstOrDefaultAsync(c => c.Id == id);
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
             _context.Sizes.Remove(existed);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -108,12 +121,12 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Size size = await _context.Sizes
                 .Include(p => p.ProductSizes)
                 .ThenInclude(p => p.Product).ThenInclude(p => p.ProductImages)
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (size == null) return NotFound();
+            if (size == null) throw new NotFoundException("Your request was not found");
 
             return View(size);
         }

@@ -2,6 +2,7 @@
 using _15_11_23.Interfaces;
 using _15_11_23.Models;
 using _15_11_23.Servicers;
+using _15_11_23.Utilities.Exceptions;
 using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -86,16 +87,16 @@ namespace _15_11_23.Controllers
 
         public async Task<IActionResult> AddBasket(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
-            if (product == null) return NotFound();
+            if (product == null) throw new NotFoundException("Your request was not found");
             List<CartCookieItemVM> cart;
             List<CartItemVM> cartItems;
 
             if (User.Identity.IsAuthenticated)
             {
                 AppUser appUser = await _userManager.Users.Include(p => p.BasketItems.Where(bi => bi.OrderId == null)).FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
-                if (appUser == null) return NotFound();
+                if (appUser == null) throw new NotFoundException("Your request was not found");
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
                 if (item == null)
                 {
@@ -164,7 +165,7 @@ namespace _15_11_23.Controllers
         }
         public async Task<IActionResult> DeleteItem(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             List<CartItemVM> cartItems;
 
             if (User.Identity.IsAuthenticated)
@@ -173,11 +174,11 @@ namespace _15_11_23.Controllers
                     .Include(p => p.BasketItems.Where(bi => bi.OrderId == null))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                if (appUser == null) return NotFound();
+                if (appUser == null) throw new NotFoundException("Your request was not found");
 
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 _context.BasketItems.Remove(item);
 
@@ -191,7 +192,7 @@ namespace _15_11_23.Controllers
 
                 CartCookieItemVM item = cart.FirstOrDefault(c => c.Id == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 cart.Remove(item);
 
@@ -218,11 +219,11 @@ namespace _15_11_23.Controllers
                     .Include(b => b.BasketItems.Where(bi => bi.OrderId == null))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                if (appUser == null) return NotFound();
+                if (appUser == null) throw new NotFoundException("Your request was not found");
 
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 item.Count--;
                 if (item.Count <= 0)
@@ -237,7 +238,7 @@ namespace _15_11_23.Controllers
 
                 CartCookieItemVM item = cart.FirstOrDefault(c => c.Id == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 item.Count--;
                 if (item.Count <= 0)
@@ -264,11 +265,11 @@ namespace _15_11_23.Controllers
                     .Include(b => b.BasketItems.Where(bi => bi.OrderId == null))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                if (appUser == null) return NotFound();
+                if (appUser == null) throw new NotFoundException("Your request was not found");
 
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 item.Count++;
                 if (item.Count <= 0)
@@ -283,7 +284,7 @@ namespace _15_11_23.Controllers
 
                 CartCookieItemVM item = cart.FirstOrDefault(c => c.Id == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 item.Count++;
                 if (item.Count <= 0)

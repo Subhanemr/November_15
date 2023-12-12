@@ -1,6 +1,7 @@
 ﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
 using _15_11_23.DAL;
 using _15_11_23.Models;
+using _15_11_23.Utilities.Exceptions;
 using _15_11_23.Utilities.Extendions;
 using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -40,13 +41,24 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
         [Authorize(Roles = "Admin,Moderator")]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-            List<Product> product = await _context.Products
+            if (page < 0) throw new WrongRequestException("The request sent does not exist");
+            double count = await _context.Products.CountAsync();
+            List<Product> product = await _context.Products.Skip(page*3).Take(3)
                 .Include(p => p.Category)
                 .Include(p => p.ProductImages.Where(pi => pi.IsPrimary == true))
                 .ToListAsync();
-            return View(product);
+
+            PaginationVM<Product> paginationVM = new PaginationVM<Product>
+            {
+                CurrentPage = page + 1,
+                TotalPage = Math.Ceiling(count / 3),
+                Item = product
+            };
+            if (paginationVM.TotalPage < page) throw new NotFoundException("Your request was not found");
+
+            return View(paginationVM);
         }
         [Authorize(Roles = "Admin,Moderator")]
         [AutoValidateAntiforgeryToken]
@@ -214,7 +226,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
 
             Product existed = await _context.Products
                 .Include(p => p.ProductImages)
@@ -223,7 +235,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 .Include(p => p.ProductSizes)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
 
             List<ProductColor> productColors = await _context.ProductColors.Where(pc => pc.ProductId == id).ToListAsync();
             _context.ProductColors.RemoveRange(productColors);
@@ -250,14 +262,14 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Product product = await _context.Products
                 .Include(p => p.ProductImages)
                 .Include(p => p.ProductTags)
                 .Include(p => p.ProductColors)
                 .Include(p => p.ProductSizes)
                 .FirstOrDefaultAsync(p => p.Id == id);
-            if (product == null) return NotFound();
+            if (product == null) throw new NotFoundException("Your request was not found");
             UpdateProductVM productVM = new UpdateProductVM 
             {
                 Name = product.Name,
@@ -295,7 +307,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 return View(productVM);
             }
            
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
             bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == productVM.CategoryId);
             if (!resultCategory)
             {
@@ -479,7 +491,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Product product = await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductColors).ThenInclude(p => p.Color)
@@ -487,7 +499,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 .Include(p => p.ProductSizes).ThenInclude(p => p.Size)
                 .Include(p => p.ProductTags).ThenInclude(p => p.Tag)
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (product == null) return NotFound();
+            if (product == null) throw new NotFoundException("Your request was not found");
 
             return View(product);
         }

@@ -1,6 +1,7 @@
 ﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
 using _15_11_23.DAL;
 using _15_11_23.Models;
+using _15_11_23.Utilities.Exceptions;
 using _15_11_23.Utilities.Extendions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -80,10 +81,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Slide slide = await _context.Slides.FirstOrDefaultAsync(c => c.Id == id);
 
-            if (slide == null) return NotFound();
+            if (slide == null) throw new NotFoundException("Your request was not found");
 
             UpdateSlideVM slideVM = new UpdateSlideVM 
             {
@@ -103,7 +104,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             if (!ModelState.IsValid) return View(slideVM);
 
             Slide existed = await _context.Slides.FirstOrDefaultAsync(c => c.Id == id);
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
             if (slideVM.Photo is not null) 
             {
 
@@ -135,11 +136,11 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
 
             Slide existed = await _context.Slides.FirstOrDefaultAsync(c => c.Id == id);
 
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
 
             existed.ImgUrl.DeleteFileAsync(_env.WebRootPath, "assets","images", "website-images");
 
@@ -153,9 +154,9 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Slide slide = await _context.Slides.FirstOrDefaultAsync(c => c.Id == id);
-            if (slide == null) return NotFound();
+            if (slide == null) throw new NotFoundException("Your request was not found");
 
             return View(slide);
         }

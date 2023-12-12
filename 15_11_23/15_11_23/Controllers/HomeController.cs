@@ -31,6 +31,12 @@ namespace _15_11_23.Controllers
             return View(vm);
         }
 
+        public IActionResult ErrorPage(string error)
+        {
+
+            return View(model: error);
+        }
+
         public IActionResult About()
         {
             return View();

@@ -1,5 +1,6 @@
 using _15_11_23.DAL;
 using _15_11_23.Interfaces;
+using _15_11_23.Middlewares;
 using _15_11_23.Models;
 using _15_11_23.Servicers;
 using _15_11_23.Services;
@@ -39,7 +40,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 
-
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.MapControllerRoute(
     "default",
     "{area:exists}/{controller=home}/{action=index}/{id?}"

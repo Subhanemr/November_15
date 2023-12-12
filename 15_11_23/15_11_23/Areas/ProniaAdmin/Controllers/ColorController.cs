@@ -1,6 +1,7 @@
 ﻿using _15_11_23.Areas.ProniaAdmin.ViewModels;
 using _15_11_23.DAL;
 using _15_11_23.Models;
+using _15_11_23.Utilities.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,22 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
         [Authorize(Roles = "Admin,Moderator")]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-            List<Color> colors = await _context.Colors.Include(c => c.ProductColors).ToListAsync();
-            return View(colors);
+            if (page < 0) throw new WrongRequestException("The request sent does not exist");
+            double count = await _context.Colors.CountAsync();
+            List<Color> colors = await _context.Colors.Skip(page * 3).Take(3)
+                .Include(c => c.ProductColors).ToListAsync();
+
+            PaginationVM<Color> paginationVM = new PaginationVM<Color>
+            {
+                CurrentPage = page + 1,
+                TotalPage = Math.Ceiling(count / 3),
+                Item = colors
+            };
+            if (paginationVM.TotalPage < page) throw new NotFoundException("Your request was not found");
+
+            return View(paginationVM);
         }
 
         [Authorize(Roles = "Admin,Moderator")]
@@ -59,10 +72,10 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Color color = await _context.Colors.FirstOrDefaultAsync(c => c.Id == id);
 
-            if (color == null) return NotFound();
+            if (color == null) throw new NotFoundException("Your request was not found");
             CreateUpdateColorVM colorVM = new CreateUpdateColorVM { Name = color.Name };
 
 
@@ -75,7 +88,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             if (!ModelState.IsValid) return View(colorVM);
 
             Color existed = await _context.Colors.FirstOrDefaultAsync(c => c.Id == id);
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
 
             bool result = await _context.Colors.AnyAsync(c => c.Name.ToLower().Trim() == colorVM.Name.ToLower().Trim() && c.Id != id);
 
@@ -93,9 +106,9 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Color existed = await _context.Colors.FirstOrDefaultAsync(c => c.Id == id);
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
             _context.Colors.Remove(existed);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -104,12 +117,12 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Color color = await _context.Colors
                 .Include(p => p.ProductColors)
                 .ThenInclude(p => p.Product).ThenInclude(p => p.ProductImages)
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (color == null) return NotFound();
+            if (color == null) throw new NotFoundException("Your request was not found");
 
             return View(color);
         }

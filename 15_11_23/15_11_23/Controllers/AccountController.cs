@@ -2,6 +2,7 @@
 using _15_11_23.Interfaces;
 using _15_11_23.Models;
 using _15_11_23.Utilities.Enums;
+using _15_11_23.Utilities.Exceptions;
 using _15_11_23.Utilities.Extendions;
 using _15_11_23.ViewModel;
 using Microsoft.AspNetCore.Identity;
@@ -83,11 +84,11 @@ namespace _15_11_23.Controllers
         {
 
             AppUser appUser = await _userManager.FindByEmailAsync(email);
-            if (appUser == null) return NotFound();
+            if (appUser == null) throw new NotFoundException("Your request was not found");
             var result = await _userManager.ConfirmEmailAsync(appUser, token);
             if (!result.Succeeded)
             {
-                return BadRequest();
+                throw new WrongRequestException("The request sent does not exist");
             }
             await _signInManager.SignInAsync(appUser, false);
 
