@@ -48,21 +48,21 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUpdateSizeVM sizeVM)
+        public async Task<IActionResult> Create(CreateUpdateSizeVM create)
         {
             if (!ModelState.IsValid)
             {
-                return View(sizeVM);
+                return View(create);
             }
 
-            bool result = await _context.Sizes.AnyAsync(c => c.Name.ToLower().Trim() == sizeVM.Name.ToLower().Trim());
+            bool result = await _context.Sizes.AnyAsync(c => c.Name.ToLower().Trim() == create.Name.ToLower().Trim());
 
             if (result)
             {
                 ModelState.AddModelError("Color.Name", "A Color with this name already exists");
-                return View(sizeVM);
+                return View(create);
             }
-            Size size = new Size { Name = sizeVM.Name };
+            Size size = new Size { Name = create.Name };
 
             await _context.Sizes.AddAsync(size);
             await _context.SaveChangesAsync();
@@ -85,14 +85,14 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, CreateUpdateSizeVM sizeVM)
+        public async Task<IActionResult> Update(int id, CreateUpdateSizeVM update)
         {
             if (!ModelState.IsValid) return View();
 
             Size existed = await _context.Sizes.FirstOrDefaultAsync(c => c.Id == id);
             if (existed == null) throw new NotFoundException("Your request was not found");
 
-            bool result = await _context.Sizes.AnyAsync(c => c.Name.ToLower().Trim() == sizeVM.Name.ToLower().Trim() && c.Id != id);
+            bool result = await _context.Sizes.AnyAsync(c => c.Name.ToLower().Trim() == update.Name.ToLower().Trim() && c.Id != id);
 
             if (result)
             {
@@ -100,7 +100,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 return View();
             }
 
-            existed.Name = sizeVM.Name;
+            existed.Name = update.Name;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

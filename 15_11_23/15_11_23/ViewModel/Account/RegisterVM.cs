@@ -21,7 +21,7 @@ namespace _15_11_23.ViewModel
         public string Surname { get; set; }
 
         [Required(ErrorMessage = "Email must be entered mutled")]
-        [MinLength(25, ErrorMessage = "It should not exceed 25-255 characters")]
+        [MinLength(10, ErrorMessage = "It should not exceed 10-255 characters")]
         [MaxLength(255, ErrorMessage = "It should not exceed 25-255 characters")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }

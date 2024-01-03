@@ -111,6 +111,7 @@ namespace _15_11_23.Controllers
             return View();
         }
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> LogIn(LoginVM loginVM, string? returnUrl)
         {
             if (!ModelState.IsValid) return View();
@@ -156,10 +157,7 @@ namespace _15_11_23.Controllers
             {
                 if (!(await _roleManager.RoleExistsAsync(role.ToString())))
                 {
-                    await _roleManager.CreateAsync(new IdentityRole
-                    {
-                        Name = role.ToString()
-                    });
+                    await _roleManager.CreateAsync(new IdentityRole{ Name = role.ToString() });
 
                 }
             }
@@ -202,7 +200,8 @@ namespace _15_11_23.Controllers
                     return View(editUserVM);
                 }
                 string fileName = await editUserVM.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
-                appUser.Img.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                if (!appUser.Img.Contains("default-profile.png"))
+                    appUser.Img.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 appUser.Img = fileName;
             }
 

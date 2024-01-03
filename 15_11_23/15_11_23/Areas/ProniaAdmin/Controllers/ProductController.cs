@@ -19,19 +19,19 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
 
-        private void CreatePopulateDropdowns(CreateProductVM productVM)
+        private void CreatePopulateDropdowns(CreateProductVM create)
         {
-            productVM.Tags = _context.Tags.ToList();
-            productVM.Categories = _context.Categories.ToList();
-            productVM.Colors = _context.Colors.ToList();
-            productVM.Sizes = _context.Sizes.ToList();
+            create.Tags = _context.Tags.ToList();
+            create.Categories = _context.Categories.ToList();
+            create.Colors = _context.Colors.ToList();
+            create.Sizes = _context.Sizes.ToList();
         }
-        private void UpdatePopulateDropdowns(UpdateProductVM productVM)
+        private void UpdatePopulateDropdowns(UpdateProductVM update)
         {
-            productVM.Tags = _context.Tags.ToList();
-            productVM.Categories = _context.Categories.ToList();
-            productVM.Colors = _context.Colors.ToList();
-            productVM.Sizes = _context.Sizes.ToList();
+            update.Tags = _context.Tags.ToList();
+            update.Categories = _context.Categories.ToList();
+            update.Colors = _context.Colors.ToList();
+            update.Sizes = _context.Sizes.ToList();
         }
 
         public ProductController(AppDbContext context, IWebHostEnvironment env)
@@ -73,128 +73,128 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
             return View(productVM);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateProductVM productVM)
+        public async Task<IActionResult> Create(CreateProductVM create)
         {
             if (!ModelState.IsValid)
             {
-                CreatePopulateDropdowns(productVM);
-                return View(productVM);
+                CreatePopulateDropdowns(create);
+                return View(create);
             }
-            bool result = await _context.Products.AnyAsync(c => c.Name.ToLower().Trim() == productVM.Name.ToLower().Trim());
+            bool result = await _context.Products.AnyAsync(c => c.Name.ToLower().Trim() == create.Name.ToLower().Trim());
             if (result)
             {
-                CreatePopulateDropdowns(productVM);
+                CreatePopulateDropdowns(create);
                 ModelState.AddModelError("Name", "A Name is available");
-                return View(productVM);
+                return View(create);
             };
-            bool resultOrder = await _context.Products.AnyAsync(c => c.CountId == productVM.CountId);
+            bool resultOrder = await _context.Products.AnyAsync(c => c.CountId == create.CountId);
             if (resultOrder)
             {
-                CreatePopulateDropdowns(productVM);
+                CreatePopulateDropdowns(create);
                 ModelState.AddModelError("Order", "A Order is available");
-                return View(productVM);
+                return View(create);
             }
 
-            bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == productVM.CategoryId);
+            bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == create.CategoryId);
             if (!resultCategory)
             {
-                CreatePopulateDropdowns(productVM);
+                CreatePopulateDropdowns(create);
                 ModelState.AddModelError("CategoryId", "This id has no category");
-                return View(productVM);
+                return View(create);
             }
-            if (productVM.Price <= 0)
+            if (create.Price <= 0)
             {
-                CreatePopulateDropdowns(productVM);
+                CreatePopulateDropdowns(create);
                 ModelState.AddModelError("Price", "Price cannot be 0");
-                return View(productVM);
+                return View(create);
             };
 
-            foreach (int tagId in productVM.TagIds)
+            foreach (int tagId in create.TagIds)
             {
                 bool tagResult = await _context.Tags.AnyAsync(t => t.Id == tagId);
                 if (!tagResult)
                 {
-                    CreatePopulateDropdowns(productVM);
-                    return View(productVM);
+                    CreatePopulateDropdowns(create);
+                    return View(create);
                 }
             }
-            foreach (int sizeId in productVM.SizeIds)
+            foreach (int sizeId in create.SizeIds)
             {
                 bool sizeResult = await _context.Sizes.AnyAsync(t => t.Id == sizeId);
                 if (!sizeResult)
                 {
-                    CreatePopulateDropdowns(productVM);
-                    return View(productVM);
+                    CreatePopulateDropdowns(create);
+                    return View(create);
                 }
             }
-            foreach (int colorId in productVM.ColorIds)
+            foreach (int colorId in create.ColorIds)
             {
                 bool colorResult = await _context.Colors.AnyAsync(t => t.Id == colorId);
                 if (!colorResult)
                 {
-                    CreatePopulateDropdowns(productVM);
-                    return View(productVM);
+                    CreatePopulateDropdowns(create);
+                    return View(create);
                 }
             }
-            if (!productVM.MainPhoto.ValidateType())
+            if (!create.MainPhoto.ValidateType())
             {
-                CreatePopulateDropdowns(productVM);
+                CreatePopulateDropdowns(create);
                 ModelState.AddModelError("Photo", "File Not supported");
-                return View(productVM);
+                return View(create);
             }
 
-            if (!productVM.MainPhoto.ValidataSize(10))
+            if (!create.MainPhoto.ValidataSize(10))
             {
-                CreatePopulateDropdowns(productVM);
+                CreatePopulateDropdowns(create);
                 ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
-                return View(productVM);
+                return View(create);
             }
 
-            if (!productVM.HoverPhoto.ValidateType())
+            if (!create.HoverPhoto.ValidateType())
             {
-                CreatePopulateDropdowns(productVM);
+                CreatePopulateDropdowns(create);
                 ModelState.AddModelError("Photo", "File Not supported");
-                return View(productVM);
+                return View(create);
             }
 
-            if (!productVM.HoverPhoto.ValidataSize(10))
+            if (!create.HoverPhoto.ValidataSize(10))
             {
-                CreatePopulateDropdowns(productVM);
+                CreatePopulateDropdowns(create);
                 ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
-                return View(productVM);
+                return View(create);
             }
 
 
             ProductImage mainImage = new ProductImage { 
             IsPrimary = true,
-            Alternative = productVM.Name,
-            Url = await productVM.MainPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images")
+            Alternative = create.Name,
+            Url = await create.MainPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images")
             };
 
             ProductImage hoverImage = new ProductImage
             {
                 IsPrimary = false,
-                Alternative = productVM.Name,
-                Url = await productVM.HoverPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images")
+                Alternative = create.Name,
+                Url = await create.HoverPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images")
             };
 
             Product product = new Product
             {
-                Name = productVM.Name,
-                Price = productVM.Price,
-                Description = productVM.Description,
-                SKU = productVM.SKU,
-                CategoryId = (int)productVM.CategoryId,
-                CountId = productVM.CountId,
-                ProductTags = productVM.TagIds.Select(tagId => new ProductTag { TagId = tagId }).ToList(),
-                ProductSizes = productVM.SizeIds.Select(sizeId => new ProductSize { SizeId = sizeId }).ToList(),
-                ProductColors = productVM.ColorIds.Select(colorId => new ProductColor { ColorId = colorId }).ToList(),
+                Name = create.Name,
+                Price = create.Price,
+                Description = create.Description,
+                SKU = create.SKU,
+                CategoryId = (int)create.CategoryId,
+                CountId = create.CountId,
+                ProductTags = create.TagIds.Select(tagId => new ProductTag { TagId = tagId }).ToList(),
+                ProductSizes = create.SizeIds.Select(sizeId => new ProductSize { SizeId = sizeId }).ToList(),
+                ProductColors = create.ColorIds.Select(colorId => new ProductColor { ColorId = colorId }).ToList(),
                 ProductImages = new List<ProductImage> { mainImage , hoverImage}
             };
 
             TempData["Message"] = "";
 
-            foreach(IFormFile photo in productVM.Photos)
+            foreach(IFormFile photo in create.Photos)
             {
                 if (!photo.ValidateType())
                 {
@@ -211,7 +211,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 product.ProductImages.Add(new ProductImage
                 {
                     IsPrimary = null,
-                    Alternative = productVM.Name,
+                    Alternative = create.Name,
                     Url = await photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images")
                 });
             }
@@ -291,7 +291,7 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, UpdateProductVM productVM)
+        public async Task<IActionResult> Update(int id, UpdateProductVM update)
         {
             Product existed = await _context.Products
                 .Include(p => p.ProductImages)
@@ -300,137 +300,137 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                 .Include(p => p.ProductColors)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            productVM.ProductImages = existed.ProductImages;
+            update.ProductImages = existed.ProductImages;
             if (!ModelState.IsValid)
             {
-                UpdatePopulateDropdowns(productVM);
-                return View(productVM);
+                UpdatePopulateDropdowns(update);
+                return View(update);
             }
            
             if (existed == null) throw new NotFoundException("Your request was not found");
-            bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == productVM.CategoryId);
+            bool resultCategory = await _context.Categories.AnyAsync(c => c.Id == update.CategoryId);
             if (!resultCategory)
             {
-                UpdatePopulateDropdowns(productVM);
+                UpdatePopulateDropdowns(update);
                 ModelState.AddModelError("CategoryId", "This id has no category");
-                return View(productVM);
+                return View(update);
             }
 
-            bool resultTag = await _context.Tags.AnyAsync(pt => productVM.TagIds.Contains(pt.Id));
+            bool resultTag = await _context.Tags.AnyAsync(pt => update.TagIds.Contains(pt.Id));
             if (!resultTag)
             {
-                UpdatePopulateDropdowns(productVM);
+                UpdatePopulateDropdowns(update);
                 ModelState.AddModelError("TagId", "This id has no tag");
-                return View(productVM);
+                return View(update);
             }
             List<ProductTag> tagsToRemove = existed.ProductTags
-                .Where(pt => !productVM.TagIds.Contains(pt.TagId))
+                .Where(pt => !update.TagIds.Contains(pt.TagId))
                 .ToList();
             _context.ProductTags.RemoveRange(tagsToRemove);
 
-            List<ProductTag> tagsToAdd = productVM.TagIds
+            List<ProductTag> tagsToAdd = update.TagIds
                 .Except(existed.ProductTags.Select(pt => pt.TagId))
                 .Select(tagId => new ProductTag { TagId = tagId })
                 .ToList();
             existed.ProductTags.AddRange(tagsToAdd);
 
-            bool resultColor = await _context.Colors.AnyAsync(pc => productVM.ColorIds.Contains(pc.Id));
+            bool resultColor = await _context.Colors.AnyAsync(pc => update.ColorIds.Contains(pc.Id));
             if (!resultColor)
             {
-                UpdatePopulateDropdowns(productVM);
+                UpdatePopulateDropdowns(update);
                 ModelState.AddModelError("ColorId", "This id has no color");
-                return View(productVM);
+                return View(update);
             }
 
             List<ProductColor> colorToRemove = existed.ProductColors
-                .Where(pc => !productVM.ColorIds.Contains(pc.ColorId))
+                .Where(pc => !update.ColorIds.Contains(pc.ColorId))
                 .ToList();
             _context.ProductColors.RemoveRange(colorToRemove);
 
-            List<ProductColor> colorToAdd = productVM.ColorIds
+            List<ProductColor> colorToAdd = update.ColorIds
                 .Except(existed.ProductColors.Select(pc => pc.ColorId))
                 .Select(colorId => new ProductColor { ColorId = colorId })
                 .ToList();
             existed.ProductColors.AddRange(colorToAdd);
 
-            bool resultSize = await _context.Sizes.AnyAsync(ps => productVM.SizeIds.Contains(ps.Id));
+            bool resultSize = await _context.Sizes.AnyAsync(ps => update.SizeIds.Contains(ps.Id));
             if (!resultSize)
             {
-                UpdatePopulateDropdowns(productVM);
+                UpdatePopulateDropdowns(update);
                 ModelState.AddModelError("SizeId", "This id has no size");
-                return View(productVM);
+                return View(update);
             }
 
             List<ProductSize> sizeToRemove = existed.ProductSizes
-                .Where(ps => !productVM.SizeIds.Contains(ps.SizeId))
+                .Where(ps => !update.SizeIds.Contains(ps.SizeId))
                 .ToList();
             _context.ProductSizes.RemoveRange(sizeToRemove);
 
-            List<ProductSize> sizeToAdd = productVM.SizeIds
+            List<ProductSize> sizeToAdd = update.SizeIds
                 .Except(existed.ProductSizes.Select(ps => ps.SizeId))
                 .Select(sizeId => new ProductSize { SizeId = sizeId })
                 .ToList();
             existed.ProductSizes.AddRange(sizeToAdd);
 
 
-            if(productVM.MainPhoto is not null)
+            if(update.MainPhoto is not null)
             {
-                if (!productVM.MainPhoto.ValidateType())
+                if (!update.MainPhoto.ValidateType())
                 {
-                    UpdatePopulateDropdowns(productVM);
+                    UpdatePopulateDropdowns(update);
                     ModelState.AddModelError("Photo", "File Not supported");
-                    return View(productVM);
+                    return View(update);
                 }
 
-                if (!productVM.MainPhoto.ValidataSize(10))
+                if (!update.MainPhoto.ValidataSize(10))
                 {
-                    UpdatePopulateDropdowns(productVM);
+                    UpdatePopulateDropdowns(update);
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
-                    return View(productVM);
+                    return View(update);
                 }
             }
 
-            if(productVM.HoverPhoto is not null)
+            if(update.HoverPhoto is not null)
             {
-                if (!productVM.HoverPhoto.ValidateType())
+                if (!update.HoverPhoto.ValidateType())
                 {
-                    UpdatePopulateDropdowns(productVM);
+                    UpdatePopulateDropdowns(update);
                     ModelState.AddModelError("Photo", "File Not supported");
-                    return View(productVM);
+                    return View(update);
                 }
 
-                if (!productVM.HoverPhoto.ValidataSize(10))
+                if (!update.HoverPhoto.ValidataSize(10))
                 {
-                    UpdatePopulateDropdowns(productVM);
+                    UpdatePopulateDropdowns(update);
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
-                    return View(productVM);
+                    return View(update);
                 }
             }
 
-            if(productVM.MainPhoto is not null)
+            if(update.MainPhoto is not null)
             {
-                string fileName = await productVM.MainPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                string fileName = await update.MainPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 ProductImage prMain = existed.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true);
                 prMain.Url.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 _context.ProductImages.Remove(prMain);
 
                 existed.ProductImages.Add(new ProductImage
                 {
-                    Alternative = productVM.Name,
+                    Alternative = update.Name,
                     IsPrimary = true,
                     Url = fileName
                 });
             }
-            if (productVM.HoverPhoto is not null)
+            if (update.HoverPhoto is not null)
             {
-                string fileName = await productVM.HoverPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                string fileName = await update.HoverPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 ProductImage prHover = existed.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false);
                 prHover.Url.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 _context.ProductImages.Remove(prHover);
 
                 existed.ProductImages.Add(new ProductImage
                 {
-                    Alternative = productVM.Name,
+                    Alternative = update.Name,
                     IsPrimary = false,
                     Url = fileName
                 });
@@ -438,23 +438,23 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
 
             if (existed.ProductImages is null) existed.ProductImages = new List<ProductImage>();
 
-            if (productVM.ImageIds is null) productVM.ImageIds = new List<int>();
+            if (update.ImageIds is null) update.ImageIds = new List<int>();
 
 
-            List<ProductImage> remove = existed.ProductImages.Where(pi => pi.IsPrimary == null && !productVM.ImageIds.Exists(imgId => imgId == pi.id)).ToList();
+            List<ProductImage> remove = existed.ProductImages.Where(pi => pi.IsPrimary == null && !update.ImageIds.Exists(imgId => imgId == pi.id)).ToList();
             foreach (ProductImage image in remove)
             {
                 image.Url.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 existed.ProductImages.Remove(image);
             }
 
-            if (productVM.ImageIds is null) productVM.ImageIds = new List<int>();
+            if (update.ImageIds is null) update.ImageIds = new List<int>();
             
             TempData["Message"] = "";
 
-            if(productVM.Photos is not null)
+            if(update.Photos is not null)
             {
-                foreach (IFormFile photo in productVM.Photos)
+                foreach (IFormFile photo in update.Photos)
                 {
                     if (!photo.ValidateType())
                     {
@@ -471,18 +471,18 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
                     existed.ProductImages.Add(new ProductImage
                     {
                         IsPrimary = null,
-                        Alternative = productVM.Name,
+                        Alternative = update.Name,
                         Url = await photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images")
                     });
                 }
             }
 
-            existed.Name = productVM.Name;
-            existed.Price = productVM.Price;
-            existed.Description = productVM.Description;
-            existed.CategoryId = (int)productVM.CategoryId;
-            existed.SKU = productVM.SKU;
-            existed.CountId = productVM.CountId;
+            existed.Name = update.Name;
+            existed.Price = update.Price;
+            existed.Description = update.Description;
+            existed.CategoryId = (int)update.CategoryId;
+            existed.SKU = update.SKU;
+            existed.CountId = update.CountId;
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

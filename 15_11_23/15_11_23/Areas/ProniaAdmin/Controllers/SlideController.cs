@@ -6,6 +6,7 @@ using _15_11_23.Utilities.Extendions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace _15_11_23.Areas.ProniaAdmin.Controllers
 {
@@ -39,35 +40,35 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateSlideVM slideVM)
+        public async Task<IActionResult> Create(CreateSlideVM create)
         {
-            if(slideVM.Photo is null)
+            if (!ModelState.IsValid) return View(create);
+
+            if (create.Photo is null)
             {
                 ModelState.AddModelError("Photo", "The image must be uploaded");
-                return View(slideVM);
+                return View(create);
             }
 
-            if (!slideVM.Photo.ValidateType())
+            if (!create.Photo.ValidateType())
             {
                 ModelState.AddModelError("Photo", "File Not supported");
-                return View(slideVM);
+                return View(create);
             }
 
-            if(!slideVM.Photo.ValidataSize(10))
+            if(!create.Photo.ValidataSize(10))
             {
                 ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
-                return View(slideVM);
+                return View(create);
             }
 
-            
-
-            string fileName = await slideVM.Photo.CreateFileAsync(_env.WebRootPath, "assets","images", "website-images");
+            string fileName = await create.Photo.CreateFileAsync(_env.WebRootPath, "assets","images", "website-images");
 
             Slide slide = new Slide
             {
-                Title = slideVM.Title,
-                SubTitle = slideVM.SubTitle,
-                Description = slideVM.Description,
+                Title = create.Title,
+                SubTitle = create.SubTitle,
+                Description = create.Description,
                 ImgUrl = fileName
             };
 
@@ -99,34 +100,34 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, UpdateSlideVM slideVM)
+        public async Task<IActionResult> Update(int id, UpdateSlideVM update)
         {
-            if (!ModelState.IsValid) return View(slideVM);
+            if (!ModelState.IsValid) return View(update);
 
             Slide existed = await _context.Slides.FirstOrDefaultAsync(c => c.Id == id);
             if (existed == null) throw new NotFoundException("Your request was not found");
-            if (slideVM.Photo is not null) 
+            if (update.Photo is not null) 
             {
 
-                if (!slideVM.Photo.ValidateType())
+                if (!update.Photo.ValidateType())
                 {
                     ModelState.AddModelError("Photo", "File Not supported");
                     return View(existed);
                 }
 
-                if (!slideVM.Photo.ValidataSize(10))
+                if (!update.Photo.ValidataSize(10))
                 {
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                     return View(existed);
                 }
-                string newImage = await slideVM.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+                string newImage = await update.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 existed.ImgUrl.DeleteFileAsync(_env.WebRootPath, "assets", "images", "website-images");
                 existed.ImgUrl = newImage;
             }
 
-            existed.Title = slideVM.Title;
-            existed.SubTitle = slideVM.SubTitle;
-            existed.Description = slideVM.Description;
+            existed.Title = update.Title;
+            existed.SubTitle = update.SubTitle;
+            existed.Description = update.Description;
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

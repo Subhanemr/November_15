@@ -9,7 +9,6 @@ namespace _15_11_23.Services
     {
         private readonly IConfiguration _conf;
 
-
         public EmailService(IConfiguration conf)
         {
             _conf = conf;

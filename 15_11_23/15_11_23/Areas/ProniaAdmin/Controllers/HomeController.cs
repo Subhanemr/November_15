@@ -9,13 +9,6 @@ namespace _15_11_23.Areas.Admin.Controllers
     [AutoValidateAntiforgeryToken]
     public class HomeController : Controller
     {
-        private readonly AppDbContext _context;
-
-        public HomeController(AppDbContext context)
-        {
-            _context = context;
-        }
-
         [Authorize(Roles = "Admin,Moderator")]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()

@@ -48,18 +48,18 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUpdateCategoryVM categoryVM)
+        public async Task<IActionResult> Create(CreateUpdateCategoryVM create)
         {
-            if(!ModelState.IsValid) return View(categoryVM);
+            if(!ModelState.IsValid) return View(create);
 
-            bool result = await _context.Categories.AnyAsync(c => c.Name.ToLower().Trim() == categoryVM.Name.ToLower().Trim());
+            bool result = await _context.Categories.AnyAsync(c => c.Name.ToLower().Trim() == create.Name.ToLower().Trim());
 
             if (result)
             {
                 ModelState.AddModelError("Name", "A Category is available");
-                return View(categoryVM);
+                return View(create);
             }
-            Category category = new Category { Name = categoryVM.Name };
+            Category category = new Category { Name = create.Name };
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
@@ -80,22 +80,22 @@ namespace _15_11_23.Areas.ProniaAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, CreateUpdateCategoryVM categoryVM)
+        public async Task<IActionResult> Update(int id, CreateUpdateCategoryVM update)
         {
-            if (!ModelState.IsValid) return View(categoryVM);
+            if (!ModelState.IsValid) return View(update);
 
            Category existed = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
            if(existed == null) throw new NotFoundException("Your request was not found");
 
-           bool result = await _context.Categories.AnyAsync(c=> c.Name.ToLower().Trim() == categoryVM.Name.ToLower().Trim() && c.Id != id);
+           bool result = await _context.Categories.AnyAsync(c=> c.Name.ToLower().Trim() == update.Name.ToLower().Trim() && c.Id != id);
 
             if (result)
             {
                 ModelState.AddModelError("Name", "A Category is available");
-                return View(categoryVM);
+                return View(update);
             }
 
-            existed.Name = categoryVM.Name;
+            existed.Name = update.Name;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
